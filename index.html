@@ -926,6 +926,7 @@
         <div class="tab-item${tab==='active'?' active':''}" onclick="switchTab('active')">${ic('parking-square')} กำลังจอด</div>
         <div class="tab-item${tab==='history'?' active':''}" onclick="switchTab('history')">${ic('search')} ค้นหา/ประวัติ</div>
         ${Auth.isAdmin()?`<div class="tab-item${tab==='dash'?' active':''}" onclick="switchTab('dash')">${ic('bar-chart-2')} สรุปวันนี้</div>`:''}
+        ${Auth.isAdmin()?`<div class="tab-item${tab==='qr'?' active':''}" onclick="switchTab('qr')">${ic('qr-code')} QR Code</div>`:''}
       </div>
       <div id="tab-body"></div>`);
     renderTab(tab);
@@ -934,7 +935,7 @@
   function switchTab(tab){
     _tab=tab;
     document.querySelectorAll('.tab-item').forEach(el=>el.classList.remove('active'));
-    const idx={active:0,history:1,dash:2}[tab];
+    const idx={active:0,history:1,dash:2,qr:3}[tab];
     document.querySelectorAll('.tab-item')[idx]?.classList.add('active');
     renderTab(tab);
   }
@@ -943,6 +944,7 @@
     if(tab==='active') renderActive();
     else if(tab==='history') renderHistory();
     else if(tab==='dash') renderDash();
+    else if(tab==='qr') renderQR();
   }
 
   // ── Active Parking ──────────────────────────────────────────────
@@ -1161,8 +1163,26 @@
               </div>`).join('')}
           </div>
 
-          <div class="card mb-12">
-            <div class="card-title">${ic('qr-code')} QR Code สำหรับผู้มาติดต่อ</div>
+          <div class="card">
+            <div class="card-title">${ic('database')} จัดการข้อมูล</div>
+            <button class="btn btn-outline btn-full" onclick="exportCSV(Store.all())">
+              ${ic('file-down')} Export ข้อมูลทั้งหมดเป็น CSV
+            </button>
+          </div>
+        </div>
+      </div>`);
+  }
+
+  // ── QR Code Tab ─────────────────────────────────────────────────
+
+  function renderQR(){
+    setTab(`
+      <div class="page" style="padding-top:16px">
+        <div class="container">
+          <div class="flex-between mb-16">
+            <h3 class="section-title" style="margin-bottom:0">QR Code สำหรับผู้มาติดต่อ</h3>
+          </div>
+          <div class="card">
             <div class="qr-wrap">
               <div class="qr-url-row">
                 <input type="text" id="qr-url" class="form-control" value="" placeholder="URL ของระบบ..." oninput="refreshQR()">
@@ -1174,13 +1194,6 @@
                 <button class="btn btn-ghost" onclick="printQR()">${ic('printer')} พิมพ์</button>
               </div>
             </div>
-          </div>
-
-          <div class="card">
-            <div class="card-title">${ic('database')} จัดการข้อมูล</div>
-            <button class="btn btn-outline btn-full" onclick="exportCSV(Store.all())">
-              ${ic('file-down')} Export ข้อมูลทั้งหมดเป็น CSV
-            </button>
           </div>
         </div>
       </div>`);
