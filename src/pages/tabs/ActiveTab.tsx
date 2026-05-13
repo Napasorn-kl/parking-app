@@ -290,7 +290,8 @@ export function ActiveTab({ onRefresh }: Props) {
     setEditRecord(record);
     editForm.setFieldsValue({
       driverName: record.driverName, phone: record.phone,
-      destination: record.destination, province: record.province, purpose: record.purpose,
+      destination: record.destination, building: record.building,
+      contactPerson: record.contactPerson, province: record.province, purpose: record.purpose,
     });
   };
   const confirmEdit = () => {
@@ -605,18 +606,22 @@ export function ActiveTab({ onRefresh }: Props) {
           <Form.Item name="phone" label="เบอร์โทรศัพท์">
             <Input inputMode="tel" />
           </Form.Item>
-          <Row>
-            <Form.Item name="destination" label="สถานที่ติดต่อ" style={{ flex: 1, marginRight: 8 }}>
-              <AutoComplete options={DESTINATIONS.map(d => ({ value: d }))}><Input /></AutoComplete>
-            </Form.Item>
-          </Row>
+          <Form.Item name="destination" label="ชื่อบริษัท/หน่วยงานที่ติดต่อ">
+            <AutoComplete options={DESTINATIONS.map(d => ({ value: d }))}><Input /></AutoComplete>
+          </Form.Item>
+          <Form.Item name="building" label="สถานที่/อาคาร/สำนักงาน">
+            <Input placeholder="เช่น อาคาร A ชั้น 3" />
+          </Form.Item>
+          <Form.Item name="contactPerson" label="ชื่อผู้ที่นัดหมาย">
+            <Input placeholder="เช่น คุณวิภา รักดี" />
+          </Form.Item>
           <Form.Item name="province" label="จังหวัดทะเบียน">
             <Select showSearch allowClear placeholder="เลือกจังหวัด">
               {PROVINCES.map(p => <Select.Option key={p} value={p}>{p}</Select.Option>)}
             </Select>
           </Form.Item>
           <Form.Item name="purpose" label="วัตถุประสงค์">
-            <Input.TextArea rows={2} />
+            <Input />
           </Form.Item>
         </Form>
       </Modal>

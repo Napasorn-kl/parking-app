@@ -11,7 +11,9 @@ export interface ParkingRecord {
   vehicleType: VehicleType;
   plate: string;
   province: string;
-  destination: string;
+  destination: string;   // ชื่อบริษัท/หน่วยงานที่ติดต่อ
+  building?: string;     // สถานที่/อาคาร/สำนักงาน/ห้อง
+  contactPerson?: string; // ชื่อผู้ที่นัดหมาย
   purpose: string;
   entryTime: string;
   exitTime?: string;
@@ -177,13 +179,13 @@ export function vehicleLabel(v: VehicleType): string {
 export function exportCSV(records: ParkingRecord[]) {
   const header = [
     'ID','วันที่','ชื่อผู้ขับ','เบอร์โทร','ประเภทรถ','ทะเบียน',
-    'จังหวัด','สถานที่ติดต่อ','วัตถุประสงค์','เวลาเข้า','เวลาออก',
+    'จังหวัด','บริษัท/หน่วยงาน','สถานที่/อาคาร','ผู้ที่นัดหมาย','วัตถุประสงค์','เวลาเข้า','เวลาออก',
     'ระยะเวลา(นาที)','สถานะ',
   ];
   const rows = records.map(r => [
     r.id, r.date, r.driverName, r.phone,
     vehicleLabel(r.vehicleType), r.plate, r.province,
-    r.destination, r.purpose,
+    r.destination, r.building ?? '', r.contactPerson ?? '', r.purpose,
     r.entryTime ? fmtDateTime(r.entryTime) : '',
     r.exitTime  ? fmtDateTime(r.exitTime)  : '',
     r.duration ?? '',
