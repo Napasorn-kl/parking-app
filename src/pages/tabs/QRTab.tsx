@@ -72,7 +72,7 @@ export function QRTab() {
     <div style={{ maxWidth: 520 }}>
       {/* URL Input */}
       <div style={{
-        background: '#111B2E', border: '1px solid #1E3552',
+        background: '#FFFFFF', border: '1px solid #E2E8F0',
         borderRadius: 12, padding: '20px', marginBottom: 20,
       }}>
         <div style={{ color: '#94A3B8', fontSize: 12, fontWeight: 600, letterSpacing: '0.08em', marginBottom: 10, textTransform: 'uppercase' }}>
@@ -91,7 +91,7 @@ export function QRTab() {
             <Button icon={<ReloadOutlined />} loading={generating} onClick={() => generate(url)} />
           </Tooltip>
         </div>
-        <div style={{ color: '#4B6280', fontSize: 11, marginTop: 8 }}>
+        <div style={{ color: '#94A3B8', fontSize: 11, marginTop: 8 }}>
           URL นี้จะถูกฝังใน QR Code เมื่อผู้มาติดต่อสแกนจะถูกส่งไปยังหน้าบันทึกรถเข้า
         </div>
       </div>
@@ -99,13 +99,13 @@ export function QRTab() {
       {/* QR Display */}
       {dataUrl && (
         <div style={{
-          background: '#111B2E', border: '1px solid #1E3552',
+          background: '#FFFFFF', border: '1px solid #E2E8F0',
           borderRadius: 12, padding: '28px 24px', textAlign: 'center',
         }}>
           <div style={{
             display: 'inline-block', padding: 16,
             background: '#FFFFFF', borderRadius: 12,
-            boxShadow: '0 0 0 1px rgba(255,255,255,0.05), 0 8px 32px rgba(0,0,0,0.4)',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
             marginBottom: 20,
           }}>
             <img src={dataUrl} alt="QR Code" style={{ width: 260, height: 260, display: 'block' }} />
@@ -132,12 +132,12 @@ export function QRTab() {
 
       {/* Instructions */}
       <div style={{
-        marginTop: 16, background: 'rgba(56,189,248,0.06)',
-        border: '1px solid rgba(56,189,248,0.15)',
+        marginTop: 16, background: 'rgba(2,132,199,0.06)',
+        border: '1px solid rgba(2,132,199,0.15)',
         borderRadius: 10, padding: '14px 16px',
         fontSize: 13, color: '#64748B', lineHeight: 1.7,
       }}>
-        <div style={{ color: '#38BDF8', fontWeight: 600, marginBottom: 6 }}>วิธีใช้งาน</div>
+        <div style={{ color: '#0284C7', fontWeight: 600, marginBottom: 6 }}>วิธีใช้งาน</div>
         <ol style={{ margin: 0, paddingLeft: 18 }}>
           <li>ดาวน์โหลดหรือพิมพ์ QR Code ด้านบน</li>
           <li>ติดไว้ที่จุดเข้าที่จอดรถหรือส่งให้ผู้มาติดต่อ</li>

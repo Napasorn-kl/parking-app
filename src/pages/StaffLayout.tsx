@@ -85,10 +85,10 @@ export function StaffLayout() {
             <CarOutlined style={{ color: '#fff', fontSize: 19 }} />
           </div>
           <div>
-            <div style={{ color: '#E2E8F0', fontWeight: 700, fontSize: 14, lineHeight: 1.2 }}>
+            <div style={{ color: '#0F172A', fontWeight: 700, fontSize: 14, lineHeight: 1.2 }}>
               ระบบจอดรถ
             </div>
-            <div style={{ color: '#4B6280', fontSize: 11 }}>Parking Management</div>
+            <div style={{ color: '#64748B', fontSize: 11 }}>Parking Management</div>
           </div>
         </div>
       </div>
@@ -97,7 +97,6 @@ export function StaffLayout() {
       <div style={{ flex: 1, paddingTop: 8 }}>
         <Menu
           mode="inline"
-          theme="dark"
           selectedKeys={[tab]}
           items={menuItems}
           onClick={({ key }) => switchTab(key as TabKey)}
@@ -121,13 +120,13 @@ export function StaffLayout() {
             {user?.name?.charAt(0)}
           </Avatar>
           <div style={{ minWidth: 0 }}>
-            <div style={{ color: '#CBD5E1', fontSize: 13, fontWeight: 600, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            <div style={{ color: '#1E293B', fontSize: 13, fontWeight: 600, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {user?.name}
             </div>
             <span style={{
               display: 'inline-block', marginTop: 2,
-              background: isAdmin ? 'rgba(56,189,248,0.15)' : 'rgba(52,211,153,0.15)',
-              color: isAdmin ? '#38BDF8' : '#34D399',
+              background: isAdmin ? 'rgba(2,132,199,0.12)' : 'rgba(22,163,74,0.12)',
+              color: isAdmin ? '#0284C7' : '#16A34A',
               fontSize: 9, fontWeight: 700, padding: '1px 7px',
               borderRadius: 10, letterSpacing: '0.08em',
             }}>
@@ -140,7 +139,7 @@ export function StaffLayout() {
           block size="small"
           onClick={handleLogout}
           style={{
-            background: 'transparent', borderColor: '#1E3552',
+            background: 'transparent', borderColor: '#E2E8F0',
             color: '#64748B', borderRadius: 8,
           }}
         >
@@ -174,11 +173,11 @@ export function StaffLayout() {
           placement="left"
           width={240}
           styles={{
-            body: { background: '#0C1420', padding: 0 },
-            header: { background: '#0C1420', borderBottom: '1px solid #1E3552' },
+            body: { background: '#FFFFFF', padding: 0 },
+            header: { background: '#FFFFFF', borderBottom: '1px solid #E2E8F0' },
           }}
-          title={<span style={{ color: '#E2E8F0' }}>เมนู</span>}
-          closeIcon={<CloseOutlined style={{ color: '#4B6280' }} />}
+          title={<span style={{ color: '#0F172A' }}>เมนู</span>}
+          closeIcon={<CloseOutlined style={{ color: '#94A3B8' }} />}
         >
           <SidebarContent />
         </Drawer>
@@ -189,21 +188,22 @@ export function StaffLayout() {
         {/* Mobile top bar */}
         {isMobile && (
           <Layout.Header style={{
-            background: '#0C1420', borderBottom: '1px solid #1E3552',
+            background: '#FFFFFF', borderBottom: '1px solid #E2E8F0',
             padding: '0 16px', height: 56, lineHeight: '56px',
             position: 'sticky', top: 0, zIndex: 100,
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <Button
                 type="text"
-                icon={<MenuOutlined style={{ color: '#94A3B8', fontSize: 18 }} />}
+                icon={<MenuOutlined style={{ color: '#64748B', fontSize: 18 }} />}
                 onClick={() => setDrawerOpen(true)}
               />
-              <span style={{ color: '#E2E8F0', fontWeight: 700, fontSize: 15 }}>ระบบจอดรถ</span>
+              <span style={{ color: '#0F172A', fontWeight: 700, fontSize: 15 }}>ระบบจอดรถ</span>
             </div>
             <Tooltip title="ออกจากระบบ">
-              <Button type="text" icon={<LogoutOutlined style={{ color: '#4B6280' }} />} onClick={handleLogout} />
+              <Button type="text" icon={<LogoutOutlined style={{ color: '#64748B' }} />} onClick={handleLogout} />
             </Tooltip>
           </Layout.Header>
         )}
@@ -219,10 +219,10 @@ export function StaffLayout() {
             marginBottom: 4,
           }}>
             <div>
-              <h2 style={{ color: '#E2E8F0', margin: '0 0 2px', fontSize: 20, fontWeight: 700, lineHeight: 1.2 }}>
+              <h2 style={{ color: '#0F172A', margin: '0 0 2px', fontSize: 20, fontWeight: 700, lineHeight: 1.2 }}>
                 {TAB_TITLES[tab]}
               </h2>
-              <div style={{ color: '#4B6280', fontSize: 12 }}>
+              <div style={{ color: '#64748B', fontSize: 12 }}>
                 {new Date().toLocaleDateString('th-TH', {
                   weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
                 })}
@@ -233,11 +233,11 @@ export function StaffLayout() {
             {tab === 'active' && (
               <div style={{
                 display: 'flex', alignItems: 'center', gap: 8,
-                background: 'rgba(56,189,248,0.08)', border: '1px solid rgba(56,189,248,0.18)',
+                background: 'rgba(2,132,199,0.07)', border: '1px solid rgba(2,132,199,0.18)',
                 borderRadius: 8, padding: '6px 14px',
               }}>
                 <span className="pulse-dot" />
-                <span style={{ color: '#38BDF8', fontSize: 13, fontWeight: 600 }}>
+                <span style={{ color: '#0284C7', fontSize: 13, fontWeight: 600 }}>
                   {activeCount} คันในลาน
                 </span>
               </div>

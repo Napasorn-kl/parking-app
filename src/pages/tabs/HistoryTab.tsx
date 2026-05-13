@@ -142,12 +142,12 @@ export function HistoryTab({ refreshKey }: Props) {
     <div>
       {/* Filters */}
       <div style={{
-        background: '#111B2E', border: '1px solid #1E3552',
+        background: '#FFFFFF', border: '1px solid #E2E8F0',
         borderRadius: 10, padding: '14px 16px', marginBottom: 16,
         display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'flex-end',
       }}>
         <div style={{ flex: '1 1 200px', minWidth: 180 }}>
-          <div style={{ color: '#64748B', fontSize: 12, marginBottom: 4 }}>
+          <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 4 }}>
             <FilterOutlined style={{ marginRight: 4 }} />ค้นหา
           </div>
           <Input
@@ -159,7 +159,7 @@ export function HistoryTab({ refreshKey }: Props) {
           />
         </div>
         <div style={{ flex: '0 1 180px', minWidth: 160 }}>
-          <div style={{ color: '#64748B', fontSize: 12, marginBottom: 4 }}>วันที่</div>
+          <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 4 }}>วันที่</div>
           <RangePicker
             style={{ width: '100%' }}
             onChange={(dates) => setDateRange(dates as [dayjs.Dayjs | null, dayjs.Dayjs | null])}
@@ -167,7 +167,7 @@ export function HistoryTab({ refreshKey }: Props) {
           />
         </div>
         <div style={{ flex: '0 1 140px', minWidth: 120 }}>
-          <div style={{ color: '#64748B', fontSize: 12, marginBottom: 4 }}>สถานะ</div>
+          <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 4 }}>สถานะ</div>
           <Select
             value={status}
             onChange={setStatus}
@@ -186,7 +186,7 @@ export function HistoryTab({ refreshKey }: Props) {
 
       {/* Result count */}
       <div style={{ color: '#4B6280', fontSize: 13, marginBottom: 10 }}>
-        พบ <span style={{ color: '#38BDF8', fontWeight: 600 }}>{filtered.length}</span> รายการ
+        พบ <span style={{ color: '#0284C7', fontWeight: 600 }}>{filtered.length}</span> รายการ
       </div>
 
       {/* Table */}

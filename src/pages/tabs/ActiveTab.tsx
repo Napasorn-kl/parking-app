@@ -111,7 +111,7 @@ export function ActiveTab({ onRefresh }: Props) {
       {/* Search bar */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
         <Input
-          prefix={<SearchOutlined style={{ color: '#4B6280' }} />}
+          prefix={<SearchOutlined style={{ color: '#94A3B8' }} />}
           placeholder="ค้นหาทะเบียน / ชื่อ / สถานที่"
           value={query}
           onChange={e => setQuery(e.target.value)}
@@ -126,7 +126,7 @@ export function ActiveTab({ onRefresh }: Props) {
       {/* Record list */}
       {records.length === 0 ? (
         <Empty
-          description={<span style={{ color: '#4B6280' }}>
+          description={<span style={{ color: '#94A3B8' }}>
             {query ? 'ไม่พบรายการที่ตรงกัน' : 'ไม่มีรถในลานจอด'}
           </span>}
           style={{ marginTop: 60 }}
@@ -145,15 +145,15 @@ export function ActiveTab({ onRefresh }: Props) {
 
             {/* Info */}
             <div style={{ fontSize: 13, color: '#94A3B8', marginBottom: 4 }}>
-              <span style={{ color: '#CBD5E1', fontWeight: 500 }}>{record.driverName}</span>
-              <span style={{ margin: '0 6px', color: '#1E3552' }}>·</span>
+              <span style={{ color: '#1E293B', fontWeight: 500 }}>{record.driverName}</span>
+              <span style={{ margin: '0 6px', color: '#CBD5E1' }}>·</span>
               {vehicleLabel(record.vehicleType)}
             </div>
             <div style={{ fontSize: 13, color: '#64748B', marginBottom: 4 }}>
               📍 {record.destination}
-              {record.purpose && <><span style={{ margin: '0 6px', color: '#1E3552' }}>·</span>{record.purpose}</>}
+              {record.purpose && <><span style={{ margin: '0 6px', color: '#CBD5E1' }}>·</span>{record.purpose}</>}
             </div>
-            <div style={{ fontSize: 12, color: '#4B6280', fontFamily: "'JetBrains Mono', monospace" }}>
+            <div style={{ fontSize: 12, color: '#94A3B8', fontFamily: "'JetBrains Mono', monospace" }}>
               เข้า {fmtTime(record.entryTime)}
             </div>
 
@@ -215,11 +215,11 @@ export function ActiveTab({ onRefresh }: Props) {
                 </div>
               </div>
               <div style={{
-                marginTop: 16, background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)',
+                marginTop: 16, background: 'rgba(22,163,74,0.07)', border: '1px solid rgba(22,163,74,0.2)',
                 borderRadius: 8, padding: '10px 16px', textAlign: 'center',
               }}>
                 <span style={{ color: '#64748B', fontSize: 12 }}>ระยะเวลาจอด </span>
-                <span style={{ color: '#4ADE80', fontWeight: 700, fontSize: 18 }}>{fmtDuration(dur)}</span>
+                <span style={{ color: '#16A34A', fontWeight: 700, fontSize: 18 }}>{fmtDuration(dur)}</span>
               </div>
             </div>
           );

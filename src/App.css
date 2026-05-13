@@ -9,8 +9,8 @@ body {
 /* ── Scrollbar ─────────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #1E3552; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #2A4A6B; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
 
 /* ── License plate ─────────────────────────────── */
 .plate-tag {
@@ -23,7 +23,7 @@ body {
   padding: 4px 14px 3px;
   font-family: 'JetBrains Mono', monospace;
   min-width: 88px;
-  box-shadow: 0 0 12px rgba(37,99,235,0.25), inset 0 1px 0 rgba(255,255,255,0.05);
+  box-shadow: 0 2px 8px rgba(37,99,235,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
   line-height: 1.2;
 }
 .plate-number {
@@ -35,7 +35,7 @@ body {
 }
 .plate-province {
   font-size: 9px;
-  color: #4B6280;
+  color: #94A3B8;
   letter-spacing: 0.06em;
   text-align: center;
 }
@@ -52,68 +52,104 @@ body {
   white-space: nowrap;
 }
 .status-badge.parking {
-  background: rgba(56,189,248,0.12);
-  border: 1px solid rgba(56,189,248,0.3);
-  color: #38BDF8;
+  background: rgba(2,132,199,0.08);
+  border: 1px solid rgba(2,132,199,0.25);
+  color: #0284C7;
 }
 .status-badge.exited {
-  background: rgba(74,222,128,0.1);
-  border: 1px solid rgba(74,222,128,0.25);
-  color: #4ADE80;
+  background: rgba(22,163,74,0.08);
+  border: 1px solid rgba(22,163,74,0.22);
+  color: #16A34A;
 }
 .status-badge.cancelled {
-  background: rgba(107,114,128,0.1);
-  border: 1px solid rgba(107,114,128,0.2);
-  color: #6B7280;
+  background: rgba(100,116,139,0.08);
+  border: 1px solid rgba(100,116,139,0.2);
+  color: #64748B;
 }
 .pulse-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #38BDF8;
+  background: #0284C7;
   flex-shrink: 0;
   animation: pulse-glow 2s ease-in-out infinite;
 }
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(56,189,248,0.5); opacity: 1; }
-  50% { box-shadow: 0 0 0 5px rgba(56,189,248,0); opacity: 0.7; }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(2,132,199,0.5); opacity: 1; }
+  50% { box-shadow: 0 0 0 5px rgba(2,132,199,0); opacity: 0.7; }
 }
 
-/* ── Admin grid background ─────────────────────── */
+/* ── Admin background ──────────────────────────── */
 .admin-bg {
-  background-color: #0B1120;
+  background-color: #F0F5FF;
   background-image:
-    linear-gradient(rgba(30,53,82,0.28) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(30,53,82,0.28) 1px, transparent 1px);
+    linear-gradient(rgba(148,163,184,0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148,163,184,0.16) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
-/* ── Active tab border bottom fix ──────────────── */
-.ant-menu-item-selected::after {
-  border-bottom-color: #38BDF8 !important;
+/* ── Sidebar ───────────────────────────────────── */
+.sidebar {
+  background: #FFFFFF !important;
+  border-right: 1px solid #E2E8F0 !important;
+}
+.sidebar-brand {
+  padding: 18px 20px 16px;
+  border-bottom: 1px solid #E8EEF6;
+}
+.sidebar-footer {
+  padding: 14px 16px;
+  border-top: 1px solid #E8EEF6;
+}
+
+/* Ant Design light menu overrides in sidebar */
+.ant-menu-light { background: transparent !important; }
+.ant-menu-light .ant-menu-item-selected {
+  background: rgba(2,132,199,0.08) !important;
+  color: #0284C7 !important;
+}
+.ant-menu-light .ant-menu-item-selected .ant-menu-item-icon,
+.ant-menu-light .ant-menu-item-selected .ant-menu-title-content {
+  color: #0284C7 !important;
+}
+.ant-menu-light .ant-menu-item:hover {
+  background: rgba(0,0,0,0.03) !important;
 }
 
 /* ── Record card (active tab) ──────────────────── */
 .record-card {
-  background: #111B2E;
-  border: 1px solid #1E3552;
-  border-left: 3px solid #38BDF8;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-left: 3px solid #0284C7;
   border-radius: 10px;
   padding: 14px 16px;
   margin-bottom: 10px;
   transition: box-shadow 0.2s, border-left-color 0.2s;
 }
 .record-card:hover {
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  border-left-color: #7DD3FC;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  border-left-color: #38BDF8;
 }
-.record-card.exited { border-left-color: #4ADE80; }
-.record-card.cancelled { border-left-color: #374151; }
+.record-card.exited   { border-left-color: #16A34A; }
+.record-card.cancelled { border-left-color: #CBD5E1; }
 
 /* ── Elapsed time colors ───────────────────────── */
-.elapsed-normal { color: #64748B; }
-.elapsed-warn   { color: #F59E0B; }
-.elapsed-danger { color: #EF4444; }
+.elapsed-normal { color: #94A3B8; }
+.elapsed-warn   { color: #D97706; }
+.elapsed-danger { color: #DC2626; }
+
+/* ── Stat card ─────────────────────────────────── */
+.stat-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.stat-card-highlight {
+  background: linear-gradient(135deg, rgba(2,132,199,0.07), rgba(14,165,233,0.03));
+  border-color: rgba(2,132,199,0.2);
+}
 
 /* ── Visitor checkin page ──────────────────────── */
 .checkin-bg {
@@ -121,7 +157,7 @@ body {
   background: linear-gradient(145deg, #EFF6FF 0%, #F0F9FF 50%, #E0F2FE 100%);
 }
 .checkin-header {
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid #E2E8F0;
@@ -134,41 +170,7 @@ body {
   z-index: 100;
 }
 
-/* ── Sidebar ───────────────────────────────────── */
-.sidebar {
-  background: #0C1420 !important;
-  border-right: 1px solid #1E3552;
-}
-.sidebar-brand {
-  padding: 18px 20px 16px;
-  border-bottom: 1px solid #1E3552;
-}
-.sidebar-footer {
-  padding: 14px 16px;
-  border-top: 1px solid #1E3552;
-}
-.ant-menu.ant-menu-dark { background: transparent !important; }
-.ant-menu-dark .ant-menu-item-selected {
-  background: rgba(56,189,248,0.12) !important;
-  border-right: 2px solid #38BDF8;
-}
-.ant-menu-dark .ant-menu-item:hover {
-  background: rgba(255,255,255,0.04) !important;
-}
-
-/* ── Stats card ────────────────────────────────── */
-.stat-card {
-  background: #111B2E;
-  border: 1px solid #1E3552;
-  border-radius: 12px;
-  padding: 20px;
-}
-.stat-card-highlight {
-  background: linear-gradient(135deg, rgba(56,189,248,0.15), rgba(14,165,233,0.08));
-  border-color: rgba(56,189,248,0.3);
-}
-
-/* ── Ant Design token overrides ────────────────── */
+/* ── Ant Design font override ──────────────────── */
 .ant-input, .ant-input-affix-wrapper,
 .ant-select-selector, .ant-picker {
   font-family: 'IBM Plex Sans Thai', 'IBM Plex Sans', sans-serif !important;
