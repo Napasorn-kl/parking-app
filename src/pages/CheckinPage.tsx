@@ -1,130 +1,103 @@
-import { useState, useEffect } from 'react';
-import { Form, Input, Select, Button, AutoComplete, Row, Col } from 'antd';
+import { useState } from 'react';
+import { Form, Input, Select, Button, AutoComplete, Row, Col, message } from 'antd';
 import {
-  UserOutlined, PhoneOutlined, CarOutlined,
-  EnvironmentOutlined, CheckCircleFilled,
-  BankOutlined, HomeOutlined, TeamOutlined, FileTextOutlined,
+  UserOutlined, PhoneOutlined, CarOutlined, EnvironmentOutlined,
+  CheckCircleFilled, BankOutlined, HomeOutlined, TeamOutlined, FileTextOutlined,
 } from '@ant-design/icons';
 import { Store, Auth, genId, VEHICLE_TYPES, PROVINCES, DESTINATIONS, fmtTime } from '../lib/data';
 import type { ParkingRecord, VehicleType } from '../lib/data';
 import { PlateTag } from '../components/PlateTag';
 
 interface FormValues {
-  driverName: string;
-  phone?: string;
-  vehicleType: VehicleType;
-  plate: string;
-  province?: string;
-  destination: string;
-  building?: string;
-  contactPerson?: string;
-  purpose: string;
+  driverName: string; phone?: string; vehicleType: VehicleType;
+  plate: string; province?: string; destination: string;
+  building?: string; contactPerson?: string; purpose: string;
 }
 
-/* ── Section header ─────────────────────────────────────────── */
-function SectionHeader({ label, color }: { label: string; color: string }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 18 }}>
-      <div style={{ width: 3, height: 18, borderRadius: 2, background: color, flexShrink: 0 }} />
-      <span style={{ fontSize: 12, fontWeight: 700, color: '#475569', letterSpacing: '0.07em', textTransform: 'uppercase' }}>
-        {label}
-      </span>
-    </div>
-  );
-}
-
-/* ── Success screen ─────────────────────────────────────────── */
+/* ── Success screen ─────────────────────────────────── */
 function SuccessScreen({ done, onReset }: { done: ParkingRecord; onReset: () => void }) {
   return (
-    <div className="checkin-bg" style={{
-      minHeight: '100vh', display: 'flex', flexDirection: 'column',
-      alignItems: 'center', justifyContent: 'center', padding: '24px 16px',
+    <div style={{
+      minHeight: '100dvh', display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center',
+      background: 'linear-gradient(145deg,#EFF6FF 0%,#F0F9FF 50%,#E0F2FE 100%)',
+      padding: '24px 20px',
     }}>
       <style>{`
         @keyframes popIn {
-          0%   { opacity: 0; transform: scale(0.85) translateY(20px); }
-          70%  { transform: scale(1.03) translateY(-2px); }
-          100% { opacity: 1; transform: scale(1) translateY(0); }
+          0%   { opacity:0; transform:scale(0.82) translateY(24px); }
+          65%  { transform:scale(1.04) translateY(-3px); }
+          100% { opacity:1; transform:scale(1) translateY(0); }
         }
-        .success-card { animation: popIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both; }
+        .sc { animation: popIn .5s cubic-bezier(.34,1.56,.64,1) both; }
       `}</style>
-
-      <div className="success-card" style={{
-        background: '#fff', borderRadius: 24, padding: '40px 28px 32px',
-        maxWidth: 400, width: '100%', textAlign: 'center',
-        boxShadow: '0 24px 64px rgba(22,163,74,0.13), 0 4px 16px rgba(0,0,0,0.06)',
-        border: '1px solid rgba(22,163,74,0.12)',
+      <div className="sc" style={{
+        background:'#fff', borderRadius:28, padding:'36px 24px 28px',
+        maxWidth:420, width:'100%', textAlign:'center',
+        boxShadow:'0 24px 72px rgba(22,163,74,.14),0 4px 16px rgba(0,0,0,.06)',
+        border:'1px solid rgba(22,163,74,.1)',
       }}>
-        {/* Icon */}
         <div style={{
-          width: 80, height: 80, borderRadius: 40,
-          background: 'linear-gradient(135deg, rgba(22,163,74,0.12), rgba(34,197,94,0.08))',
-          display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-          marginBottom: 16, border: '1px solid rgba(22,163,74,0.2)',
+          width:88, height:88, borderRadius:44,
+          background:'linear-gradient(135deg,rgba(22,163,74,.12),rgba(34,197,94,.06))',
+          display:'inline-flex', alignItems:'center', justifyContent:'center',
+          marginBottom:18, border:'1.5px solid rgba(22,163,74,.18)',
         }}>
-          <CheckCircleFilled style={{ fontSize: 44, color: '#16A34A' }} />
+          <CheckCircleFilled style={{ fontSize:48, color:'#16A34A' }} />
         </div>
-
-        <div style={{ fontSize: 22, fontWeight: 800, color: '#0F172A', marginBottom: 4 }}>
-          บันทึกสำเร็จ!
-        </div>
-        <div style={{ fontSize: 13, color: '#64748B', marginBottom: 24 }}>
-          ระบบบันทึกข้อมูลรถของคุณเรียบร้อยแล้ว
-        </div>
-
-        <div style={{ marginBottom: 20 }}>
+        <div style={{ fontSize:24, fontWeight:800, color:'#0F172A', marginBottom:4 }}>บันทึกสำเร็จ!</div>
+        <div style={{ fontSize:13, color:'#64748B', marginBottom:22 }}>ระบบบันทึกข้อมูลรถของคุณเรียบร้อยแล้ว</div>
+        <div style={{ marginBottom:20 }}>
           <PlateTag plate={done.plate} province={done.province} size="lg" />
         </div>
-
-        {/* Summary */}
         <div style={{
-          background: '#F8FAFF', borderRadius: 12, padding: '16px 18px',
-          fontSize: 13, color: '#374151', textAlign: 'left', marginBottom: 24,
-          border: '1px solid #EEF2FF',
+          background:'#F8FAFF', borderRadius:14, padding:'14px 16px',
+          fontSize:13, textAlign:'left', marginBottom:16, border:'1px solid #EEF2FF',
         }}>
           {[
-            { label: 'ผู้ขับ',         value: done.driverName },
-            ...(done.destination ? [{ label: 'หน่วยงาน', value: done.destination }] : []),
-            ...(done.building    ? [{ label: 'สถานที่',  value: done.building }] : []),
-            ...(done.contactPerson ? [{ label: 'ผู้นัดหมาย', value: done.contactPerson }] : []),
-            { label: 'เวลาเข้า', value: fmtTime(done.entryTime), mono: true },
-          ].map(({ label, value, mono }) => (
+            { label:'ผู้ขับ',      value: done.driverName },
+            ...(done.destination   ? [{ label:'หน่วยงาน',  value: done.destination }]   : []),
+            ...(done.building      ? [{ label:'สถานที่',   value: done.building }]      : []),
+            ...(done.contactPerson ? [{ label:'ผู้นัดหมาย', value: done.contactPerson }] : []),
+            { label:'เวลาเข้า', value: fmtTime(done.entryTime), mono: true },
+          ].map(({ label, value, mono }, i, arr) => (
             <div key={label} style={{
-              display: 'flex', justifyContent: 'space-between',
-              alignItems: 'baseline', paddingBottom: 7, marginBottom: 7,
-              borderBottom: '1px solid #EEF2FF',
+              display:'flex', justifyContent:'space-between', alignItems:'baseline',
+              paddingBottom: i < arr.length-1 ? 8 : 0,
+              marginBottom:  i < arr.length-1 ? 8 : 0,
+              borderBottom:  i < arr.length-1 ? '1px solid #EEF2FF' : 'none',
             }}>
-              <span style={{ color: '#94A3B8', fontSize: 12 }}>{label}</span>
+              <span style={{ color:'#94A3B8', fontSize:12 }}>{label}</span>
               <span style={{
-                fontWeight: 600,
-                fontFamily: mono ? "'JetBrains Mono', monospace" : undefined,
-                fontSize: mono ? 13 : 13,
-                color: '#0F172A',
-                textAlign: 'right', maxWidth: '60%',
-              }}>
-                {value}
-              </span>
+                fontWeight:600, color:'#0F172A', textAlign:'right', maxWidth:'65%', fontSize:13,
+                fontFamily: mono ? "'JetBrains Mono',monospace" : undefined,
+              }}>{value}</span>
             </div>
           ))}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 2 }}>
-            <span style={{ fontSize: 11, color: '#94A3B8' }}>สถานะ</span>
-            <span style={{
-              fontSize: 11, fontWeight: 700, color: '#0284C7',
-              background: 'rgba(2,132,199,0.08)', border: '1px solid rgba(2,132,199,0.2)',
-              borderRadius: 20, padding: '2px 10px',
-            }}>กำลังจอด</span>
+        </div>
+        <div style={{ display:'flex', gap:8, marginBottom:16 }}>
+          <div style={{
+            flex:1, background:'rgba(2,132,199,.07)', border:'1px solid rgba(2,132,199,.18)',
+            borderRadius:10, padding:'8px 12px', textAlign:'center',
+          }}>
+            <div style={{ fontSize:10, color:'#94A3B8', marginBottom:2 }}>สถานะ</div>
+            <div style={{ fontSize:12, fontWeight:700, color:'#0284C7' }}>กำลังจอด</div>
+          </div>
+          <div style={{
+            flex:1, background:'rgba(22,163,74,.07)', border:'1px solid rgba(22,163,74,.18)',
+            borderRadius:10, padding:'8px 12px', textAlign:'center',
+          }}>
+            <div style={{ fontSize:10, color:'#94A3B8', marginBottom:2 }}>เวลาเข้า</div>
+            <div style={{ fontSize:12, fontWeight:700, color:'#16A34A', fontFamily:"'JetBrains Mono',monospace" }}>
+              {fmtTime(done.entryTime)}
+            </div>
           </div>
         </div>
-
-        <Button
-          type="primary" block size="large"
-          onClick={onReset}
-          style={{
-            height: 50, borderRadius: 12, fontSize: 15, fontWeight: 700,
-            background: 'linear-gradient(135deg, #16A34A, #22C55E)',
-            border: 'none', boxShadow: '0 4px 14px rgba(22,163,74,0.35)',
-          }}
-        >
+        <Button type="primary" block size="large" onClick={onReset} style={{
+          height:54, borderRadius:14, fontSize:16, fontWeight:700,
+          background:'linear-gradient(135deg,#16A34A,#22C55E)',
+          border:'none', boxShadow:'0 6px 20px rgba(22,163,74,.3)',
+        }}>
           บันทึกรถคันอื่น
         </Button>
       </div>
@@ -132,255 +105,210 @@ function SuccessScreen({ done, onReset }: { done: ParkingRecord; onReset: () => 
   );
 }
 
-/* ══════════════════════════════════════════════════════════════ */
-export function CheckinPage() {
-  const [form] = Form.useForm<FormValues>();
-  const [done, setDone] = useState<ParkingRecord | null>(null);
-  const [loading, setLoading] = useState(false);
+/* ── Section label ──────────────────────────────────── */
+function Section({ label, color }: { label: string; color: string }) {
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:14, marginTop:4 }}>
+      <div style={{ width:3, height:16, borderRadius:2, background:color, flexShrink:0 }} />
+      <span style={{ fontSize:11, fontWeight:700, color:'#64748B', letterSpacing:'0.07em', textTransform:'uppercase' }}>
+        {label}
+      </span>
+    </div>
+  );
+}
 
-  useEffect(() => {
-    setTimeout(() => form.getFieldInstance?.('driverName')?.focus?.(), 200);
-  }, [form]);
+/* ══════════════════════════════════════════════════════ */
+export function CheckinPage() {
+  const [form]  = Form.useForm<FormValues>();
+  const [done, setDone]       = useState<ParkingRecord | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const onFinish = (values: FormValues) => {
     setLoading(true);
     const plate = values.plate.trim().toUpperCase();
-    const dup = Store.findActivePlate(plate);
+    const dup   = Store.findActivePlate(plate);
     if (dup) {
-      import('antd').then(({ message }) =>
-        message.warning({ content: `ทะเบียน ${plate} ยังอยู่ในระบบ ยังไม่ได้บันทึกเวลาออก`, duration: 4 })
-      );
-      setLoading(false);
-      return;
+      message.warning({ content:`ทะเบียน ${plate} ยังอยู่ในระบบ ยังไม่ได้บันทึกเวลาออก`, duration:4 });
+      setLoading(false); return;
     }
     const now = new Date().toISOString();
     const record: ParkingRecord = {
-      id: genId(),
-      date: now.slice(0, 10),
-      driverName: values.driverName.trim(),
-      phone: values.phone?.trim() ?? '',
-      vehicleType: values.vehicleType,
-      plate,
+      id: genId(), date: now.slice(0,10),
+      driverName: values.driverName.trim(), phone: values.phone?.trim() ?? '',
+      vehicleType: values.vehicleType, plate,
       province: values.province ?? '',
       destination: values.destination,
       building: values.building?.trim() ?? '',
       contactPerson: values.contactPerson?.trim() ?? '',
       purpose: values.purpose.trim(),
-      entryTime: now,
-      status: 'parking',
+      entryTime: now, status:'parking',
       recordedBy: Auth.get()?.id ?? 'visitor',
     };
-    Store.add(record);
-    setDone(record);
-    setLoading(false);
+    Store.add(record); setDone(record); setLoading(false);
   };
 
   if (done) return <SuccessScreen done={done} onReset={() => { setDone(null); form.resetFields(); }} />;
 
   return (
-    <div className="checkin-bg" style={{ minHeight: '100vh', paddingBottom: 60 }}>
+    <div className="checkin-bg" style={{ minHeight:'100dvh', paddingBottom:40 }}>
       <style>{`
-        @keyframes fadeSlideUp {
-          from { opacity: 0; transform: translateY(18px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .ci-hero   { animation: fadeSlideUp 0.38s ease both; }
-        .ci-card   { animation: fadeSlideUp 0.42s 0.06s ease both; }
-        .ci-s1     { animation: fadeSlideUp 0.36s 0.10s ease both; }
-        .ci-s2     { animation: fadeSlideUp 0.36s 0.18s ease both; }
-        .ci-submit { animation: fadeSlideUp 0.36s 0.24s ease both; }
+        @keyframes ciUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+        .ci-page { animation: ciUp .35s ease both; }
 
-        .ant-form-item-label > label {
-          font-weight: 600 !important;
-          font-size: 13px !important;
-          color: #374151 !important;
+        .ci-form .ant-form-item { margin-bottom: 0; }
+        .ci-form .ant-form-item-label { padding-bottom: 5px; }
+        .ci-form .ant-form-item-label > label {
+          font-size: 13px !important; font-weight: 600 !important; color: #374151 !important; height:auto !important;
         }
-        .ci-input .ant-input,
-        .ci-input .ant-select-selector,
-        .ci-input .ant-input-affix-wrapper {
-          border-radius: 10px !important;
+        .ci-form .ant-input,
+        .ci-form .ant-input-affix-wrapper,
+        .ci-form .ant-select-selector {
+          min-height: 50px !important;
+          border-radius: 12px !important;
           border-color: #E2E8F0 !important;
-          background: #FAFBFE !important;
-          font-size: 14px !important;
+          background: #F8FAFF !important;
+          font-size: 15px !important;
         }
-        .ci-input .ant-input:focus,
-        .ci-input .ant-select-focused .ant-select-selector,
-        .ci-input .ant-input-affix-wrapper-focused {
+        .ci-form .ant-input-affix-wrapper { padding: 0 14px !important; }
+        .ci-form .ant-input-affix-wrapper .ant-input {
+          min-height: unset !important; background: transparent !important; border: none !important;
+          box-shadow: none !important; padding: 0 8px !important;
+        }
+        .ci-form .ant-input:focus,
+        .ci-form .ant-select-focused .ant-select-selector,
+        .ci-form .ant-input-affix-wrapper-focused {
           border-color: #2563EB !important;
-          box-shadow: 0 0 0 3px rgba(37,99,235,0.08) !important;
+          box-shadow: 0 0 0 3px rgba(37,99,235,.10) !important;
           background: #fff !important;
         }
+        .ci-form .ant-select-selector { align-items: center !important; padding: 0 14px !important; }
+        .ci-form .ant-form-item-explain-error { font-size: 12px; margin-top: 4px; }
       `}</style>
 
-      <div style={{ padding: '36px 16px 0', maxWidth: 500, margin: '0 auto' }}>
-        {/* ── Hero branding ── */}
-        <div className="ci-hero" style={{ textAlign: 'center', marginBottom: 28 }}>
+      <div className="ci-page" style={{ maxWidth:500, margin:'0 auto', padding:'28px 16px 0' }}>
+
+        {/* ── Hero ── */}
+        <div style={{ textAlign:'center', marginBottom:24 }}>
           <div style={{
-            width: 60, height: 60, borderRadius: 18,
-            background: 'linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%)',
-            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            marginBottom: 14, boxShadow: '0 10px 28px rgba(29,78,216,0.28)',
+            width:56, height:56, borderRadius:16,
+            background:'linear-gradient(135deg,#1D4ED8,#2563EB)',
+            display:'inline-flex', alignItems:'center', justifyContent:'center',
+            marginBottom:12, boxShadow:'0 8px 24px rgba(29,78,216,.28)',
           }}>
-            <CarOutlined style={{ color: '#fff', fontSize: 28 }} />
+            <CarOutlined style={{ color:'#fff', fontSize:26 }} />
           </div>
-          <div style={{ fontSize: 22, fontWeight: 800, color: '#0F172A', lineHeight: 1.2, marginBottom: 6 }}>
+          <div style={{ fontSize:21, fontWeight:800, color:'#0F172A', lineHeight:1.2, marginBottom:5 }}>
             บันทึกรถเข้าที่จอด
           </div>
-          <div style={{ fontSize: 13, color: '#64748B', lineHeight: 1.6 }}>
-            กรุณากรอกข้อมูลให้ครบก่อนนำรถเข้าจอด
-          </div>
+          <div style={{ fontSize:13, color:'#64748B' }}>กรุณากรอกข้อมูลก่อนนำรถเข้าจอด</div>
         </div>
 
-        {/* ── Form card ── */}
-        <div className="ci-card" style={{
-          background: '#fff', borderRadius: 20,
-          boxShadow: '0 8px 40px rgba(29,78,216,0.08), 0 1px 4px rgba(0,0,0,0.04)',
-          border: '1px solid #E8EEFA', overflow: 'hidden',
+        {/* ── Card ── */}
+        <div style={{
+          background:'#fff', borderRadius:20,
+          boxShadow:'0 6px 32px rgba(29,78,216,.08),0 1px 4px rgba(0,0,0,.04)',
+          border:'1px solid #E8EEFA', overflow:'hidden',
         }}>
-          <Form
-            form={form} layout="vertical"
-            onFinish={onFinish} requiredMark={false} size="large"
-            className="ci-input"
-          >
-            {/* ─── Section 1: ข้อมูลรถและผู้ขับ ─── */}
-            <div className="ci-s1" style={{ padding: '24px 22px 20px' }}>
-              <SectionHeader label="ข้อมูลรถและผู้ขับ" color="#2563EB" />
+          <Form form={form} layout="vertical" onFinish={onFinish} requiredMark={false} className="ci-form">
 
-              <Form.Item
-                name="driverName"
-                label="ชื่อ-นามสกุลผู้ขับ"
-                rules={[{ required: true, message: 'กรุณากรอกชื่อ-นามสกุล' }]}
-                style={{ marginBottom: 14 }}
-              >
-                <Input
-                  prefix={<UserOutlined style={{ color: '#94A3B8' }} />}
-                  placeholder="เช่น สมชาย ใจดี"
-                />
-              </Form.Item>
+            {/* ── ข้อมูลรถและผู้ขับ ── */}
+            <div style={{ padding:'22px 18px 20px' }}>
+              <Section label="ข้อมูลรถและผู้ขับ" color="#2563EB" />
+              <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
 
-              <Form.Item name="phone" label="เบอร์โทรศัพท์" style={{ marginBottom: 14 }}>
-                <Input
-                  prefix={<PhoneOutlined style={{ color: '#94A3B8' }} />}
-                  placeholder="081-234-5678"
-                  inputMode="tel"
-                />
-              </Form.Item>
+                <Form.Item name="driverName" label="ชื่อ-นามสกุลผู้ขับ"
+                  rules={[{ required:true, message:'กรุณากรอกชื่อ-นามสกุล' }]}>
+                  <Input prefix={<UserOutlined style={{ color:'#94A3B8' }} />} placeholder="เช่น สมชาย ใจดี" />
+                </Form.Item>
 
-              <Row gutter={12}>
-                <Col span={12}>
-                  <Form.Item
-                    name="vehicleType" label="ประเภทรถ"
-                    rules={[{ required: true, message: 'กรุณาเลือก' }]}
-                    style={{ marginBottom: 14 }}
-                  >
-                    <Select placeholder="เลือกประเภท">
-                      {VEHICLE_TYPES.map(t => (
-                        <Select.Option key={t.value} value={t.value}>{t.label}</Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
-                    name="plate" label="ทะเบียนรถ"
-                    rules={[{ required: true, message: 'กรุณากรอก' }]}
-                    style={{ marginBottom: 14 }}
-                  >
-                    <Input
-                      placeholder="กข-1234"
-                      style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, letterSpacing: '0.05em' }}
-                      onChange={e => form.setFieldValue('plate', e.target.value.toUpperCase())}
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
+                <Form.Item name="phone" label="เบอร์โทรศัพท์ (ไม่บังคับ)">
+                  <Input prefix={<PhoneOutlined style={{ color:'#94A3B8' }} />}
+                    placeholder="081-234-5678" inputMode="tel" />
+                </Form.Item>
 
-              <Form.Item name="province" label="จังหวัดของทะเบียน" style={{ marginBottom: 0 }}>
-                <Select placeholder="เลือกจังหวัด" showSearch allowClear>
-                  {PROVINCES.map(p => <Select.Option key={p} value={p}>{p}</Select.Option>)}
-                </Select>
-              </Form.Item>
+                <Form.Item name="vehicleType" label="ประเภทรถ"
+                  rules={[{ required:true, message:'กรุณาเลือกประเภทรถ' }]}>
+                  <Select placeholder="เลือกประเภทรถ" size="large">
+                    {VEHICLE_TYPES.map(t => <Select.Option key={t.value} value={t.value}>{t.label}</Select.Option>)}
+                  </Select>
+                </Form.Item>
+
+                <Row gutter={10}>
+                  <Col span={14}>
+                    <Form.Item name="plate" label="ทะเบียนรถ"
+                      rules={[{ required:true, message:'กรุณากรอกทะเบียน' }]}>
+                      <Input placeholder="กข-1234"
+                        style={{ fontFamily:"'JetBrains Mono',monospace", fontWeight:700, letterSpacing:'0.06em' }}
+                        onChange={e => form.setFieldValue('plate', e.target.value.toUpperCase())} />
+                    </Form.Item>
+                  </Col>
+                  <Col span={10}>
+                    <Form.Item name="province" label="จังหวัด">
+                      <Select placeholder="เลือก" showSearch allowClear size="large">
+                        {PROVINCES.map(p => <Select.Option key={p} value={p}>{p}</Select.Option>)}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+              </div>
             </div>
 
             {/* Divider */}
-            <div style={{ borderTop: '1px dashed #E2E8F0', margin: '0 22px' }} />
+            <div style={{ borderTop:'1px dashed #E8EEFA', margin:'0 18px' }} />
 
-            {/* ─── Section 2: รายละเอียดการติดต่อ ─── */}
-            <div className="ci-s2" style={{ padding: '20px 22px' }}>
-              <SectionHeader label="รายละเอียดการติดต่อ" color="#7C3AED" />
+            {/* ── รายละเอียดการติดต่อ ── */}
+            <div style={{ padding:'20px 18px' }}>
+              <Section label="รายละเอียดการติดต่อ" color="#7C3AED" />
+              <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
 
-              <Form.Item
-                name="destination"
-                label="ชื่อบริษัท / หน่วยงานที่ติดต่อ"
-                rules={[{ required: true, message: 'กรุณาระบุหน่วยงาน' }]}
-                style={{ marginBottom: 14 }}
-              >
-                <AutoComplete
-                  options={DESTINATIONS.map(d => ({ value: d }))}
-                  filterOption={(input, opt) => (opt?.value ?? '').includes(input)}
-                  placeholder="เช่น ฝ่ายบุคคล, ห้องประชุม A"
-                >
-                  <Input prefix={<BankOutlined style={{ color: '#94A3B8' }} />} />
-                </AutoComplete>
-              </Form.Item>
+                <Form.Item name="destination" label="ชื่อบริษัท / หน่วยงานที่ติดต่อ"
+                  rules={[{ required:true, message:'กรุณาระบุหน่วยงาน' }]}>
+                  <AutoComplete options={DESTINATIONS.map(d => ({ value:d }))}
+                    filterOption={(i,o) => (o?.value ?? '').includes(i)}
+                    placeholder="เช่น ฝ่ายบุคคล, ห้องประชุม A">
+                    <Input prefix={<BankOutlined style={{ color:'#94A3B8' }} />} />
+                  </AutoComplete>
+                </Form.Item>
 
-              <Form.Item
-                name="building"
-                label="สถานที่ / อาคาร / สำนักงาน"
-                style={{ marginBottom: 14 }}
-              >
-                <Input
-                  prefix={<HomeOutlined style={{ color: '#94A3B8' }} />}
-                  placeholder="เช่น อาคาร A ชั้น 3 ห้อง 301"
-                />
-              </Form.Item>
+                <Form.Item name="building" label="สถานที่ / อาคาร / สำนักงาน (ไม่บังคับ)">
+                  <Input prefix={<HomeOutlined style={{ color:'#94A3B8' }} />}
+                    placeholder="เช่น อาคาร A ชั้น 3 ห้อง 301" />
+                </Form.Item>
 
-              <Form.Item
-                name="contactPerson"
-                label="ชื่อผู้ที่นัดหมาย / ผู้มาติดต่อ"
-                style={{ marginBottom: 14 }}
-              >
-                <Input
-                  prefix={<TeamOutlined style={{ color: '#94A3B8' }} />}
-                  placeholder="เช่น คุณวิภา รักดี"
-                />
-              </Form.Item>
+                <Form.Item name="contactPerson" label="ชื่อผู้ที่นัดหมาย (ไม่บังคับ)">
+                  <Input prefix={<TeamOutlined style={{ color:'#94A3B8' }} />}
+                    placeholder="เช่น คุณวิภา รักดี" />
+                </Form.Item>
 
-              <Form.Item
-                name="purpose"
-                label="วัตถุประสงค์การติดต่อ"
-                rules={[{ required: true, message: 'กรุณาระบุวัตถุประสงค์' }]}
-                style={{ marginBottom: 0 }}
-              >
-                <Input
-                  prefix={<FileTextOutlined style={{ color: '#94A3B8' }} />}
-                  placeholder="เช่น ประชุม, ส่งพัสดุ, สัมภาษณ์งาน"
-                />
-              </Form.Item>
+                <Form.Item name="purpose" label="วัตถุประสงค์การติดต่อ"
+                  rules={[{ required:true, message:'กรุณาระบุวัตถุประสงค์' }]}>
+                  <Input prefix={<FileTextOutlined style={{ color:'#94A3B8' }} />}
+                    placeholder="เช่น ประชุม, ส่งพัสดุ, สัมภาษณ์งาน" />
+                </Form.Item>
+
+              </div>
             </div>
 
-            {/* ─── Submit ─── */}
-            <div className="ci-submit" style={{
-              padding: '16px 22px 24px',
-              borderTop: '1px solid #F1F5F9',
-              background: 'linear-gradient(180deg, #fff 0%, #F8FAFF 100%)',
+            {/* ── Submit ── */}
+            <div style={{
+              padding:'14px 18px 22px',
+              borderTop:'1px solid #F1F5F9',
+              background:'linear-gradient(180deg,#fff 0%,#F8FAFF 100%)',
             }}>
-              <Button
-                type="primary" htmlType="submit" block loading={loading}
-                style={{
-                  height: 54, borderRadius: 13, fontSize: 16, fontWeight: 700,
-                  background: 'linear-gradient(135deg, #1D4ED8 0%, #2563EB 60%, #3B82F6 100%)',
-                  border: 'none', letterSpacing: '0.02em',
-                  boxShadow: '0 6px 20px rgba(29,78,216,0.35)',
-                }}
-              >
-                <EnvironmentOutlined style={{ marginRight: 8 }} />
+              <Button type="primary" htmlType="submit" block loading={loading} style={{
+                height:54, borderRadius:14, fontSize:16, fontWeight:700,
+                background:'linear-gradient(135deg,#1D4ED8,#2563EB)',
+                border:'none', boxShadow:'0 6px 20px rgba(29,78,216,.32)',
+              }}>
+                <EnvironmentOutlined style={{ marginRight:8 }} />
                 บันทึกเวลาเข้า
               </Button>
-              <div style={{ textAlign: 'center', marginTop: 10, fontSize: 11, color: '#94A3B8' }}>
+              <div style={{ textAlign:'center', marginTop:9, fontSize:11, color:'#CBD5E1' }}>
                 เวลาเข้าจะถูกบันทึกโดยอัตโนมัติ
               </div>
             </div>
+
           </Form>
         </div>
       </div>
