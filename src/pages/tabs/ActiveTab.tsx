@@ -6,6 +6,8 @@ import {
 import {
   SearchOutlined, LogoutOutlined, EditOutlined,
   CloseCircleOutlined, ExclamationCircleOutlined, ReloadOutlined,
+  EnvironmentOutlined, UserOutlined, CarOutlined, ClockCircleOutlined,
+  PhoneOutlined,
 } from '@ant-design/icons';
 import {
   Store, DESTINATIONS, PROVINCES, vehicleLabel,
@@ -134,43 +136,99 @@ export function ActiveTab({ onRefresh }: Props) {
       ) : (
         records.map(record => (
           <div key={record.id} className={`record-card ${record.status}`}>
-            {/* Top row */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10, gap: 8 }}>
+
+            {/* ── Zone A: Plate + Status ── */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12, gap: 8 }}>
               <PlateTag plate={record.plate} province={record.province} />
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 5 }}>
                 <StatusBadge status={record.status} />
                 <ElapsedTag entryTime={record.entryTime} now={now} />
               </div>
             </div>
 
-            {/* Info */}
-            <div style={{ fontSize: 13, color: '#94A3B8', marginBottom: 4 }}>
-              <span style={{ color: '#1E293B', fontWeight: 500 }}>{record.driverName}</span>
-              <span style={{ margin: '0 6px', color: '#CBD5E1' }}>·</span>
-              {vehicleLabel(record.vehicleType)}
-            </div>
-            <div style={{ fontSize: 13, color: '#64748B', marginBottom: 4 }}>
-              📍 {record.destination}
-              {record.purpose && <><span style={{ margin: '0 6px', color: '#CBD5E1' }}>·</span>{record.purpose}</>}
-            </div>
-            <div style={{ fontSize: 12, color: '#94A3B8', fontFamily: "'JetBrains Mono', monospace" }}>
-              เข้า {fmtTime(record.entryTime)}
+            {/* ── Zone B: Info rows ── */}
+            <div style={{
+              background: '#F8FAFC',
+              border: '1px solid #F1F5F9',
+              borderRadius: 8,
+              padding: '10px 12px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 7,
+              marginBottom: 11,
+            }}>
+              {/* Driver + vehicle */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+                <UserOutlined style={{ fontSize: 12, color: '#94A3B8', flexShrink: 0 }} />
+                <span style={{ fontSize: 13, color: '#1E293B', fontWeight: 600, lineHeight: 1.3 }}>
+                  {record.driverName}
+                </span>
+                <span style={{ fontSize: 11, color: '#94A3B8', background: '#EEF2FF', borderRadius: 4, padding: '1px 6px', marginLeft: 2 }}>
+                  <CarOutlined style={{ marginRight: 3, fontSize: 10 }} />
+                  {vehicleLabel(record.vehicleType)}
+                </span>
+              </div>
+
+              {/* Destination */}
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 7 }}>
+                <EnvironmentOutlined style={{ fontSize: 12, color: '#94A3B8', flexShrink: 0, marginTop: 1 }} />
+                <span style={{ fontSize: 13, color: '#374151', lineHeight: 1.4 }}>
+                  {record.destination}
+                  {record.purpose && (
+                    <span style={{ color: '#94A3B8' }}> · {record.purpose}</span>
+                  )}
+                </span>
+              </div>
+
+              {/* Phone (if any) */}
+              {record.phone && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+                  <PhoneOutlined style={{ fontSize: 12, color: '#94A3B8', flexShrink: 0 }} />
+                  <span style={{ fontSize: 12, color: '#64748B', fontFamily: "'JetBrains Mono', monospace" }}>
+                    {record.phone}
+                  </span>
+                </div>
+              )}
+
+              {/* Entry time */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+                <ClockCircleOutlined style={{ fontSize: 12, color: '#94A3B8', flexShrink: 0 }} />
+                <span style={{ fontSize: 12, color: '#64748B', fontFamily: "'JetBrains Mono', monospace" }}>
+                  เข้า {fmtTime(record.entryTime)}
+                </span>
+              </div>
             </div>
 
-            {/* Actions */}
-            <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
+            {/* ── Zone C: Actions ── */}
+            <div style={{ display: 'flex', gap: 7, alignItems: 'center' }}>
               <Button
                 type="primary" size="small"
                 icon={<LogoutOutlined />}
                 onClick={() => setCheckoutRecord(record)}
-                style={{ background: '#22C55E', borderColor: '#22C55E' }}
+                style={{
+                  background: 'linear-gradient(135deg, #16A34A, #22C55E)',
+                  borderColor: '#16A34A',
+                  fontWeight: 600,
+                  flex: 1,
+                  height: 32,
+                }}
               >
                 บันทึกเวลาออก
               </Button>
-              <Button size="small" icon={<EditOutlined />} onClick={() => openEdit(record)}>
+              <Button
+                size="small"
+                icon={<EditOutlined />}
+                onClick={() => openEdit(record)}
+                style={{ height: 32, minWidth: 72 }}
+              >
                 แก้ไข
               </Button>
-              <Button size="small" danger icon={<CloseCircleOutlined />} onClick={() => handleCancel(record)}>
+              <Button
+                size="small" danger
+                icon={<CloseCircleOutlined />}
+                onClick={() => handleCancel(record)}
+                style={{ height: 32, minWidth: 64 }}
+              >
                 ยกเลิก
               </Button>
             </div>
