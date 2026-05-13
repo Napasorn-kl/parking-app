@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Input, Button, Modal, Form, Select, AutoComplete,
-  Empty, Row, Tooltip, message, Table, Tag,
+  Empty, Row, Col, Tooltip, message, Table, Tag,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import {
@@ -9,7 +9,7 @@ import {
   CloseCircleOutlined, ExclamationCircleOutlined, ReloadOutlined,
   SortAscendingOutlined, WarningOutlined,
   EnvironmentOutlined, UserOutlined, CarOutlined, ClockCircleOutlined,
-  PhoneOutlined,
+  PhoneOutlined, CheckCircleOutlined, FieldTimeOutlined,
 } from '@ant-design/icons';
 import {
   Store, DESTINATIONS, PROVINCES, VEHICLE_TYPES, vehicleLabel,
@@ -28,6 +28,39 @@ const SORT_OPTIONS: { value: SortKey; label: string }[] = [
   { value: 'entry_desc',   label: 'เข้าล่าสุดก่อน' },
   { value: 'plate_asc',    label: 'ทะเบียน A–Z' },
 ];
+
+/* ── KPI Card ────────────────────────────────────────────────── */
+function KpiCard({ icon, iconBg, value, label, sub, borderColor }: {
+  icon: React.ReactNode; iconBg: string; value: React.ReactNode;
+  label: string; sub?: string; borderColor: string;
+}) {
+  return (
+    <div style={{
+      background: '#FFFFFF', border: '1px solid #E2E8F0',
+      borderTop: `3px solid ${borderColor}`, borderRadius: 12,
+      padding: '14px 16px 12px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+      height: '100%',
+    }}>
+      <div style={{ marginBottom: 10 }}>
+        <div style={{
+          width: 32, height: 32, borderRadius: 8, background: iconBg,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          {icon}
+        </div>
+      </div>
+      <div style={{
+        fontSize: 26, fontWeight: 800, lineHeight: 1.1,
+        fontFamily: "'JetBrains Mono', monospace",
+        color: '#0F172A', marginBottom: 3, wordBreak: 'break-word',
+      }}>
+        {value}
+      </div>
+      <div style={{ fontSize: 12, color: '#475569', fontWeight: 500, lineHeight: 1.3 }}>{label}</div>
+      {sub && <div style={{ fontSize: 11, color: '#94A3B8', marginTop: 2 }}>{sub}</div>}
+    </div>
+  );
+}
 
 /* ── Elapsed display ─────────────────────────────────────────── */
 function ElapsedBadge({ entryTime, now }: { entryTime: string; now: number }) {
@@ -181,6 +214,7 @@ export function ActiveTab({ onRefresh }: Props) {
   const refresh = useCallback(() => { setRefreshKey(k => k + 1); onRefresh(); }, [onRefresh]);
 
   const allActive = useMemo(() => Store.active(), [refreshKey]);
+  const stats     = useMemo(() => Store.todayStats(), [refreshKey]);
 
   const typeCounts = useMemo(() => {
     const map: Record<string, number> = {};
@@ -362,8 +396,61 @@ export function ActiveTab({ onRefresh }: Props) {
     </>
   );
 
+  const avgLabel = stats.avgDur > 0 ? fmtDuration(stats.avgDur) : '—';
+
   return (
     <div>
+      {/* ── KPI Cards ── */}
+      <Row gutter={[10, 10]} style={{ marginBottom: 16 }}>
+        <Col xs={12} sm={6}>
+          <KpiCard
+            icon={<CarOutlined style={{ fontSize: 15, color: '#0284C7' }} />}
+            iconBg="rgba(2,132,199,0.1)"
+            value={stats.total}
+            label="รถเข้าทั้งหมด"
+            sub="วันนี้"
+            borderColor="#0284C7"
+          />
+        </Col>
+        <Col xs={12} sm={6}>
+          <KpiCard
+            icon={<CarOutlined style={{ fontSize: 15, color: '#7C3AED' }} />}
+            iconBg="rgba(124,58,237,0.1)"
+            value={<span style={{ color: '#7C3AED' }}>{stats.active}</span>}
+            label="กำลังจอดอยู่"
+            sub="คันในลาน"
+            borderColor="#7C3AED"
+          />
+        </Col>
+        <Col xs={12} sm={6}>
+          <KpiCard
+            icon={<CheckCircleOutlined style={{ fontSize: 15, color: '#16A34A' }} />}
+            iconBg="rgba(22,163,74,0.1)"
+            value={<span style={{ color: '#16A34A' }}>{stats.exited}</span>}
+            label="ออกแล้ว"
+            sub="วันนี้"
+            borderColor="#16A34A"
+          />
+        </Col>
+        <Col xs={12} sm={6}>
+          <KpiCard
+            icon={<FieldTimeOutlined style={{ fontSize: 15, color: '#D97706' }} />}
+            iconBg="rgba(217,119,6,0.1)"
+            value={
+              <span style={{
+                fontSize: avgLabel.length > 8 ? 16 : 26,
+                color: '#D97706', lineHeight: 1.2, display: 'block',
+              }}>
+                {avgLabel}
+              </span>
+            }
+            label="เวลาจอดเฉลี่ย"
+            sub="ต่อคัน"
+            borderColor="#D97706"
+          />
+        </Col>
+      </Row>
+
       {toolbar}
 
       {records.length === 0 ? (
