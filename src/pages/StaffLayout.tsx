@@ -26,7 +26,7 @@ export function StaffLayout() {
   const navigate = useNavigate();
   const [tab, setTab] = useState<TabKey>('active');
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [refreshKey, setRefreshKey] = useState(0);
 
   const user = Auth.get();
@@ -34,7 +34,7 @@ export function StaffLayout() {
 
   useEffect(() => {
     if (!Auth.isStaff()) { navigate('/login', { replace: true }); return; }
-    const onResize = () => setIsMobile(window.innerWidth < 1024);
+    const onResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, [navigate]);
