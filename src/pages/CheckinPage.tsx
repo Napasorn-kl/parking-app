@@ -192,19 +192,7 @@ export function CheckinPage() {
           box-shadow: none !important; min-height: unset !important;
           padding: 0 8px !important; font-size: 15px !important; flex: 1;
         }
-        /* AutoComplete inner affix wrapper — reset ให้ไม่มี border/bg ซ้อน */
-        .ci-form .ant-select-selection-search-input.ant-input-affix-wrapper {
-          background: transparent !important; border: none !important;
-          box-shadow: none !important; min-height: unset !important;
-          padding: 0 !important; height: 100% !important;
-        }
-        .ci-form .ant-select-selection-search-input .ant-input {
-          background: transparent !important; border: none !important;
-          box-shadow: none !important; min-height: unset !important;
-          padding: 0 4px !important; font-size: 15px !important;
-        }
-
-        /* ── Select ── */
+        /* ── Select & AutoComplete ── */
         .ci-form .ant-select-selector {
           min-height: 50px !important; border-radius: 12px !important;
           border-color: #E2E8F0 !important; background: #F8FAFF !important;
@@ -310,13 +298,15 @@ export function CheckinPage() {
               <Section label="รายละเอียดการติดต่อ" color="#7C3AED" />
               <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
 
-                <Form.Item name="destination" label="ชื่อบริษัท / หน่วยงานที่ติดต่อ"
+                <Form.Item
+                  name="destination"
+                  label={<span><BankOutlined style={{ color:'#94A3B8', marginRight:6 }} />ชื่อบริษัท / หน่วยงานที่ติดต่อ</span>}
                   rules={[{ required:true, message:'กรุณาระบุหน่วยงาน' }]}>
-                  <AutoComplete options={DESTINATIONS.map(d => ({ value:d }))}
+                  <AutoComplete
+                    options={DESTINATIONS.map(d => ({ value:d }))}
                     filterOption={(i,o) => (o?.value ?? '').includes(i)}
-                    placeholder="เช่น ฝ่ายบุคคล, ห้องประชุม A">
-                    <Input prefix={<BankOutlined style={{ color:'#94A3B8' }} />} />
-                  </AutoComplete>
+                    placeholder="เช่น ฝ่ายบุคคล, ห้องประชุม A"
+                  />
                 </Form.Item>
 
                 <Form.Item name="building" label="สถานที่ / อาคาร / สำนักงาน (ไม่บังคับ)">
