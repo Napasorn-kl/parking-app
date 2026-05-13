@@ -28,17 +28,17 @@ export default function App() {
     <ConfigProvider theme={appTheme} locale={thTH}>
       <HashRouter>
         <Routes>
-          {/* Visitor — check-in (QR code destination) */}
+          {/* ── ผู้มาติดต่อ — สแกน QR ── */}
           <Route path="/checkin" element={<CheckinPage />} />
-          <Route path="/"        element={<CheckinPage />} />
 
-          {/* Staff / Admin — separate entry point */}
+          {/* ── เจ้าหน้าที่ / ผู้ดูแล ── */}
+          <Route path="/"        element={<Navigate to="/admin" replace />} />
           <Route path="/admin"   element={<Navigate to="/login" replace />} />
           <Route path="/login"   element={<LoginPage />} />
           <Route path="/staff/*" element={<StaffLayout />} />
 
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/checkin" replace />} />
+          {/* Fallback → admin */}
+          <Route path="*" element={<Navigate to="/admin" replace />} />
         </Routes>
       </HashRouter>
     </ConfigProvider>
