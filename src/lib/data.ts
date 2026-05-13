@@ -91,9 +91,8 @@ export const Store = {
   findActivePlate(plate: string): ParkingRecord | undefined {
     return this.active().find(r => r.plate.toUpperCase() === plate.toUpperCase());
   },
-  todayStats() {
-    const today = new Date().toISOString().slice(0, 10);
-    const records = this.all().filter(r => r.date === today);
+  statsForRange(from: string, to: string) {
+    const records = this.all().filter(r => r.date >= from && r.date <= to);
     const active = records.filter(r => r.status === 'parking');
     const exited = records.filter(r => r.status === 'exited');
     const durations = exited.map(r => r.duration ?? 0).filter(d => d > 0);
@@ -103,6 +102,10 @@ export const Store = {
     const byType: Record<string, number> = {};
     records.forEach(r => { byType[r.vehicleType] = (byType[r.vehicleType] ?? 0) + 1; });
     return { total: records.length, active: active.length, exited: exited.length, avgDur, byType };
+  },
+  todayStats() {
+    const today = new Date().toISOString().slice(0, 10);
+    return this.statsForRange(today, today);
   },
 };
 

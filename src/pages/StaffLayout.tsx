@@ -16,7 +16,7 @@ type TabKey = 'active' | 'history' | 'dash' | 'qr';
 const TAB_TITLES: Record<TabKey, string> = {
   active:  'รถที่กำลังจอด',
   history: 'ค้นหา / ประวัติ',
-  dash:    'สรุปวันนี้',
+  dash:    'สรุปข้อมูล',
   qr:      'QR Code',
 };
 
@@ -66,7 +66,7 @@ export function StaffLayout() {
     },
     { key: 'history', icon: <SearchOutlined />, label: 'ค้นหา/ประวัติ' },
     ...(isAdmin ? [
-      { key: 'dash', icon: <BarChartOutlined />, label: 'สรุปวันนี้' },
+      { key: 'dash', icon: <BarChartOutlined />, label: 'สรุปข้อมูล' },
       { key: 'qr',   icon: <QrcodeOutlined />,   label: 'QR Code' },
     ] : []),
   ];

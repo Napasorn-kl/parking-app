@@ -1,13 +1,18 @@
-import { useMemo } from 'react';
-import { Row, Col, Button, Tooltip } from 'antd';
+import { useMemo, useState } from 'react';
+import { Row, Col, Button, Tooltip, DatePicker } from 'antd';
+import type { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import {
   DownloadOutlined,
   CarOutlined,
   CheckCircleOutlined,
   ClockCircleOutlined,
   FieldTimeOutlined,
+  CalendarOutlined,
 } from '@ant-design/icons';
 import { Store, VEHICLE_TYPES, fmtDuration, exportCSV } from '../../lib/data';
+
+const { RangePicker } = DatePicker;
 
 interface Props { refreshKey: number }
 
@@ -91,41 +96,109 @@ function VehicleBar({ label, count, pct, maxPct }: { label: string; count: numbe
   );
 }
 
+/* ── Preset chip ─────────────────────────────────────────────────────── */
+function PresetChip({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button onClick={onClick} style={{
+      padding: '4px 10px', borderRadius: 16, border: 'none', cursor: 'pointer', fontSize: 12,
+      fontWeight: active ? 700 : 400,
+      background: active ? '#0284C7' : '#F1F5F9',
+      color: active ? '#FFFFFF' : '#475569',
+      transition: 'all 0.15s ease',
+      outline: 'none',
+      flexShrink: 0,
+    }}>
+      {label}
+    </button>
+  );
+}
+
 /* ── Main Component ────────────────────────────────────────────────────── */
 export function DashTab({ refreshKey }: Props) {
-  const stats = useMemo(() => Store.todayStats(), [refreshKey]);
-  const today = new Date().toLocaleDateString('th-TH', {
-    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
-  });
+  const today = dayjs();
+  const todayStr = today.format('YYYY-MM-DD');
+
+  const [dateRange, setDateRange] = useState<[Dayjs, Dayjs]>([today, today]);
+  const from = dateRange[0].format('YYYY-MM-DD');
+  const to   = dateRange[1].format('YYYY-MM-DD');
+
+  const stats = useMemo(() => Store.statsForRange(from, to), [refreshKey, from, to]);
+
+  const isToday   = from === todayStr && to === todayStr;
+  const isSameDay = from === to;
+  const preset7   = from === today.subtract(6, 'day').format('YYYY-MM-DD') && to === todayStr;
+  const preset30  = from === today.subtract(29, 'day').format('YYYY-MM-DD') && to === todayStr;
+  const presetMon = from === today.startOf('month').format('YYYY-MM-DD') && to === todayStr;
+
+  const setPreset = (p: 'today' | '7d' | '30d' | 'month') => {
+    if (p === 'today') setDateRange([today, today]);
+    else if (p === '7d')    setDateRange([today.subtract(6, 'day'), today]);
+    else if (p === '30d')   setDateRange([today.subtract(29, 'day'), today]);
+    else if (p === 'month') setDateRange([today.startOf('month'), today]);
+  };
+
+  // Section label for chart headers
+  const sectionLabel = isToday
+    ? 'วันนี้'
+    : isSameDay
+      ? dateRange[0].locale('th').format('D MMM YYYY')
+      : `${dateRange[0].format('D/M/YY')} – ${dateRange[1].format('D/M/YY')}`;
 
   const maxCount = Math.max(...VEHICLE_TYPES.map(t => stats.byType[t.value] ?? 0), 1);
   const activePct = stats.total > 0 ? Math.round((stats.active / stats.total) * 100) : 0;
   const exitedPct = stats.total > 0 ? Math.round((stats.exited / stats.total) * 100) : 0;
+  const avgLabel  = stats.avgDur > 0 ? fmtDuration(stats.avgDur) : '—';
 
-  // Format average duration compactly
-  const avgLabel = stats.avgDur > 0 ? fmtDuration(stats.avgDur) : '—';
+  // Records for export (same date range)
+  const handleExport = () => {
+    const records = Store.all().filter(r => r.date >= from && r.date <= to);
+    exportCSV(records);
+  };
 
   return (
     <div>
-      {/* ── Header ── */}
+      {/* ── Date filter bar ── */}
       <div style={{
-        display: 'flex', justifyContent: 'space-between',
-        alignItems: 'center', marginBottom: 20,
+        background: '#FFFFFF', border: '1px solid #E2E8F0',
+        borderRadius: 12, padding: '14px 16px', marginBottom: 20,
+        display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap',
       }}>
-        <div>
-          <div style={{ fontSize: 18, fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>สรุปวันนี้</div>
-          <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 2 }}>{today}</div>
+        <CalendarOutlined style={{ color: '#94A3B8', fontSize: 14, flexShrink: 0 }} />
+
+        {/* Range picker */}
+        <RangePicker
+          value={dateRange}
+          onChange={(dates) => {
+            if (dates && dates[0] && dates[1]) setDateRange([dates[0], dates[1]]);
+          }}
+          format="DD/MM/YYYY"
+          allowClear={false}
+          size="small"
+          disabledDate={(d) => d.isAfter(today)}
+          style={{ width: 210, flexShrink: 0 }}
+        />
+
+        {/* Preset chips */}
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+          <PresetChip label="วันนี้"       active={isToday}   onClick={() => setPreset('today')} />
+          <PresetChip label="7 วัน"        active={preset7}   onClick={() => setPreset('7d')}    />
+          <PresetChip label="30 วัน"       active={preset30}  onClick={() => setPreset('30d')}   />
+          <PresetChip label="เดือนนี้"     active={presetMon} onClick={() => setPreset('month')} />
         </div>
-        <Tooltip title="Export ข้อมูลทั้งหมดเป็น CSV">
-          <Button
-            icon={<DownloadOutlined />}
-            size="small"
-            onClick={() => exportCSV(Store.all())}
-            style={{ borderRadius: 8 }}
-          >
-            Export ทั้งหมด
-          </Button>
-        </Tooltip>
+
+        {/* Spacer + export */}
+        <div style={{ marginLeft: 'auto' }}>
+          <Tooltip title="Export ข้อมูลช่วงวันที่นี้เป็น CSV">
+            <Button
+              icon={<DownloadOutlined />}
+              size="small"
+              onClick={handleExport}
+              style={{ borderRadius: 8 }}
+            >
+              Export
+            </Button>
+          </Tooltip>
+        </div>
       </div>
 
       {/* ── KPI Cards ── */}
@@ -136,25 +209,17 @@ export function DashTab({ refreshKey }: Props) {
             iconBg="rgba(2,132,199,0.1)"
             value={stats.total}
             label="รถเข้าทั้งหมด"
-            sub="วันนี้"
+            sub={sectionLabel}
             borderColor="#0284C7"
           />
         </Col>
         <Col xs={12} sm={6}>
           <KpiCard
-            icon={
-              <span style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <CarOutlined style={{ fontSize: 16, color: '#7C3AED' }} />
-              </span>
-            }
+            icon={<CarOutlined style={{ fontSize: 16, color: '#7C3AED' }} />}
             iconBg="rgba(124,58,237,0.1)"
-            value={
-              <span style={{ color: '#7C3AED' }}>
-                {stats.active}
-              </span>
-            }
-            label="กำลังจอดอยู่"
-            sub="คันในลาน"
+            value={<span style={{ color: '#7C3AED' }}>{stats.active}</span>}
+            label={isToday ? 'กำลังจอดอยู่' : 'ยังจอดอยู่'}
+            sub={isToday ? 'คันในลาน' : 'คงค้างในระบบ'}
             borderColor="#7C3AED"
           />
         </Col>
@@ -164,7 +229,7 @@ export function DashTab({ refreshKey }: Props) {
             iconBg="rgba(22,163,74,0.1)"
             value={<span style={{ color: '#16A34A' }}>{stats.exited}</span>}
             label="ออกแล้ว"
-            sub="วันนี้"
+            sub={sectionLabel}
             borderColor="#16A34A"
           />
         </Col>
@@ -208,7 +273,7 @@ export function DashTab({ refreshKey }: Props) {
                 background: 'linear-gradient(180deg, #0EA5E9, #0284C7)',
               }} />
               <span style={{ fontSize: 12, fontWeight: 700, color: '#475569', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                แยกตามประเภทรถ — วันนี้
+                แยกตามประเภทรถ — {sectionLabel}
               </span>
             </div>
 
@@ -232,7 +297,7 @@ export function DashTab({ refreshKey }: Props) {
                 padding: '28px 0', fontSize: 13,
               }}>
                 <CarOutlined style={{ fontSize: 28, display: 'block', marginBottom: 8 }} />
-                ยังไม่มีข้อมูลสำหรับวันนี้
+                ไม่มีข้อมูลในช่วงวันที่นี้
               </div>
             )}
           </div>
@@ -295,7 +360,9 @@ export function DashTab({ refreshKey }: Props) {
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
                       <div style={{ width: 8, height: 8, borderRadius: 2, background: '#7C3AED', flexShrink: 0 }} />
-                      <span style={{ fontSize: 13, color: '#475569' }}>กำลังจอด</span>
+                      <span style={{ fontSize: 13, color: '#475569' }}>
+                        {isToday ? 'กำลังจอด' : 'ยังจอดอยู่'}
+                      </span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                       <span style={{
@@ -353,7 +420,7 @@ export function DashTab({ refreshKey }: Props) {
                 padding: '28px 0', fontSize: 13,
               }}>
                 <ClockCircleOutlined style={{ fontSize: 28, display: 'block', marginBottom: 8 }} />
-                ยังไม่มีรถเข้าวันนี้
+                ไม่มีข้อมูลในช่วงวันที่นี้
               </div>
             )}
           </div>
