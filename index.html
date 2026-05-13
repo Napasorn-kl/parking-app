@@ -5,378 +5,395 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#2563eb">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>ระบบจอดรถ | Parking Management</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
-    /* ─────────────────────────────────────────
-       CSS Variables — Light / Dark
-    ───────────────────────────────────────── */
+    /* ── Variables ─────────────────────────────────────────────── */
     :root {
-      --primary: #2563eb;
-      --primary-d: #1d4ed8;
-      --primary-l: #eff6ff;
-      --success: #16a34a;
-      --success-l: #f0fdf4;
-      --warning: #d97706;
-      --warning-l: #fffbeb;
-      --danger: #dc2626;
-      --danger-l: #fef2f2;
-      --bg: #f1f5f9;
-      --surface: #ffffff;
-      --surface2: #f8fafc;
-      --border: #e2e8f0;
-      --text: #0f172a;
-      --text2: #475569;
-      --text3: #94a3b8;
-      --shadow: 0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);
-      --shadow-md: 0 4px 6px -1px rgba(0,0,0,.1);
-      --r: 12px;
-      --rs: 8px;
+      --primary:    #2563EB;
+      --primary-d:  #1D4ED8;
+      --primary-l:  #EFF6FF;
+      --primary-m:  #BFDBFE;
+      --success:    #059669;
+      --success-l:  #ECFDF5;
+      --warning:    #D97706;
+      --warning-l:  #FFFBEB;
+      --danger:     #DC2626;
+      --danger-l:   #FEF2F2;
+      --bg:         #F0F9FF;
+      --surface:    #FFFFFF;
+      --surface2:   #F8FAFF;
+      --border:     #E4ECFC;
+      --text:       #0F172A;
+      --text2:      #475569;
+      --text3:      #94A3B8;
+      --shadow-sm:  0 1px 3px rgba(37,99,235,.06),0 1px 2px rgba(0,0,0,.04);
+      --shadow:     0 2px 10px rgba(37,99,235,.08),0 1px 4px rgba(0,0,0,.04);
+      --shadow-md:  0 6px 20px rgba(37,99,235,.12),0 2px 8px rgba(0,0,0,.06);
+      --r:   16px;
+      --rs:  10px;
     }
     [data-theme="dark"] {
-      --primary: #3b82f6;
-      --primary-d: #2563eb;
-      --primary-l: #1e3a5f;
-      --success: #22c55e;
-      --success-l: #052e16;
-      --warning: #f59e0b;
-      --warning-l: #1c1403;
-      --danger: #ef4444;
-      --danger-l: #200808;
-      --bg: #0f172a;
-      --surface: #1e293b;
-      --surface2: #0f172a;
-      --border: #334155;
-      --text: #f1f5f9;
-      --text2: #94a3b8;
-      --text3: #64748b;
-      --shadow: 0 1px 3px rgba(0,0,0,.3);
-      --shadow-md: 0 4px 6px -1px rgba(0,0,0,.4);
+      --primary:    #3B82F6;
+      --primary-d:  #2563EB;
+      --primary-l:  #1E3A5F;
+      --primary-m:  #1E3A5F;
+      --success:    #10B981;
+      --success-l:  #052E16;
+      --warning:    #F59E0B;
+      --warning-l:  #1C1403;
+      --danger:     #EF4444;
+      --danger-l:   #200808;
+      --bg:         #0B0F1A;
+      --surface:    #141B2D;
+      --surface2:   #0B0F1A;
+      --border:     #1E2D4A;
+      --text:       #F1F5F9;
+      --text2:      #94A3B8;
+      --text3:      #475569;
+      --shadow-sm:  0 1px 3px rgba(0,0,0,.3);
+      --shadow:     0 2px 10px rgba(0,0,0,.3);
+      --shadow-md:  0 6px 20px rgba(0,0,0,.4);
     }
 
-    /* ─────────────────────────────────────────
-       Reset & Base
-    ───────────────────────────────────────── */
+    /* ── Reset ─────────────────────────────────────────────────── */
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{font-size:16px;scroll-behavior:smooth}
+    html{font-size:16px;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
     body{
-      font-family:'Sarabun',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,sans-serif;
       background:var(--bg);color:var(--text);min-height:100vh;
-      transition:background .2s,color .2s;
-      -webkit-font-smoothing:antialiased;
+      transition:background .2s,color .2s;-webkit-font-smoothing:antialiased;
     }
     a{color:var(--primary);text-decoration:none}
+    button{font-family:inherit;cursor:pointer}
 
-    /* ─────────────────────────────────────────
-       Layout
-    ───────────────────────────────────────── */
+    /* ── Lucide icons ──────────────────────────────────────────── */
+    .icon{
+      display:inline-flex;align-items:center;justify-content:center;
+      flex-shrink:0;vertical-align:middle;
+    }
+    .icon svg{width:var(--sz,18px);height:var(--sz,18px);stroke:currentColor;
+      stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .icon-xs svg{--sz:14px} .icon-sm svg{--sz:16px}
+    .icon-md svg{--sz:20px} .icon-lg svg{--sz:24px} .icon-xl svg{--sz:32px}
+    [data-lucide]{display:inline-flex;align-items:center;vertical-align:middle;flex-shrink:0}
+    [data-lucide] svg{stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+    /* ── Layout ────────────────────────────────────────────────── */
     .container{max-width:640px;margin:0 auto;padding:0 16px}
     .page{padding:20px 0 100px;min-height:100vh}
 
-    /* ─────────────────────────────────────────
-       Navbar
-    ───────────────────────────────────────── */
+    /* ── Navbar ────────────────────────────────────────────────── */
     .navbar{
-      background:var(--surface);border-bottom:1px solid var(--border);
-      position:sticky;top:0;z-index:100;padding:0 16px;
+      background:rgba(255,255,255,.88);backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;
+      padding:0 16px;transition:background .2s;
     }
+    [data-theme="dark"] .navbar{background:rgba(20,27,45,.88)}
     .navbar-inner{
       max-width:640px;margin:0 auto;display:flex;align-items:center;
-      justify-content:space-between;height:56px;gap:8px;
+      justify-content:space-between;height:58px;gap:8px;
     }
     .navbar-left{display:flex;align-items:center;gap:8px;overflow:hidden}
-    .navbar-title{font-size:1.05rem;font-weight:700;color:var(--primary);white-space:nowrap}
+    .navbar-brand{
+      display:flex;align-items:center;gap:8px;
+      font-size:1rem;font-weight:800;color:var(--primary);white-space:nowrap;
+    }
+    .navbar-brand-icon{
+      width:32px;height:32px;background:var(--primary);border-radius:8px;
+      display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;
+    }
+    .navbar-brand-icon [data-lucide] svg{width:18px;height:18px}
     .navbar-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
 
-    /* ─────────────────────────────────────────
-       Tab Bar
-    ───────────────────────────────────────── */
+    /* ── Tab Bar ───────────────────────────────────────────────── */
     .tab-bar{
       display:flex;background:var(--surface);border-bottom:1px solid var(--border);
       overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
     }
     .tab-bar::-webkit-scrollbar{display:none}
     .tab-item{
-      padding:14px 18px;font-size:.9rem;font-weight:600;color:var(--text2);
+      display:flex;align-items:center;gap:6px;
+      padding:14px 18px;font-size:.875rem;font-weight:600;color:var(--text3);
       white-space:nowrap;cursor:pointer;border-bottom:2.5px solid transparent;
       transition:all .15s;user-select:none;-webkit-tap-highlight-color:transparent;
     }
+    .tab-item [data-lucide] svg{width:16px;height:16px}
     .tab-item.active{color:var(--primary);border-bottom-color:var(--primary)}
     .tab-item:hover{color:var(--primary)}
 
-    /* ─────────────────────────────────────────
-       Cards
-    ───────────────────────────────────────── */
+    /* ── Cards ─────────────────────────────────────────────────── */
     .card{
-      background:var(--surface);border:1px solid var(--border);
-      border-radius:var(--r);padding:20px;box-shadow:var(--shadow);
+      background:var(--surface);border-radius:var(--r);padding:20px;
+      box-shadow:var(--shadow);border:1px solid var(--border);
     }
-    .card-title{font-size:.95rem;font-weight:700;margin-bottom:14px;color:var(--text)}
+    .card-title{
+      font-size:.9rem;font-weight:700;margin-bottom:14px;color:var(--text);
+      display:flex;align-items:center;gap:6px;
+    }
+    .card-title [data-lucide] svg{width:16px;height:16px;color:var(--primary)}
 
-    /* ─────────────────────────────────────────
-       Forms
-    ───────────────────────────────────────── */
+    /* ── Forms ─────────────────────────────────────────────────── */
     .form-group{margin-bottom:16px}
     .form-label{
-      display:block;font-size:.875rem;font-weight:600;color:var(--text2);margin-bottom:6px;
+      display:flex;align-items:center;gap:4px;
+      font-size:.8125rem;font-weight:600;color:var(--text2);margin-bottom:7px;letter-spacing:.01em;
     }
-    .req{color:var(--danger);margin-left:2px}
-    .optional{color:var(--text3);font-weight:400;font-size:.8rem}
+    .req{color:var(--danger);margin-left:1px}
+    .optional{color:var(--text3);font-weight:400;font-size:.78rem}
     .form-control{
       width:100%;padding:12px 14px;background:var(--surface2);
-      border:1.5px solid var(--border);border-radius:var(--rs);color:var(--text);
-      font-size:1rem;font-family:inherit;transition:border-color .15s,box-shadow .15s;
+      border:1.5px solid var(--border);border-radius:var(--rs);
+      color:var(--text);font-size:.9375rem;font-family:inherit;
+      transition:border-color .15s,box-shadow .15s,background .15s;
       -webkit-appearance:none;appearance:none;
     }
     .form-control:focus{
-      outline:none;border-color:var(--primary);
-      box-shadow:0 0 0 3px rgba(37,99,235,.15);
+      outline:none;border-color:var(--primary);background:var(--surface);
+      box-shadow:0 0 0 3px rgba(37,99,235,.12);
     }
     .form-control::placeholder{color:var(--text3)}
-    .form-control:disabled{opacity:.6;cursor:not-allowed}
+    .form-control:disabled{opacity:.55;cursor:not-allowed}
     select.form-control{
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
       background-repeat:no-repeat;background-position:right 12px center;padding-right:40px;
     }
     textarea.form-control{resize:vertical;min-height:80px}
-    .form-hint{font-size:.78rem;color:var(--text3);margin-top:4px}
-    .form-error{font-size:.78rem;color:var(--danger);margin-top:4px;display:none}
+    .form-hint{font-size:.75rem;color:var(--text3);margin-top:5px}
+    .form-error{font-size:.75rem;color:var(--danger);margin-top:5px;display:none}
     .form-control.is-invalid{border-color:var(--danger)}
     .form-control.is-invalid+.form-error{display:block}
-    .plate-input{
-      font-size:1.15rem;font-family:'Courier New',monospace;
-      letter-spacing:2px;text-transform:uppercase;
-    }
+    .plate-input{font-size:1.1rem;font-family:'Courier New',monospace;letter-spacing:2px;text-transform:uppercase}
 
-    /* Vehicle type radio grid */
+    /* Vehicle type grid */
     .vtype-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
     .vtype-item{
       display:flex;align-items:center;gap:8px;padding:10px 12px;
       border:1.5px solid var(--border);border-radius:var(--rs);cursor:pointer;
-      transition:all .15s;font-size:.9rem;
+      transition:all .15s;font-size:.875rem;color:var(--text2);font-weight:500;
     }
-    .vtype-item:hover{border-color:var(--primary)}
-    .vtype-item input[type="radio"]{accent-color:var(--primary);flex-shrink:0}
+    .vtype-item [data-lucide] svg{width:18px;height:18px;color:var(--text3);transition:color .15s}
+    .vtype-item:hover{border-color:var(--primary-m)}
     .vtype-item.checked{
       border-color:var(--primary);background:var(--primary-l);
       color:var(--primary);font-weight:600;
     }
+    .vtype-item.checked [data-lucide] svg{color:var(--primary)}
+    .vtype-item input[type="radio"]{display:none}
 
-    /* ─────────────────────────────────────────
-       Buttons
-    ───────────────────────────────────────── */
+    /* ── Buttons ───────────────────────────────────────────────── */
     .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:6px;
-      padding:12px 20px;border-radius:var(--rs);font-size:1rem;font-weight:600;
+      display:inline-flex;align-items:center;justify-content:center;gap:7px;
+      padding:11px 20px;border-radius:var(--rs);font-size:.9375rem;font-weight:600;
       font-family:inherit;cursor:pointer;border:none;transition:all .15s;
-      text-decoration:none;-webkit-tap-highlight-color:transparent;white-space:nowrap;
-      user-select:none;
+      text-decoration:none;-webkit-tap-highlight-color:transparent;
+      white-space:nowrap;user-select:none;
     }
+    .btn [data-lucide] svg{width:16px;height:16px}
     .btn:active{transform:scale(.97)}
-    .btn-primary{background:var(--primary);color:#fff}
-    .btn-primary:hover{background:var(--primary-d)}
-    .btn-success{background:var(--success);color:#fff}
-    .btn-success:hover{opacity:.9}
+    .btn-primary{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.3)}
+    .btn-primary:hover{background:var(--primary-d);box-shadow:0 4px 12px rgba(37,99,235,.4)}
+    .btn-success{background:var(--success);color:#fff;box-shadow:0 2px 8px rgba(5,150,105,.3)}
+    .btn-success:hover{opacity:.92}
     .btn-danger{background:var(--danger);color:#fff}
     .btn-outline{background:transparent;color:var(--primary);border:1.5px solid var(--primary)}
     .btn-outline:hover{background:var(--primary-l)}
     .btn-ghost{background:transparent;color:var(--text2);border:1.5px solid var(--border)}
-    .btn-ghost:hover{background:var(--border)}
-    .btn-sm{padding:7px 14px;font-size:.875rem}
+    .btn-ghost:hover{background:var(--border);color:var(--text)}
+    .btn-sm{padding:7px 14px;font-size:.8125rem;gap:5px}
+    .btn-sm [data-lucide] svg{width:14px;height:14px}
     .btn-full{width:100%}
-    .btn-lg{padding:15px 24px;font-size:1.05rem}
+    .btn-lg{padding:14px 24px;font-size:1rem}
     .btn-icon{
       padding:8px;background:transparent;border:none;cursor:pointer;
-      color:var(--text2);border-radius:var(--rs);font-size:1.1rem;
-      -webkit-tap-highlight-color:transparent;
+      color:var(--text2);border-radius:var(--rs);
+      -webkit-tap-highlight-color:transparent;transition:all .15s;
+      display:flex;align-items:center;justify-content:center;
     }
-    .btn-icon:hover{background:var(--border)}
+    .btn-icon [data-lucide] svg{width:20px;height:20px}
+    .btn-icon:hover{background:var(--border);color:var(--text)}
 
-    /* ─────────────────────────────────────────
-       Badges
-    ───────────────────────────────────────── */
+    /* ── Badges ────────────────────────────────────────────────── */
     .badge{
-      display:inline-flex;align-items:center;padding:4px 10px;
-      border-radius:999px;font-size:.78rem;font-weight:700;white-space:nowrap;
+      display:inline-flex;align-items:center;gap:5px;
+      padding:4px 10px;border-radius:999px;font-size:.75rem;font-weight:700;white-space:nowrap;
     }
+    .badge [data-lucide] svg{width:12px;height:12px}
     .badge-parking{background:var(--primary-l);color:var(--primary)}
     .badge-exited{background:var(--success-l);color:var(--success)}
     .badge-cancelled{background:var(--border);color:var(--text3)}
 
-    /* ─────────────────────────────────────────
-       Stat Cards
-    ───────────────────────────────────────── */
+    /* ── Stat Cards ────────────────────────────────────────────── */
     .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
     .stat-card{
-      background:var(--surface);border:1px solid var(--border);
-      border-radius:var(--r);padding:16px;text-align:center;
+      background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+      padding:16px;text-align:center;box-shadow:var(--shadow-sm);
     }
-    .stat-value{font-size:2rem;font-weight:700;color:var(--primary)}
-    .stat-label{font-size:.78rem;color:var(--text2);margin-top:4px}
+    .stat-value{font-size:1.875rem;font-weight:800;color:var(--primary);line-height:1}
+    .stat-label{font-size:.75rem;color:var(--text3);margin-top:6px;font-weight:500}
 
-    /* ─────────────────────────────────────────
-       Record Cards
-    ───────────────────────────────────────── */
+    /* ── Record Cards ──────────────────────────────────────────── */
     .record-list{display:flex;flex-direction:column;gap:10px}
     .record-card{
-      background:var(--surface);border:1px solid var(--border);
-      border-radius:var(--r);padding:16px;box-shadow:var(--shadow);
+      background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+      padding:16px;box-shadow:var(--shadow-sm);
+      border-left:3.5px solid var(--border);transition:box-shadow .15s;
     }
+    .record-card.status-parking{border-left-color:var(--primary)}
+    .record-card.status-exited{border-left-color:var(--success)}
+    .record-card.status-cancelled{border-left-color:var(--text3)}
+    .record-card:hover{box-shadow:var(--shadow)}
     .record-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
     .record-plate{font-size:1.1rem;font-weight:700;font-family:'Courier New',monospace;letter-spacing:1px}
-    .record-name{font-size:.85rem;color:var(--text2);margin-top:2px}
+    .record-name{font-size:.8125rem;color:var(--text2);margin-top:3px;font-weight:500}
     .record-meta{
-      display:flex;flex-wrap:wrap;gap:8px;font-size:.8rem;color:var(--text2);margin-top:8px;
+      display:flex;flex-wrap:wrap;gap:6px 12px;font-size:.78rem;color:var(--text2);margin-top:8px;
     }
-    .record-meta-item{display:flex;align-items:center;gap:3px}
-    .record-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+    .record-meta-item{display:flex;align-items:center;gap:4px}
+    .record-meta-item [data-lucide] svg{width:13px;height:13px;color:var(--text3);flex-shrink:0}
+    .record-actions{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}
 
-    /* ─────────────────────────────────────────
-       Alerts
-    ───────────────────────────────────────── */
+    /* ── Alerts ────────────────────────────────────────────────── */
     .alert{
       padding:12px 14px;border-radius:var(--rs);font-size:.875rem;
-      margin-bottom:14px;display:flex;align-items:flex-start;gap:8px;line-height:1.5;
+      margin-bottom:14px;display:flex;align-items:flex-start;gap:9px;line-height:1.5;
     }
-    .alert-warning{background:var(--warning-l);color:var(--warning);border:1px solid var(--warning)}
-    .alert-success{background:var(--success-l);color:var(--success);border:1px solid var(--success)}
-    .alert-danger{background:var(--danger-l);color:var(--danger);border:1px solid var(--danger)}
-    .alert-info{background:var(--primary-l);color:var(--primary);border:1px solid var(--primary)}
+    .alert [data-lucide] svg{width:16px;height:16px;flex-shrink:0;margin-top:1px}
+    .alert-warning{background:var(--warning-l);color:var(--warning);border:1px solid #FDE68A}
+    .alert-success{background:var(--success-l);color:var(--success);border:1px solid #A7F3D0}
+    .alert-danger{background:var(--danger-l);color:var(--danger);border:1px solid #FECACA}
+    .alert-info{background:var(--primary-l);color:var(--primary);border:1px solid var(--primary-m)}
 
-    /* ─────────────────────────────────────────
-       Info rows
-    ───────────────────────────────────────── */
+    /* ── Info rows ─────────────────────────────────────────────── */
     .info-list{display:flex;flex-direction:column;gap:10px}
     .info-row{
-      display:flex;justify-content:space-between;align-items:baseline;
-      font-size:.9rem;gap:12px;
+      display:flex;justify-content:space-between;align-items:baseline;font-size:.9rem;gap:12px;
+      padding-bottom:10px;border-bottom:1px solid var(--border);
     }
-    .info-label{color:var(--text2);flex-shrink:0}
+    .info-row:last-child{padding-bottom:0;border-bottom:none}
+    .info-label{color:var(--text2);flex-shrink:0;font-size:.8125rem}
     .info-value{font-weight:600;text-align:right}
 
-    /* ─────────────────────────────────────────
-       Divider
-    ───────────────────────────────────────── */
-    .divider{height:1px;background:var(--border);margin:16px 0}
+    /* ── Divider ───────────────────────────────────────────────── */
+    .divider{
+      display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--text3);font-size:.78rem;
+    }
+    .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
 
-    /* ─────────────────────────────────────────
-       Empty State
-    ───────────────────────────────────────── */
+    /* ── Empty State ───────────────────────────────────────────── */
     .empty-state{text-align:center;padding:48px 24px;color:var(--text3)}
-    .empty-icon{font-size:3rem;margin-bottom:12px}
-    .empty-text{font-size:.95rem}
+    .empty-icon{
+      width:60px;height:60px;border-radius:16px;background:var(--border);
+      display:flex;align-items:center;justify-content:center;margin:0 auto 14px;
+    }
+    .empty-icon [data-lucide] svg{width:28px;height:28px;color:var(--text3)}
+    .empty-text{font-size:.9rem;font-weight:500}
 
-    /* ─────────────────────────────────────────
-       Toast
-    ───────────────────────────────────────── */
+    /* ── Toast ─────────────────────────────────────────────────── */
     #toast-container{
-      position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
-      z-index:9999;display:flex;flex-direction:column;gap:8px;
-      width:calc(100% - 32px);max-width:400px;pointer-events:none;
+      position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;
+      display:flex;flex-direction:column;gap:8px;width:calc(100% - 32px);max-width:400px;
+      pointer-events:none;
     }
     .toast{
-      background:#1e293b;color:#f1f5f9;padding:13px 16px;border-radius:var(--rs);
-      font-size:.9rem;box-shadow:var(--shadow-md);display:flex;align-items:center;gap:8px;
-      animation:toast-in .25s ease;
+      background:#1E293B;color:#F1F5F9;padding:12px 16px;border-radius:var(--rs);
+      font-size:.875rem;font-weight:500;box-shadow:var(--shadow-md);
+      display:flex;align-items:center;gap:9px;animation:toast-in .25s ease;
     }
+    .toast [data-lucide] svg{width:16px;height:16px;flex-shrink:0}
     .toast-success{background:var(--success)}
     .toast-error{background:var(--danger)}
     .toast-warning{background:var(--warning)}
-    @keyframes toast-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes toast-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
-    /* ─────────────────────────────────────────
-       Modal
-    ───────────────────────────────────────── */
+    /* ── Modal ─────────────────────────────────────────────────── */
     .modal-backdrop{
-      position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;
-      display:flex;align-items:center;justify-content:center;padding:16px;
+      position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);
+      z-index:500;display:flex;align-items:center;justify-content:center;padding:16px;
     }
     .modal-box{
-      background:var(--surface);border-radius:var(--r);padding:24px;
-      width:100%;max-width:400px;box-shadow:var(--shadow-md);
+      background:var(--surface);border-radius:var(--r);padding:24px;width:100%;
+      max-width:400px;box-shadow:var(--shadow-md);border:1px solid var(--border);
     }
-    .modal-title{font-size:1.1rem;font-weight:700;margin-bottom:10px}
-    .modal-msg{color:var(--text2);margin-bottom:20px;line-height:1.6;font-size:.95rem}
+    .modal-title{font-size:1rem;font-weight:700;margin-bottom:8px}
+    .modal-msg{color:var(--text2);margin-bottom:20px;line-height:1.6;font-size:.9rem}
     .modal-actions{display:flex;gap:8px;justify-content:flex-end}
 
-    /* ─────────────────────────────────────────
-       Landing
-    ───────────────────────────────────────── */
-    .landing-hero{text-align:center;padding:40px 0 28px}
-    .landing-icon{font-size:4rem;margin-bottom:12px}
-    .landing-title{font-size:1.7rem;font-weight:700;margin-bottom:6px}
-    .landing-subtitle{font-size:.95rem;color:var(--text2);margin-bottom:28px}
+    /* ── Landing ───────────────────────────────────────────────── */
+    .landing-hero{
+      background:linear-gradient(135deg,var(--primary) 0%,#1E40AF 100%);
+      border-radius:var(--r);padding:36px 24px 32px;text-align:center;
+      color:#fff;margin-bottom:20px;
+    }
+    .landing-hero-icon{
+      width:64px;height:64px;border-radius:18px;background:rgba(255,255,255,.2);
+      display:flex;align-items:center;justify-content:center;margin:0 auto 16px;
+    }
+    .landing-hero-icon [data-lucide] svg{width:32px;height:32px;color:#fff}
+    .landing-hero h1{font-size:1.625rem;font-weight:800;margin-bottom:6px}
+    .landing-hero p{font-size:.9rem;opacity:.85}
     .landing-count{
-      background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
-      padding:20px;text-align:center;margin-bottom:20px;
+      background:var(--surface);border-radius:var(--r);padding:20px;
+      text-align:center;margin-bottom:16px;box-shadow:var(--shadow-sm);border:1px solid var(--border);
     }
+    .landing-count-num{font-size:2.5rem;font-weight:800;color:var(--primary);line-height:1}
+    .landing-count-label{font-size:.8rem;color:var(--text3);margin-top:5px;font-weight:500}
 
-    /* ─────────────────────────────────────────
-       Success
-    ───────────────────────────────────────── */
+    /* ── Success ───────────────────────────────────────────────── */
     .success-circle{
-      width:76px;height:76px;border-radius:50%;background:var(--success-l);color:var(--success);
-      font-size:2.2rem;display:flex;align-items:center;justify-content:center;
-      margin:0 auto 20px;
+      width:72px;height:72px;border-radius:50%;background:var(--success-l);color:var(--success);
+      display:flex;align-items:center;justify-content:center;margin:0 auto 20px;
     }
+    .success-circle [data-lucide] svg{width:32px;height:32px}
 
-    /* ─────────────────────────────────────────
-       Login
-    ───────────────────────────────────────── */
+    /* ── Login ─────────────────────────────────────────────────── */
     .login-wrap{
-      min-height:100vh;display:flex;align-items:center;
-      justify-content:center;padding:24px;background:var(--bg);
+      min-height:100vh;display:flex;align-items:center;justify-content:center;
+      padding:24px;background:var(--bg);
     }
     .login-card{
       background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
       padding:32px 28px;width:100%;max-width:380px;box-shadow:var(--shadow-md);
     }
+    .login-brand{
+      display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;
+    }
+    .login-brand-icon{
+      width:44px;height:44px;background:var(--primary);border-radius:12px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .login-brand-icon [data-lucide] svg{width:22px;height:22px;color:#fff}
 
-    /* ─────────────────────────────────────────
-       Progress bar (vehicle type chart)
-    ───────────────────────────────────────── */
+    /* ── Bar chart ─────────────────────────────────────────────── */
     .bar-track{width:80px;height:7px;background:var(--border);border-radius:4px;overflow:hidden}
-    .bar-fill{height:100%;background:var(--primary);border-radius:4px;transition:width .4s}
+    .bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),#60A5FA);border-radius:4px;transition:width .5s ease}
 
-    /* ─────────────────────────────────────────
-       Utilities
-    ───────────────────────────────────────── */
-    .text-primary{color:var(--primary)}
-    .text-success{color:var(--success)}
-    .text-danger{color:var(--danger)}
-    .text-muted{color:var(--text2)}
-    .text-xs{font-size:.78rem}
-    .text-sm{font-size:.875rem}
-    .text-center{text-align:center}
-    .font-bold{font-weight:700}
-    .font-mono{font-family:'Courier New',monospace;letter-spacing:1px}
-    .mt-8{margin-top:8px}
-    .mt-12{margin-top:12px}
-    .mt-16{margin-top:16px}
-    .mt-20{margin-top:20px}
-    .mb-8{margin-bottom:8px}
-    .mb-12{margin-bottom:12px}
-    .mb-16{margin-bottom:16px}
-    .flex{display:flex}
-    .flex-between{display:flex;justify-content:space-between;align-items:center}
-    .flex-center{display:flex;justify-content:center;align-items:center}
-    .gap-8{gap:8px}
-    .gap-12{gap:12px}
-    .flex-wrap{flex-wrap:wrap}
-    .section-title{font-size:1.15rem;font-weight:700;margin-bottom:14px}
+    /* ── QR Code ───────────────────────────────────────────────── */
+    .qr-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;padding:4px 0}
+    #qr-canvas{border-radius:var(--rs);overflow:hidden;box-shadow:var(--shadow)}
+    #qr-canvas img,#qr-canvas canvas{display:block}
+    .qr-url-row{display:flex;gap:8px;width:100%}
+    .qr-url-row .form-control{font-size:.82rem}
+    .qr-actions{display:flex;gap:8px;width:100%}
 
-    /* ─────────────────────────────────────────
-       Responsive
-    ───────────────────────────────────────── */
-    @media (min-width:480px){
-      .stats-grid{grid-template-columns:repeat(4,1fr)}
-    }
-    @media (min-width:640px){
-      .page{padding:28px 0 100px}
-      .vtype-grid{grid-template-columns:repeat(3,1fr)}
-    }
+    /* ── Utilities ─────────────────────────────────────────────── */
+    .text-primary{color:var(--primary)}.text-success{color:var(--success)}
+    .text-danger{color:var(--danger)}.text-muted{color:var(--text2)}
+    .text-xs{font-size:.75rem}.text-sm{font-size:.8125rem}
+    .text-center{text-align:center}.font-bold{font-weight:700}.font-mono{font-family:'Courier New',monospace;letter-spacing:1px}
+    .mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}.mt-20{margin-top:20px}
+    .mb-8{margin-bottom:8px}.mb-12{margin-bottom:12px}.mb-16{margin-bottom:16px}
+    .flex{display:flex}.flex-between{display:flex;justify-content:space-between;align-items:center}
+    .flex-center{display:flex;justify-content:center;align-items:center}.gap-8{gap:8px}
+    .section-title{font-size:1.125rem;font-weight:800;margin-bottom:14px}
+
+    /* ── Responsive ────────────────────────────────────────────── */
+    @media(min-width:480px){.stats-grid{grid-template-columns:repeat(4,1fr)}}
+    @media(min-width:640px){.page{padding:28px 0 100px}.vtype-grid{grid-template-columns:repeat(3,1fr)}}
     @media print{.navbar,.tab-bar,.btn,#toast-container{display:none}}
   </style>
 </head>
@@ -392,11 +409,11 @@
   // ══════════════════════════════════════════════════════════════════
 
   const VEHICLE_TYPES = [
-    {v:'car',       l:'รถยนต์ส่วนบุคคล', icon:'🚗'},
-    {v:'motorcycle',l:'รถจักรยานยนต์',    icon:'🏍️'},
-    {v:'van',       l:'รถตู้',            icon:'🚐'},
-    {v:'truck',     l:'รถส่งของ/บรรทุก',  icon:'🚚'},
-    {v:'other',     l:'อื่นๆ',            icon:'🚙'},
+    {v:'car',        l:'รถยนต์ส่วนบุคคล', icon:'car'},
+    {v:'motorcycle', l:'รถจักรยานยนต์',   icon:'bike'},
+    {v:'van',        l:'รถตู้',           icon:'bus'},
+    {v:'truck',      l:'รถส่งของ/บรรทุก', icon:'truck'},
+    {v:'other',      l:'อื่นๆ',           icon:'circle-ellipsis'},
   ];
 
   const PROVINCES = [
@@ -422,111 +439,59 @@
   ];
 
   // ══════════════════════════════════════════════════════════════════
-  //  STORE  (localStorage)
+  //  STORE
   // ══════════════════════════════════════════════════════════════════
 
   const Store = {
     KEY: 'pkRecords',
-
-    all() {
-      try { return JSON.parse(localStorage.getItem(this.KEY) || '[]'); }
-      catch { return []; }
+    all() { try { return JSON.parse(localStorage.getItem(this.KEY)||'[]'); } catch { return []; } },
+    _save(r){ localStorage.setItem(this.KEY, JSON.stringify(r)); },
+    add(data){
+      const r={...data, id:this._uid(), createdAt:new Date().toISOString()};
+      const all=this.all(); all.unshift(r); this._save(all); return r;
     },
-    _save(records) { localStorage.setItem(this.KEY, JSON.stringify(records)); },
-
-    add(data) {
-      const r = { ...data, id: this._uid(), createdAt: new Date().toISOString() };
-      const records = this.all();
-      records.unshift(r);
-      this._save(records);
-      return r;
+    update(id,patch){
+      const all=this.all(), i=all.findIndex(r=>r.id===id);
+      if(i===-1) return null;
+      all[i]={...all[i],...patch, updatedAt:new Date().toISOString()};
+      this._save(all); return all[i];
     },
-
-    update(id, patch) {
-      const records = this.all();
-      const i = records.findIndex(r => r.id === id);
-      if (i === -1) return null;
-      records[i] = { ...records[i], ...patch, updatedAt: new Date().toISOString() };
-      this._save(records);
-      return records[i];
+    byId(id){ return this.all().find(r=>r.id===id)||null; },
+    active(){ return this.all().filter(r=>r.status==='parking'); },
+    activePlate(plate){
+      const n=plate.replace(/[\s\-]/g,'').toUpperCase();
+      return this.all().find(r=>r.status==='parking'&&r.licensePlate.replace(/[\s\-]/g,'').toUpperCase()===n)||null;
     },
-
-    byId(id) { return this.all().find(r => r.id === id) || null; },
-    active() { return this.all().filter(r => r.status === 'parking'); },
-
-    activePlate(plate) {
-      const n = plate.replace(/[\s\-]/g,'').toUpperCase();
-      return this.all().find(r =>
-        r.status === 'parking' &&
-        r.licensePlate.replace(/[\s\-]/g,'').toUpperCase() === n
-      ) || null;
-    },
-
-    search({ plate='', name='', destination='', dateFrom='', dateTo='', status='' } = {}) {
-      return this.all().filter(r => {
-        if (plate && !r.licensePlate.toLowerCase().includes(plate.toLowerCase())) return false;
-        if (name && !r.driverName.toLowerCase().includes(name.toLowerCase())) return false;
-        if (destination && !r.destination.toLowerCase().includes(destination.toLowerCase())) return false;
-        if (status && r.status !== status) return false;
-        if (dateFrom) {
-          if (new Date(r.entryTime) < new Date(dateFrom)) return false;
-        }
-        if (dateTo) {
-          const to = new Date(dateTo);
-          to.setHours(23,59,59,999);
-          if (new Date(r.entryTime) > to) return false;
-        }
+    search({plate='',name='',destination='',dateFrom='',dateTo='',status=''}={}){
+      return this.all().filter(r=>{
+        if(plate&&!r.licensePlate.toLowerCase().includes(plate.toLowerCase())) return false;
+        if(name&&!r.driverName.toLowerCase().includes(name.toLowerCase())) return false;
+        if(destination&&!r.destination.toLowerCase().includes(destination.toLowerCase())) return false;
+        if(status&&r.status!==status) return false;
+        if(dateFrom&&new Date(r.entryTime)<new Date(dateFrom)) return false;
+        if(dateTo){const t=new Date(dateTo);t.setHours(23,59,59,999);if(new Date(r.entryTime)>t) return false;}
         return true;
       });
     },
-
-    todayStats() {
-      const today = new Date().toDateString();
-      const all = this.all().filter(r => new Date(r.entryTime).toDateString() === today);
-      const exited = all.filter(r => r.status === 'exited');
-      const avgDur = exited.length
-        ? Math.round(exited.reduce((s,r) => s+(r.duration||0),0) / exited.length)
-        : 0;
-      const byType = {};
-      VEHICLE_TYPES.forEach(t => { byType[t.v] = all.filter(r => r.vehicleType === t.v).length; });
-      return {
-        total: all.length,
-        active: all.filter(r => r.status === 'parking').length,
-        exited: exited.length,
-        avgDur,
-        byType,
-      };
+    todayStats(){
+      const today=new Date().toDateString();
+      const all=this.all().filter(r=>new Date(r.entryTime).toDateString()===today);
+      const exited=all.filter(r=>r.status==='exited');
+      const avgDur=exited.length?Math.round(exited.reduce((s,r)=>s+(r.duration||0),0)/exited.length):0;
+      const byType={}; VEHICLE_TYPES.forEach(t=>{byType[t.v]=all.filter(r=>r.vehicleType===t.v).length;});
+      return{total:all.length,active:all.filter(r=>r.status==='parking').length,exited:exited.length,avgDur,byType};
     },
-
-    _uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2,7); },
-
-    seed() {
-      if (this.all().length) return;
-      const now = Date.now();
-      const mins = m => new Date(now - m*60000).toISOString();
-      const records = [
-        { id:'m01', driverName:'สมชาย ใจดี',     phone:'081-234-5678', vehicleType:'car',
-          licensePlate:'กข-1234', province:'กรุงเทพมหานคร', destination:'ฝ่ายบุคคล',
-          purpose:'สัมภาษณ์งาน', entryTime:mins(90),  exitTime:null, duration:null,
-          status:'parking',  recordedBy:'visitor', createdAt:mins(90) },
-        { id:'m02', driverName:'วิไล รักษ์ดี',   phone:'086-543-2109', vehicleType:'motorcycle',
-          licensePlate:'ขค-5678', province:'นนทบุรี',          destination:'ฝ่ายการเงิน',
-          purpose:'ชำระเงิน', entryTime:mins(45),  exitTime:null, duration:null,
-          status:'parking',  recordedBy:'visitor', createdAt:mins(45) },
-        { id:'m03', driverName:'มนัส วงศ์สว่าง', phone:'',             vehicleType:'van',
-          licensePlate:'บต-9012', province:'ปทุมธานี',          destination:'ฝ่ายจัดซื้อ',
-          purpose:'ส่งของ',   entryTime:mins(180), exitTime:mins(120), duration:60,
-          status:'exited',   recordedBy:'เจ้าหน้าที่', createdAt:mins(180) },
-        { id:'m04', driverName:'อารีย์ สมบัติ',  phone:'062-111-2222', vehicleType:'car',
-          licensePlate:'กง-3456', province:'สมุทรปราการ',        destination:'ฝ่ายขาย',
-          purpose:'ประชุม',   entryTime:mins(120), exitTime:null, duration:null,
-          status:'parking',  recordedBy:'visitor', createdAt:mins(120) },
-        { id:'m05', driverName:'ทวีศักดิ์ มงคล', phone:'089-000-1111', vehicleType:'truck',
-          licensePlate:'นบ-7890', province:'สระบุรี',            destination:'โกดังสินค้า',
-          purpose:'ส่งสินค้า', entryTime:mins(300), exitTime:mins(240), duration:60,
-          status:'exited',   recordedBy:'เจ้าหน้าที่', createdAt:mins(300) },
-      ];
-      this._save(records);
+    _uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); },
+    seed(){
+      if(this.all().length) return;
+      const now=Date.now(), mins=m=>new Date(now-m*60000).toISOString();
+      this._save([
+        {id:'m01',driverName:'สมชาย ใจดี',phone:'081-234-5678',vehicleType:'car',licensePlate:'กข-1234',province:'กรุงเทพมหานคร',destination:'ฝ่ายบุคคล',purpose:'สัมภาษณ์งาน',entryTime:mins(90),exitTime:null,duration:null,status:'parking',recordedBy:'visitor',createdAt:mins(90)},
+        {id:'m02',driverName:'วิไล รักษ์ดี',phone:'086-543-2109',vehicleType:'motorcycle',licensePlate:'ขค-5678',province:'นนทบุรี',destination:'ฝ่ายการเงิน',purpose:'ชำระเงิน',entryTime:mins(45),exitTime:null,duration:null,status:'parking',recordedBy:'visitor',createdAt:mins(45)},
+        {id:'m03',driverName:'มนัส วงศ์สว่าง',phone:'',vehicleType:'van',licensePlate:'บต-9012',province:'ปทุมธานี',destination:'ฝ่ายจัดซื้อ',purpose:'ส่งของ',entryTime:mins(180),exitTime:mins(120),duration:60,status:'exited',recordedBy:'เจ้าหน้าที่',createdAt:mins(180)},
+        {id:'m04',driverName:'อารีย์ สมบัติ',phone:'062-111-2222',vehicleType:'car',licensePlate:'กง-3456',province:'สมุทรปราการ',destination:'ฝ่ายขาย',purpose:'ประชุม',entryTime:mins(120),exitTime:null,duration:null,status:'parking',recordedBy:'visitor',createdAt:mins(120)},
+        {id:'m05',driverName:'ทวีศักดิ์ มงคล',phone:'089-000-1111',vehicleType:'truck',licensePlate:'นบ-7890',province:'สระบุรี',destination:'โกดังสินค้า',purpose:'ส่งสินค้า',entryTime:mins(300),exitTime:mins(240),duration:60,status:'exited',recordedBy:'เจ้าหน้าที่',createdAt:mins(300)},
+      ]);
     },
   };
 
@@ -535,20 +500,13 @@
   // ══════════════════════════════════════════════════════════════════
 
   const Auth = {
-    KEY: 'pkUser',
-    get()    { try { return JSON.parse(sessionStorage.getItem(this.KEY)); } catch { return null; } },
-    set(u)   { sessionStorage.setItem(this.KEY, JSON.stringify(u)); },
-    clear()  { sessionStorage.removeItem(this.KEY); },
-    login(username, password) {
-      const match = CREDS.find(c => c.username === username && c.password === password);
-      if (!match) return null;
-      const u = { role: match.role, name: match.name };
-      this.set(u);
-      return u;
-    },
-    logout() { this.clear(); },
-    isStaff() { const u = this.get(); return u && (u.role === 'staff' || u.role === 'admin'); },
-    isAdmin() { const u = this.get(); return u && u.role === 'admin'; },
+    KEY:'pkUser',
+    get(){try{return JSON.parse(sessionStorage.getItem(this.KEY));}catch{return null;}},
+    set(u){sessionStorage.setItem(this.KEY,JSON.stringify(u));},
+    login(u,p){ const m=CREDS.find(c=>c.username===u&&c.password===p); if(!m) return null; const user={role:m.role,name:m.name}; this.set(user); return user; },
+    logout(){sessionStorage.removeItem(this.KEY);},
+    isStaff(){const u=this.get();return u&&(u.role==='staff'||u.role==='admin');},
+    isAdmin(){const u=this.get();return u&&u.role==='admin';},
   };
 
   // ══════════════════════════════════════════════════════════════════
@@ -556,75 +514,59 @@
   // ══════════════════════════════════════════════════════════════════
 
   const Router = {
-    _routes: {},
-    on(path, fn) { this._routes[path] = fn; },
-    go(path) { window.location.hash = path; },
-    init() {
-      window.addEventListener('hashchange', () => this._run());
-      this._run();
-    },
-    _run() {
-      const hash = window.location.hash.replace('#','') || '/';
-      const parts = hash.split('/').filter(Boolean);
-      const key = parts.length ? '/' + parts[0] : '/';
-      const params = parts.slice(1);
-      const fn = this._routes[key] || this._routes['*'];
-      if (fn) fn(params);
+    _routes:{},
+    on(path,fn){this._routes[path]=fn;},
+    go(path){window.location.hash=path;},
+    init(){window.addEventListener('hashchange',()=>this._run()); this._run();},
+    _run(){
+      const hash=window.location.hash.replace('#','')||'/';
+      const parts=hash.split('/').filter(Boolean);
+      const key=parts.length?'/'+parts[0]:'/';
+      const fn=this._routes[key]||this._routes['*'];
+      if(fn) fn(parts.slice(1));
     },
   };
 
   // ══════════════════════════════════════════════════════════════════
-  //  UTILITIES
+  //  UTILS
   // ══════════════════════════════════════════════════════════════════
 
-  function fmtDate(iso) {
-    if (!iso) return '-';
-    return new Date(iso).toLocaleDateString('th-TH', {year:'numeric',month:'short',day:'numeric'});
+  function fmtDate(iso){if(!iso) return '-'; return new Date(iso).toLocaleDateString('th-TH',{year:'numeric',month:'short',day:'numeric'});}
+  function fmtTime(iso){if(!iso) return '-'; return new Date(iso).toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});}
+  function fmtDT(iso){return iso?fmtDate(iso)+' '+fmtTime(iso):'-';}
+  function fmtDur(min){if(!min&&min!==0) return '-'; const h=Math.floor(min/60),m=min%60; return h?`${h} ชม. ${m} นาที`:`${m} นาที`;}
+  function calcDur(entry,exit){return Math.round((new Date(exit)-new Date(entry))/60000);}
+  function vtLabel(v){return VEHICLE_TYPES.find(t=>t.v===v)?.l||v;}
+  function vtIcon(v){return VEHICLE_TYPES.find(t=>t.v===v)?.icon||'car';}
+  function statusMap(s){return{parking:'กำลังจอด',exited:'ออกแล้ว',cancelled:'ยกเลิก'}[s]||s;}
+  function badge(s){
+    const cls={parking:'badge-parking',exited:'badge-exited',cancelled:'badge-cancelled'}[s]||'';
+    const ic={parking:'clock',exited:'check-circle-2',cancelled:'x-circle'}[s]||'circle';
+    return `<span class="badge ${cls}"><i data-lucide="${ic}"></i>${statusMap(s)}</span>`;
   }
-  function fmtTime(iso) {
-    if (!iso) return '-';
-    return new Date(iso).toLocaleTimeString('th-TH', {hour:'2-digit',minute:'2-digit'});
-  }
-  function fmtDT(iso) { return iso ? fmtDate(iso) + ' ' + fmtTime(iso) : '-'; }
-  function fmtDur(min) {
-    if (!min && min !== 0) return '-';
-    const h = Math.floor(min/60), m = min%60;
-    return h ? `${h} ชม. ${m} นาที` : `${m} นาที`;
-  }
-  function calcDur(entry, exit) { return Math.round((new Date(exit)-new Date(entry))/60000); }
-  function vtLabel(v) { return VEHICLE_TYPES.find(t => t.v === v)?.l || v; }
-  function vtIcon(v)  { return VEHICLE_TYPES.find(t => t.v === v)?.icon || '🚗'; }
-  function statusMap(s) {
-    return {parking:'กำลังจอด',exited:'ออกแล้ว',cancelled:'ยกเลิก'}[s] || s;
-  }
-  function badge(s) {
-    const cls = {parking:'badge-parking',exited:'badge-exited',cancelled:'badge-cancelled'}[s]||'';
-    return `<span class="badge ${cls}">${statusMap(s)}</span>`;
-  }
-  function elapsed(entryIso) {
-    const m = Math.round((Date.now()-new Date(entryIso))/60000);
-    return fmtDur(Math.max(0,m));
-  }
-  function esc(s) { return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function elapsed(entryIso){return fmtDur(Math.max(0,Math.round((Date.now()-new Date(entryIso))/60000)));}
+  function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function ic(name,cls=''){return `<i data-lucide="${name}" class="${cls}"></i>`;}
+  function applyIcons(){if(window.lucide) lucide.createIcons();}
+  function setApp(html){document.getElementById('app').innerHTML=html; applyIcons();}
+  function setTab(html){const el=document.getElementById('tab-body'); if(el){el.innerHTML=html; applyIcons();}}
 
-  function toast(msg, type='default') {
-    const c = document.getElementById('toast-container');
-    const t = document.createElement('div');
-    t.className = `toast toast-${type}`;
-    const icons = {success:'✓',error:'✕',warning:'⚠',default:'ℹ'};
-    t.innerHTML = `<span>${icons[type]||'ℹ'}</span><span>${msg}</span>`;
+  function toast(msg,type='default'){
+    const c=document.getElementById('toast-container');
+    const t=document.createElement('div');
+    t.className=`toast toast-${type}`;
+    const icons={success:'check-circle',error:'x-circle',warning:'alert-triangle',default:'info'};
+    t.innerHTML=`<i data-lucide="${icons[type]||'info'}"></i><span>${msg}</span>`;
     c.appendChild(t);
-    setTimeout(() => {
-      t.style.transition='all .3s'; t.style.opacity='0'; t.style.transform='translateY(16px)';
-      setTimeout(() => t.remove(), 320);
-    }, 3000);
+    applyIcons();
+    setTimeout(()=>{t.style.transition='all .3s';t.style.opacity='0';t.style.transform='translateY(14px)';setTimeout(()=>t.remove(),320);},3000);
   }
 
-  function modal(title, msg, onOk, okLabel='ยืนยัน', okClass='btn-primary') {
+  function modal(title,msg,onOk,okLabel='ยืนยัน',okClass='btn-primary'){
     document.getElementById('_modal')?.remove();
-    const el = document.createElement('div');
-    el.id='_modal'; el.className='modal-backdrop';
-    el.innerHTML = `
+    const el=document.createElement('div');
+    el.id='_modal';el.className='modal-backdrop';
+    el.innerHTML=`
       <div class="modal-box">
         <div class="modal-title">${title}</div>
         <div class="modal-msg">${msg}</div>
@@ -634,157 +576,146 @@
         </div>
       </div>`;
     document.body.appendChild(el);
-    document.getElementById('_m_no').onclick = () => el.remove();
-    document.getElementById('_m_yes').onclick = () => { el.remove(); onOk(); };
-    el.addEventListener('click', e => { if (e.target === el) el.remove(); });
+    document.getElementById('_m_no').onclick=()=>el.remove();
+    document.getElementById('_m_yes').onclick=()=>{el.remove();onOk();};
+    el.addEventListener('click',e=>{if(e.target===el) el.remove();});
+    applyIcons();
   }
 
-  function toggleTheme() {
-    const html = document.documentElement;
-    const t = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    html.setAttribute('data-theme', t);
-    localStorage.setItem('pkTheme', t);
-    // Update moon/sun icon if present
-    const icon = document.getElementById('_theme_btn');
-    if (icon) icon.textContent = t === 'dark' ? '☀️' : '🌙';
+  function toggleTheme(){
+    const html=document.documentElement;
+    const t=html.getAttribute('data-theme')==='dark'?'light':'dark';
+    html.setAttribute('data-theme',t);
+    localStorage.setItem('pkTheme',t);
+    const btn=document.getElementById('_theme_btn');
+    if(btn){btn.innerHTML=`<i data-lucide="${t==='dark'?'sun':'moon'}"></i>`; applyIcons();}
   }
 
-  function exportCSV(records) {
-    const H = ['ID','วันที่','ชื่อผู้ขับ','เบอร์โทร','ประเภทรถ','ทะเบียน','จังหวัด',
-               'สถานที่ติดต่อ','วัตถุประสงค์','เวลาเข้า','เวลาออก','ระยะเวลา(นาที)','สถานะ','ผู้บันทึก'];
-    const rows = records.map(r => [
-      r.id, fmtDate(r.entryTime), r.driverName, r.phone||'',
-      vtLabel(r.vehicleType), r.licensePlate, r.province||'',
-      r.destination, r.purpose||'', fmtDT(r.entryTime),
-      r.exitTime ? fmtDT(r.exitTime) : '',
-      r.duration ?? '', statusMap(r.status), r.recordedBy||''
-    ]);
-    const csv = [H,...rows].map(row =>
-      row.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')
-    ).join('\n');
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8'}));
-    a.download = `parking_${new Date().toISOString().slice(0,10)}.csv`;
+  function exportCSV(records){
+    const H=['ID','วันที่','ชื่อผู้ขับ','เบอร์โทร','ประเภทรถ','ทะเบียน','จังหวัด','สถานที่ติดต่อ','วัตถุประสงค์','เวลาเข้า','เวลาออก','ระยะเวลา(นาที)','สถานะ','ผู้บันทึก'];
+    const rows=records.map(r=>[r.id,fmtDate(r.entryTime),r.driverName,r.phone||'',vtLabel(r.vehicleType),r.licensePlate,r.province||'',r.destination,r.purpose||'',fmtDT(r.entryTime),r.exitTime?fmtDT(r.exitTime):'',r.duration??'',statusMap(r.status),r.recordedBy||'']);
+    const csv=[H,...rows].map(row=>row.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'}));
+    a.download=`parking_${new Date().toISOString().slice(0,10)}.csv`;
     a.click();
-    toast('ดาวน์โหลด CSV สำเร็จ', 'success');
+    toast('ดาวน์โหลด CSV สำเร็จ','success');
   }
 
   // ══════════════════════════════════════════════════════════════════
-  //  SHARED NAVBAR
+  //  NAVBAR
   // ══════════════════════════════════════════════════════════════════
 
-  function navbar(title, backPath='') {
-    const user = Auth.get();
-    const theme = document.documentElement.getAttribute('data-theme');
+  function navbar(title,backPath=''){
+    const user=Auth.get();
+    const theme=document.documentElement.getAttribute('data-theme');
     return `
       <nav class="navbar">
         <div class="navbar-inner">
           <div class="navbar-left">
-            ${backPath ? `<button class="btn-icon" onclick="Router.go('${backPath}')">←</button>` : ''}
-            <span class="navbar-title">🅿 ${title}</span>
+            ${backPath?`<button class="btn-icon" onclick="Router.go('${backPath}')">${ic('arrow-left')}</button>`:''}
+            <div class="navbar-brand">
+              <div class="navbar-brand-icon">${ic('square-parking')}</div>
+              ${title}
+            </div>
           </div>
           <div class="navbar-right">
-            <button class="btn-icon" id="_theme_btn" onclick="toggleTheme()" title="เปลี่ยนธีม">${theme==='dark'?'☀️':'🌙'}</button>
-            ${user ? `<button class="btn btn-ghost btn-sm" onclick="doLogout()">ออก</button>` : ''}
+            <button class="btn-icon" id="_theme_btn" onclick="toggleTheme()">${ic(theme==='dark'?'sun':'moon')}</button>
+            ${user?`<button class="btn btn-ghost btn-sm" onclick="doLogout()">${ic('log-out')} ออก</button>`:''}
           </div>
         </div>
       </nav>`;
   }
 
-  function doLogout() {
-    modal('ออกจากระบบ','ต้องการออกจากระบบใช่หรือไม่?',()=>{
-      Auth.logout(); toast('ออกจากระบบแล้ว'); Router.go('/');
-    });
+  function doLogout(){
+    modal('ออกจากระบบ','ต้องการออกจากระบบใช่หรือไม่?',()=>{Auth.logout();toast('ออกจากระบบแล้ว');Router.go('/');});
   }
 
   // ══════════════════════════════════════════════════════════════════
   //  PAGE: LANDING
   // ══════════════════════════════════════════════════════════════════
 
-  function pgLanding() {
-    const cnt = Store.active().length;
-    document.getElementById('app').innerHTML = `
+  function pgLanding(){
+    const cnt=Store.active().length;
+    setApp(`
       ${navbar('ระบบจอดรถ')}
       <div class="page">
         <div class="container">
           <div class="landing-hero">
-            <div class="landing-icon">🚗</div>
-            <h1 class="landing-title">ระบบบันทึกที่จอดรถ</h1>
-            <p class="landing-subtitle">กรุณาเลือกรายการที่ต้องการดำเนินการ</p>
+            <div class="landing-hero-icon">${ic('square-parking')}</div>
+            <h1>ระบบบันทึกที่จอดรถ</h1>
+            <p>กรุณาเลือกรายการที่ต้องการดำเนินการ</p>
           </div>
 
           <div class="landing-count">
-            <div class="stat-value" style="font-size:2.5rem">${cnt}</div>
-            <div class="stat-label" style="font-size:.9rem">คันที่กำลังจอดอยู่ขณะนี้</div>
+            <div class="landing-count-num">${cnt}</div>
+            <div class="landing-count-label">คันที่กำลังจอดอยู่ขณะนี้</div>
           </div>
 
           <button class="btn btn-primary btn-full btn-lg" onclick="Router.go('/checkin')" style="margin-bottom:10px">
-            🔑 บันทึกรถเข้า (Check-In)
+            ${ic('log-in')} บันทึกรถเข้า (Check-In)
           </button>
 
-          <div class="divider"></div>
-          <p class="text-muted text-sm text-center mb-8">สำหรับเจ้าหน้าที่</p>
+          <div class="divider">สำหรับเจ้าหน้าที่</div>
+
           <button class="btn btn-outline btn-full" onclick="staffEntry()">
-            👮 เข้าสู่ระบบเจ้าหน้าที่
+            ${ic('shield-check')} เข้าสู่ระบบเจ้าหน้าที่
           </button>
         </div>
-      </div>`;
+      </div>`);
   }
 
-  function staffEntry() {
-    Auth.isStaff() ? Router.go('/staff') : Router.go('/login');
-  }
+  function staffEntry(){Auth.isStaff()?Router.go('/staff'):Router.go('/login');}
 
   // ══════════════════════════════════════════════════════════════════
   //  PAGE: CHECK-IN
   // ══════════════════════════════════════════════════════════════════
 
-  function pgCheckin() {
-    document.getElementById('app').innerHTML = `
+  function pgCheckin(){
+    setApp(`
       ${navbar('บันทึกรถเข้า','/')}
       <div class="page">
         <div class="container">
           <h2 class="section-title">กรอกข้อมูลผู้มาติดต่อ</h2>
 
           <div id="dup-warn" class="alert alert-warning" style="display:none">
-            ⚠️ <span id="dup-msg"></span>
+            ${ic('alert-triangle')}<span id="dup-msg"></span>
           </div>
 
           <div class="card">
             <form id="ci-form" novalidate>
 
               <div class="form-group">
-                <label class="form-label">ชื่อ-นามสกุลผู้ขับรถ <span class="req">*</span></label>
+                <label class="form-label">${ic('user')} ชื่อ-นามสกุลผู้ขับรถ <span class="req">*</span></label>
                 <input type="text" id="ci-name" class="form-control" placeholder="เช่น สมชาย ใจดี" autocomplete="name">
                 <div class="form-error">กรุณากรอกชื่อ-นามสกุล</div>
               </div>
 
               <div class="form-group">
-                <label class="form-label">เบอร์โทรศัพท์ <span class="optional">(ไม่บังคับ)</span></label>
+                <label class="form-label">${ic('phone')} เบอร์โทรศัพท์ <span class="optional">(ไม่บังคับ)</span></label>
                 <input type="tel" id="ci-phone" class="form-control" placeholder="เช่น 08x-xxx-xxxx" autocomplete="tel">
               </div>
 
               <div class="form-group">
-                <label class="form-label">ประเภทรถยนต์ <span class="req">*</span></label>
-                <div class="vtype-grid" id="vtype-grid">
-                  ${VEHICLE_TYPES.map((t,i) => `
-                    <label class="vtype-item${i===0?' checked':''}" id="vt-${t.v}">
-                      <input type="radio" name="vt" value="${t.v}" ${i===0?'checked':''} onchange="selectVtype('${t.v}')">
-                      ${t.icon} ${t.l}
+                <label class="form-label">${ic('car')} ประเภทรถยนต์ <span class="req">*</span></label>
+                <div class="vtype-grid">
+                  ${VEHICLE_TYPES.map((t,i)=>`
+                    <label class="vtype-item${i===0?' checked':''}" id="vt-${t.v}" onclick="selectVtype('${t.v}')">
+                      <input type="radio" name="vt" value="${t.v}" ${i===0?'checked':''}>
+                      ${ic(t.icon)} ${t.l}
                     </label>`).join('')}
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="form-label">ทะเบียนรถยนต์ <span class="req">*</span></label>
+                <label class="form-label">${ic('credit-card')} ทะเบียนรถยนต์ <span class="req">*</span></label>
                 <input type="text" id="ci-plate" class="form-control plate-input"
-                  placeholder="เช่น กข-1234" autocomplete="off"
-                  oninput="chkDup(this.value)">
+                  placeholder="เช่น กข-1234" autocomplete="off" oninput="chkDup(this.value)">
                 <div class="form-error">กรุณากรอกทะเบียนรถ</div>
               </div>
 
               <div class="form-group">
-                <label class="form-label">จังหวัดของทะเบียน <span class="optional">(ไม่บังคับ)</span></label>
+                <label class="form-label">${ic('map')} จังหวัดของทะเบียน <span class="optional">(ไม่บังคับ)</span></label>
                 <select id="ci-prov" class="form-control">
                   <option value="">-- เลือกจังหวัด --</option>
                   ${PROVINCES.map(p=>`<option>${p}</option>`).join('')}
@@ -792,7 +723,7 @@
               </div>
 
               <div class="form-group">
-                <label class="form-label">สถานที่/หน่วยงานที่มาติดต่อ <span class="req">*</span></label>
+                <label class="form-label">${ic('building-2')} สถานที่/หน่วยงานที่มาติดต่อ <span class="req">*</span></label>
                 <input type="text" id="ci-dest" class="form-control"
                   placeholder="เช่น ฝ่ายบุคคล, ห้องประชุม 3" list="dest-list">
                 <datalist id="dest-list">
@@ -805,7 +736,7 @@
               </div>
 
               <div class="form-group">
-                <label class="form-label">วัตถุประสงค์การติดต่อ</label>
+                <label class="form-label">${ic('file-text')} วัตถุประสงค์การติดต่อ</label>
                 <input type="text" id="ci-purpose" class="form-control"
                   placeholder="เช่น สัมภาษณ์งาน, ประชุม, ส่งเอกสาร" list="pur-list">
                 <datalist id="pur-list">
@@ -816,77 +747,57 @@
               </div>
 
               <div class="form-group">
-                <label class="form-label">เวลาเข้า (บันทึกอัตโนมัติ)</label>
-                <div class="form-control" style="color:var(--text2);cursor:default">
-                  🕐 <span id="ci-clock"></span>
+                <label class="form-label">${ic('clock')} เวลาเข้า (บันทึกอัตโนมัติ)</label>
+                <div class="form-control" style="color:var(--text2);cursor:default;display:flex;align-items:center;gap:8px">
+                  ${ic('clock-3')} <span id="ci-clock"></span>
                 </div>
               </div>
 
               <button type="submit" class="btn btn-primary btn-full btn-lg" style="margin-top:4px">
-                ✅ บันทึกรถเข้า
+                ${ic('check-circle')} บันทึกรถเข้า
               </button>
             </form>
           </div>
           <p class="text-xs text-muted text-center mt-12">* จำเป็นต้องกรอก</p>
         </div>
-      </div>`;
+      </div>`);
 
-    const clk = document.getElementById('ci-clock');
-    const tick = () => { if(clk) clk.textContent = new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); };
-    tick();
-    const iv = setInterval(tick, 1000);
-
-    document.getElementById('ci-form').addEventListener('submit', e => {
-      e.preventDefault();
-      clearInterval(iv);
-      submitCheckin();
-    });
+    const clk=document.getElementById('ci-clock');
+    const tick=()=>{if(clk) clk.textContent=new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',second:'2-digit'});};
+    tick(); const iv=setInterval(tick,1000);
+    document.getElementById('ci-form').addEventListener('submit',e=>{e.preventDefault();clearInterval(iv);submitCheckin();});
   }
 
-  function selectVtype(v) {
-    document.querySelectorAll('.vtype-item').forEach(el => el.classList.remove('checked'));
-    document.getElementById('vt-'+v)?.classList.add('checked');
+  function selectVtype(v){
+    document.querySelectorAll('.vtype-item').forEach(el=>el.classList.remove('checked'));
+    const item=document.getElementById('vt-'+v);
+    if(item){item.classList.add('checked'); item.querySelector('input').checked=true;}
   }
 
-  function chkDup(val) {
-    const warn = document.getElementById('dup-warn');
-    const msg  = document.getElementById('dup-msg');
-    if (!val || val.length < 2) { warn.style.display='none'; return; }
-    const ex = Store.activePlate(val);
-    if (ex) {
-      msg.textContent = `รถทะเบียน "${ex.licensePlate}" ยังอยู่ในระบบ (${ex.driverName}) — เข้ามาตั้งแต่ ${fmtTime(ex.entryTime)}`;
-      warn.style.display='flex';
-    } else {
-      warn.style.display='none';
-    }
+  function chkDup(val){
+    const warn=document.getElementById('dup-warn'),msg=document.getElementById('dup-msg');
+    if(!val||val.length<2){warn.style.display='none';return;}
+    const ex=Store.activePlate(val);
+    if(ex){msg.textContent=`รถทะเบียน "${ex.licensePlate}" ยังอยู่ในระบบ (${ex.driverName}) — เข้ามาตั้งแต่ ${fmtTime(ex.entryTime)}`;warn.style.display='flex';}
+    else warn.style.display='none';
   }
 
-  function submitCheckin() {
-    const fields = [
-      {id:'ci-name', msg:'กรุณากรอกชื่อ-นามสกุล'},
-      {id:'ci-plate', msg:'กรุณากรอกทะเบียนรถ'},
-      {id:'ci-dest', msg:'กรุณากรอกสถานที่ที่มาติดต่อ'},
-    ];
-    let ok = true;
-    fields.forEach(({id}) => {
-      const el = document.getElementById(id);
-      if (!el.value.trim()) { el.classList.add('is-invalid'); ok=false; }
-      else el.classList.remove('is-invalid');
-    });
-    if (!ok) { toast('กรุณากรอกข้อมูลที่จำเป็น', 'error'); return; }
-
-    const vt = document.querySelector('input[name="vt"]:checked')?.value || 'car';
-    const rec = Store.add({
-      driverName:   document.getElementById('ci-name').value.trim(),
-      phone:        document.getElementById('ci-phone').value.trim(),
-      vehicleType:  vt,
-      licensePlate: document.getElementById('ci-plate').value.trim().toUpperCase(),
-      province:     document.getElementById('ci-prov').value,
-      destination:  document.getElementById('ci-dest').value.trim(),
-      purpose:      document.getElementById('ci-purpose').value.trim(),
-      entryTime:    new Date().toISOString(),
-      exitTime: null, duration: null,
-      status: 'parking', recordedBy: 'visitor',
+  function submitCheckin(){
+    const fields=[{id:'ci-name'},{id:'ci-plate'},{id:'ci-dest'}];
+    let ok=true;
+    fields.forEach(({id})=>{const el=document.getElementById(id);if(!el.value.trim()){el.classList.add('is-invalid');ok=false;}else el.classList.remove('is-invalid');});
+    if(!ok){toast('กรุณากรอกข้อมูลที่จำเป็น','error');return;}
+    const vt=document.querySelector('input[name="vt"]:checked')?.value||'car';
+    const rec=Store.add({
+      driverName:document.getElementById('ci-name').value.trim(),
+      phone:document.getElementById('ci-phone').value.trim(),
+      vehicleType:vt,
+      licensePlate:document.getElementById('ci-plate').value.trim().toUpperCase(),
+      province:document.getElementById('ci-prov').value,
+      destination:document.getElementById('ci-dest').value.trim(),
+      purpose:document.getElementById('ci-purpose').value.trim(),
+      entryTime:new Date().toISOString(),exitTime:null,duration:null,
+      status:'parking',recordedBy:'visitor',
     });
     Router.go('/success/'+rec.id);
   }
@@ -895,19 +806,17 @@
   //  PAGE: SUCCESS
   // ══════════════════════════════════════════════════════════════════
 
-  function pgSuccess(params) {
-    const rec = Store.byId(params[0]);
-    const app = document.getElementById('app');
-    if (!rec) { app.innerHTML = navbar('สำเร็จ','/')+'<div class="page"><div class="container"><div class="empty-state"><div class="empty-icon">❓</div><p>ไม่พบข้อมูล</p></div></div></div>'; return; }
-
-    app.innerHTML = `
+  function pgSuccess(params){
+    const rec=Store.byId(params[0]);
+    if(!rec){setApp(navbar('สำเร็จ','/')+'<div class="page"><div class="container"><div class="empty-state"><div class="empty-icon"><i data-lucide="help-circle"></i></div><p class="empty-text">ไม่พบข้อมูล</p></div></div></div>');applyIcons();return;}
+    setApp(`
       ${navbar('บันทึกสำเร็จ')}
       <div class="page">
         <div class="container">
           <div class="text-center" style="padding:32px 0 20px">
-            <div class="success-circle">✓</div>
-            <h2 style="font-size:1.4rem;font-weight:700;margin-bottom:6px">บันทึกเรียบร้อยแล้ว!</h2>
-            <p class="text-muted">ระบบได้บันทึกข้อมูลรถของคุณเรียบร้อย</p>
+            <div class="success-circle">${ic('check-circle-2')}</div>
+            <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:6px">บันทึกเรียบร้อยแล้ว!</h2>
+            <p class="text-muted text-sm">ระบบได้บันทึกข้อมูลรถของคุณเรียบร้อย</p>
           </div>
 
           <div class="card mb-16">
@@ -922,7 +831,7 @@
               </div>
               <div class="info-row">
                 <span class="info-label">ประเภทรถ</span>
-                <span class="info-value">${vtIcon(rec.vehicleType)} ${vtLabel(rec.vehicleType)}</span>
+                <span class="info-value">${vtLabel(rec.vehicleType)}</span>
               </div>
               <div class="info-row">
                 <span class="info-label">สถานที่ติดต่อ</span>
@@ -939,153 +848,148 @@
             </div>
           </div>
 
-          <div class="alert alert-info">
-            ℹ️ กรุณาแจ้งเจ้าหน้าที่เพื่อบันทึกเวลาออกเมื่อต้องการออกจากที่จอดรถ
-          </div>
+          <div class="alert alert-info">${ic('info')} กรุณาแจ้งเจ้าหน้าที่เพื่อบันทึกเวลาออกเมื่อต้องการออกจากที่จอดรถ</div>
 
           <button class="btn btn-primary btn-full mt-12" onclick="Router.go('/')">
-            กลับสู่หน้าหลัก
+            ${ic('home')} กลับสู่หน้าหลัก
           </button>
         </div>
-      </div>`;
+      </div>`);
   }
 
   // ══════════════════════════════════════════════════════════════════
   //  PAGE: LOGIN
   // ══════════════════════════════════════════════════════════════════
 
-  function pgLogin() {
-    if (Auth.isStaff()) { Router.go('/staff'); return; }
-    document.getElementById('app').innerHTML = `
+  function pgLogin(){
+    if(Auth.isStaff()){Router.go('/staff');return;}
+    setApp(`
       <div class="login-wrap">
         <div class="login-card">
-          <div class="text-center" style="font-size:2.5rem;margin-bottom:8px">🔐</div>
-          <h2 style="text-align:center;font-size:1.3rem;font-weight:700;margin-bottom:4px">เข้าสู่ระบบ</h2>
+          <div class="login-brand">
+            <div class="login-brand-icon">${ic('lock')}</div>
+          </div>
+          <h2 style="text-align:center;font-size:1.25rem;font-weight:800;margin-bottom:4px;margin-top:10px">เข้าสู่ระบบ</h2>
           <p class="text-muted text-sm text-center mb-16">สำหรับเจ้าหน้าที่และผู้ดูแลระบบ</p>
 
           <div id="ln-err" class="alert alert-danger" style="display:none">
-            ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง
+            ${ic('alert-circle')} ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง
           </div>
 
           <form id="ln-form">
             <div class="form-group">
-              <label class="form-label">ชื่อผู้ใช้</label>
+              <label class="form-label">${ic('user')} ชื่อผู้ใช้</label>
               <input type="text" id="ln-user" class="form-control" placeholder="staff หรือ admin" autocomplete="username">
             </div>
             <div class="form-group">
-              <label class="form-label">รหัสผ่าน</label>
+              <label class="form-label">${ic('key-round')} รหัสผ่าน</label>
               <input type="password" id="ln-pass" class="form-control" placeholder="••••••••" autocomplete="current-password">
             </div>
-            <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px">เข้าสู่ระบบ</button>
+            <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px">
+              ${ic('log-in')} เข้าสู่ระบบ
+            </button>
           </form>
 
-          <div class="divider"></div>
+          <div class="divider mt-16">ข้อมูล Demo</div>
           <p class="text-xs text-muted text-center">
-            Demo: <strong>staff / staff123</strong> &nbsp;|&nbsp; <strong>admin / admin123</strong>
+            <strong>staff / staff123</strong> &nbsp;|&nbsp; <strong>admin / admin123</strong>
           </p>
-          <button class="btn btn-ghost btn-full btn-sm mt-12" onclick="Router.go('/')">← กลับหน้าหลัก</button>
+          <button class="btn btn-ghost btn-full btn-sm mt-12" onclick="Router.go('/')">
+            ${ic('arrow-left')} กลับหน้าหลัก
+          </button>
         </div>
-      </div>`;
+      </div>`);
 
-    document.getElementById('ln-form').addEventListener('submit', e => {
+    document.getElementById('ln-form').addEventListener('submit',e=>{
       e.preventDefault();
-      const u = document.getElementById('ln-user').value.trim();
-      const p = document.getElementById('ln-pass').value;
-      const user = Auth.login(u, p);
-      if (user) {
-        toast(`ยินดีต้อนรับ ${user.name}`, 'success');
-        Router.go('/staff');
-      } else {
-        document.getElementById('ln-err').style.display='flex';
-      }
+      const u=document.getElementById('ln-user').value.trim();
+      const p=document.getElementById('ln-pass').value;
+      const user=Auth.login(u,p);
+      if(user){toast(`ยินดีต้อนรับ ${user.name}`,'success');Router.go('/staff');}
+      else document.getElementById('ln-err').style.display='flex';
     });
   }
 
   // ══════════════════════════════════════════════════════════════════
-  //  PAGE: STAFF DASHBOARD (tabs: active / history / dashboard)
+  //  PAGE: STAFF DASHBOARD
   // ══════════════════════════════════════════════════════════════════
 
-  let _tab = 'active';
+  let _tab='active';
 
-  function pgStaff(params) {
-    if (!Auth.isStaff()) { Router.go('/login'); return; }
-    const tab = params[0] || _tab;
-    _tab = tab;
-    const user = Auth.get();
-
-    document.getElementById('app').innerHTML = `
+  function pgStaff(params){
+    if(!Auth.isStaff()){Router.go('/login');return;}
+    const tab=params[0]||_tab; _tab=tab;
+    const user=Auth.get();
+    setApp(`
       ${navbar(`ระบบจัดการ (${user.name})`)}
       <div class="tab-bar" id="tab-bar">
-        <div class="tab-item${tab==='active'?' active':''}" onclick="switchTab('active')">🚗 กำลังจอด</div>
-        <div class="tab-item${tab==='history'?' active':''}" onclick="switchTab('history')">📋 ค้นหา/ประวัติ</div>
-        ${Auth.isAdmin() ? `<div class="tab-item${tab==='dash'?' active':''}" onclick="switchTab('dash')">📊 สรุปวันนี้</div>` : ''}
+        <div class="tab-item${tab==='active'?' active':''}" onclick="switchTab('active')">${ic('parking-square')} กำลังจอด</div>
+        <div class="tab-item${tab==='history'?' active':''}" onclick="switchTab('history')">${ic('search')} ค้นหา/ประวัติ</div>
+        ${Auth.isAdmin()?`<div class="tab-item${tab==='dash'?' active':''}" onclick="switchTab('dash')">${ic('bar-chart-2')} สรุปวันนี้</div>`:''}
       </div>
-      <div id="tab-body"></div>`;
-
+      <div id="tab-body"></div>`);
     renderTab(tab);
   }
 
-  function switchTab(tab) {
-    _tab = tab;
-    document.querySelectorAll('.tab-item').forEach(el => el.classList.remove('active'));
-    const idx = {active:0,history:1,dash:2}[tab];
+  function switchTab(tab){
+    _tab=tab;
+    document.querySelectorAll('.tab-item').forEach(el=>el.classList.remove('active'));
+    const idx={active:0,history:1,dash:2}[tab];
     document.querySelectorAll('.tab-item')[idx]?.classList.add('active');
     renderTab(tab);
   }
 
-  function renderTab(tab) {
-    if (tab === 'active')  renderActive();
-    else if (tab === 'history') renderHistory();
-    else if (tab === 'dash')    renderDash();
+  function renderTab(tab){
+    if(tab==='active') renderActive();
+    else if(tab==='history') renderHistory();
+    else if(tab==='dash') renderDash();
   }
 
-  // ── Active Parking ────────────────────────────────────────────────
+  // ── Active Parking ──────────────────────────────────────────────
 
-  function renderActive() {
-    const active = Store.active();
-    document.getElementById('tab-body').innerHTML = `
+  function renderActive(){
+    const active=Store.active();
+    setTab(`
       <div class="page" style="padding-top:16px">
         <div class="container">
           <div class="flex-between mb-12">
             <h3 class="section-title" style="margin-bottom:0">รถที่กำลังจอด (${active.length} คัน)</h3>
-            <button class="btn btn-ghost btn-sm" onclick="renderActive()">🔄</button>
+            <button class="btn btn-ghost btn-sm" onclick="renderActive()">${ic('refresh-cw')} รีเฟรช</button>
           </div>
 
-          <div style="margin-bottom:12px">
-            <input type="text" id="active-q" class="form-control"
-              placeholder="🔍 ค้นหาทะเบียน / ชื่อ / สถานที่" oninput="filterActive(this.value)">
+          <div style="margin-bottom:12px;position:relative">
+            <div style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);display:flex">${ic('search')}</div>
+            <input type="text" id="active-q" class="form-control" style="padding-left:38px"
+              placeholder="ค้นหาทะเบียน / ชื่อ / สถานที่" oninput="filterActive(this.value)">
           </div>
 
           <div id="active-list" class="record-list">
-            ${active.length === 0
-              ? `<div class="empty-state"><div class="empty-icon">🅿️</div><p class="empty-text">ไม่มีรถในลานจอดขณะนี้</p></div>`
-              : active.map(r => recCard(r, true)).join('')}
+            ${active.length===0
+              ?`<div class="empty-state"><div class="empty-icon">${ic('parking-square')}</div><p class="empty-text">ไม่มีรถในลานจอดขณะนี้</p></div>`
+              :active.map(r=>recCard(r,true)).join('')}
           </div>
 
           <button class="btn btn-primary btn-full mt-20" onclick="Router.go('/checkin')">
-            + บันทึกรถเข้า
+            ${ic('plus')} บันทึกรถเข้า
           </button>
         </div>
-      </div>`;
+      </div>`);
   }
 
-  function filterActive(q) {
-    const active = Store.active();
-    const s = q.toLowerCase();
-    const list = q ? active.filter(r =>
-      r.licensePlate.toLowerCase().includes(s) ||
-      r.driverName.toLowerCase().includes(s) ||
-      r.destination.toLowerCase().includes(s)
-    ) : active;
-    document.getElementById('active-list').innerHTML = list.length === 0
-      ? `<div class="empty-state"><div class="empty-icon">🔍</div><p>ไม่พบรายการ</p></div>`
-      : list.map(r => recCard(r, true)).join('');
+  function filterActive(q){
+    const active=Store.active(),s=q.toLowerCase();
+    const list=q?active.filter(r=>r.licensePlate.toLowerCase().includes(s)||r.driverName.toLowerCase().includes(s)||r.destination.toLowerCase().includes(s)):active;
+    document.getElementById('active-list').innerHTML=list.length===0
+      ?`<div class="empty-state"><div class="empty-icon">${ic('search')}</div><p class="empty-text">ไม่พบรายการ</p></div>`
+      :list.map(r=>recCard(r,true)).join('');
+    applyIcons();
   }
 
-  function recCard(r, showActions=false) {
-    const el = elapsed(r.entryTime);
+  function recCard(r,showActions=false){
+    const statusClass=`status-${r.status}`;
+    const el=elapsed(r.entryTime);
     return `
-      <div class="record-card">
+      <div class="record-card ${statusClass}">
         <div class="record-header">
           <div>
             <div class="record-plate">${esc(r.licensePlate)}</div>
@@ -1094,70 +998,69 @@
           ${badge(r.status)}
         </div>
         <div class="record-meta">
-          <span class="record-meta-item">${vtIcon(r.vehicleType)} ${vtLabel(r.vehicleType)}</span>
-          <span class="record-meta-item">📍 ${esc(r.destination)}</span>
-          ${r.province ? `<span class="record-meta-item">🗺 ${esc(r.province)}</span>` : ''}
+          <span class="record-meta-item">${ic('car')} ${vtLabel(r.vehicleType)}</span>
+          <span class="record-meta-item">${ic('map-pin')} ${esc(r.destination)}</span>
+          ${r.province?`<span class="record-meta-item">${ic('map')} ${esc(r.province)}</span>`:''}
         </div>
         <div class="record-meta">
-          <span class="record-meta-item">🕐 เข้า ${fmtTime(r.entryTime)}</span>
-          ${r.exitTime ? `<span class="record-meta-item">🕐 ออก ${fmtTime(r.exitTime)}</span>` : ''}
-          ${r.status==='parking' ? `<span class="record-meta-item">⏱ ${el}</span>` : ''}
-          ${r.duration ? `<span class="record-meta-item">⏱ ${fmtDur(r.duration)}</span>` : ''}
+          <span class="record-meta-item">${ic('clock')} เข้า ${fmtTime(r.entryTime)}</span>
+          ${r.exitTime?`<span class="record-meta-item">${ic('clock')} ออก ${fmtTime(r.exitTime)}</span>`:''}
+          ${r.status==='parking'?`<span class="record-meta-item">${ic('timer')} ${el}</span>`:''}
+          ${r.duration?`<span class="record-meta-item">${ic('timer')} ${fmtDur(r.duration)}</span>`:''}
         </div>
-        ${r.purpose ? `<div class="record-meta"><span>📝 ${esc(r.purpose)}</span></div>` : ''}
+        ${r.purpose?`<div class="record-meta"><span class="record-meta-item">${ic('file-text')} ${esc(r.purpose)}</span></div>`:''}
 
-        ${showActions ? `
+        ${showActions?`
           <div class="record-actions">
-            ${r.status==='parking' ? `
-              <button class="btn btn-success btn-sm" onclick="Router.go('/checkout/${r.id}')">✅ บันทึกเวลาออก</button>
-              ${Auth.isAdmin() ? `<button class="btn btn-ghost btn-sm" onclick="cancelRec('${r.id}')">❌ ยกเลิก</button>` : ''}
-            ` : ''}
-            ${Auth.isStaff() ? `<button class="btn btn-ghost btn-sm" onclick="Router.go('/edit/${r.id}')">✏️ แก้ไข</button>` : ''}
-          </div>` : ''}
+            ${r.status==='parking'?`
+              <button class="btn btn-success btn-sm" onclick="Router.go('/checkout/${r.id}')">${ic('log-out')} บันทึกเวลาออก</button>
+              ${Auth.isAdmin()?`<button class="btn btn-ghost btn-sm" onclick="cancelRec('${r.id}')">${ic('x-circle')} ยกเลิก</button>`:''}
+            `:''}
+            ${Auth.isStaff()?`<button class="btn btn-ghost btn-sm" onclick="Router.go('/edit/${r.id}')">${ic('pencil')} แก้ไข</button>`:''}
+          </div>`:''
+        }
       </div>`;
   }
 
-  function cancelRec(id) {
+  function cancelRec(id){
     modal('ยกเลิกรายการ','ต้องการยกเลิกรายการนี้ใช่หรือไม่?',()=>{
-      Store.update(id,{status:'cancelled'});
-      toast('ยกเลิกรายการแล้ว','warning');
-      renderActive();
+      Store.update(id,{status:'cancelled'});toast('ยกเลิกรายการแล้ว','warning');renderActive();
     },'ยกเลิก','btn-danger');
   }
 
-  // ── History / Search ─────────────────────────────────────────────
+  // ── History ─────────────────────────────────────────────────────
 
-  function renderHistory() {
-    const today = new Date().toISOString().slice(0,10);
-    document.getElementById('tab-body').innerHTML = `
+  function renderHistory(){
+    const today=new Date().toISOString().slice(0,10);
+    setTab(`
       <div class="page" style="padding-top:16px">
         <div class="container">
           <h3 class="section-title">ค้นหาประวัติการจอดรถ</h3>
 
           <div class="card mb-16">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
               <div class="form-group" style="margin-bottom:0;grid-column:1/-1">
-                <label class="form-label">ทะเบียนรถ</label>
+                <label class="form-label">${ic('credit-card')} ทะเบียนรถ</label>
                 <input type="text" id="s-plate" class="form-control plate-input" placeholder="เช่น กข-1234">
               </div>
               <div class="form-group" style="margin-bottom:0">
-                <label class="form-label">ชื่อผู้มาติดต่อ</label>
+                <label class="form-label">${ic('user')} ชื่อผู้มาติดต่อ</label>
                 <input type="text" id="s-name" class="form-control" placeholder="ชื่อผู้ขับ">
               </div>
               <div class="form-group" style="margin-bottom:0">
-                <label class="form-label">สถานที่ติดต่อ</label>
+                <label class="form-label">${ic('building-2')} สถานที่ติดต่อ</label>
                 <input type="text" id="s-dest" class="form-control" placeholder="เช่น ฝ่ายบุคคล">
               </div>
               <div class="form-group" style="margin-bottom:0">
-                <label class="form-label">วันที่เริ่มต้น</label>
+                <label class="form-label">${ic('calendar')} วันที่เริ่มต้น</label>
                 <input type="date" id="s-from" class="form-control" value="${today}">
               </div>
               <div class="form-group" style="margin-bottom:0">
-                <label class="form-label">วันที่สิ้นสุด</label>
+                <label class="form-label">${ic('calendar')} วันที่สิ้นสุด</label>
                 <input type="date" id="s-to" class="form-control" value="${today}">
               </div>
               <div class="form-group" style="margin-bottom:0;grid-column:1/-1">
-                <label class="form-label">สถานะ</label>
+                <label class="form-label">${ic('layers')} สถานะ</label>
                 <select id="s-status" class="form-control">
                   <option value="">-- ทั้งหมด --</option>
                   <option value="parking">กำลังจอด</option>
@@ -1167,59 +1070,57 @@
               </div>
             </div>
             <div style="display:flex;gap:8px;margin-top:14px">
-              <button class="btn btn-primary" style="flex:1" onclick="doSearch()">🔍 ค้นหา</button>
-              <button class="btn btn-ghost" onclick="clearSearch()">ล้าง</button>
+              <button class="btn btn-primary" style="flex:1" onclick="doSearch()">${ic('search')} ค้นหา</button>
+              <button class="btn btn-ghost" onclick="clearSearch()">${ic('x')} ล้าง</button>
             </div>
           </div>
 
           <div id="s-results"></div>
         </div>
-      </div>`;
+      </div>`);
     doSearch();
   }
 
-  function doSearch() {
-    const params = {
-      plate:       document.getElementById('s-plate')?.value || '',
-      name:        document.getElementById('s-name')?.value  || '',
-      destination: document.getElementById('s-dest')?.value  || '',
-      dateFrom:    document.getElementById('s-from')?.value  || '',
-      dateTo:      document.getElementById('s-to')?.value    || '',
-      status:      document.getElementById('s-status')?.value|| '',
+  function doSearch(){
+    const params={
+      plate:document.getElementById('s-plate')?.value||'',
+      name:document.getElementById('s-name')?.value||'',
+      destination:document.getElementById('s-dest')?.value||'',
+      dateFrom:document.getElementById('s-from')?.value||'',
+      dateTo:document.getElementById('s-to')?.value||'',
+      status:document.getElementById('s-status')?.value||'',
     };
-    const results = Store.search(params);
-    const el = document.getElementById('s-results');
-    if (!el) return;
-
-    if (results.length === 0) {
-      el.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><p class="empty-text">ไม่พบข้อมูล</p></div>`;
-      return;
+    const results=Store.search(params);
+    const el=document.getElementById('s-results');
+    if(!el) return;
+    if(results.length===0){
+      el.innerHTML=`<div class="empty-state"><div class="empty-icon">${ic('search')}</div><p class="empty-text">ไม่พบข้อมูล</p></div>`;
+      applyIcons(); return;
     }
-    el.innerHTML = `
+    el.innerHTML=`
       <div class="flex-between mb-12">
         <p class="text-muted text-sm">พบ ${results.length} รายการ</p>
-        ${Auth.isAdmin() ? `<button class="btn btn-ghost btn-sm" id="exp-btn">⬇️ Export CSV</button>` : ''}
+        ${Auth.isAdmin()?`<button class="btn btn-ghost btn-sm" id="exp-btn">${ic('download')} Export CSV</button>`:''}
       </div>
-      <div class="record-list">${results.map(r=>recCard(r, Auth.isStaff())).join('')}</div>`;
-
-    document.getElementById('exp-btn')?.addEventListener('click', () => exportCSV(results));
+      <div class="record-list">${results.map(r=>recCard(r,Auth.isStaff())).join('')}</div>`;
+    applyIcons();
+    document.getElementById('exp-btn')?.addEventListener('click',()=>exportCSV(results));
   }
 
-  function clearSearch() {
-    const today = new Date().toISOString().slice(0,10);
-    ['s-plate','s-name','s-dest'].forEach(id => { const e=document.getElementById(id); if(e) e.value=''; });
-    document.getElementById('s-from').value = today;
-    document.getElementById('s-to').value = today;
-    document.getElementById('s-status').value = '';
+  function clearSearch(){
+    const today=new Date().toISOString().slice(0,10);
+    ['s-plate','s-name','s-dest'].forEach(id=>{const e=document.getElementById(id);if(e) e.value='';});
+    document.getElementById('s-from').value=today;
+    document.getElementById('s-to').value=today;
+    document.getElementById('s-status').value='';
     doSearch();
   }
 
-  // ── Dashboard ─────────────────────────────────────────────────────
+  // ── Dashboard ───────────────────────────────────────────────────
 
-  function renderDash() {
-    const s = Store.todayStats();
-    const today = fmtDate(new Date().toISOString());
-    document.getElementById('tab-body').innerHTML = `
+  function renderDash(){
+    const s=Store.todayStats(), today=fmtDate(new Date().toISOString());
+    setTab(`
       <div class="page" style="padding-top:16px">
         <div class="container">
           <div class="flex-between mb-16">
@@ -1241,66 +1142,71 @@
               <div class="stat-label">ออกแล้ว</div>
             </div>
             <div class="stat-card">
-              <div class="stat-value" style="font-size:1.3rem">${fmtDur(s.avgDur)}</div>
+              <div class="stat-value" style="font-size:1.2rem">${fmtDur(s.avgDur)}</div>
               <div class="stat-label">เวลาจอดเฉลี่ย</div>
             </div>
           </div>
 
           <div class="card mb-12">
-            <div class="card-title">แยกตามประเภทรถ (วันนี้)</div>
-            ${VEHICLE_TYPES.map(t => `
-              <div class="info-row" style="margin-bottom:12px">
-                <span class="info-label">${t.icon} ${t.l}</span>
+            <div class="card-title">${ic('bar-chart-2')} แยกตามประเภทรถ (วันนี้)</div>
+            ${VEHICLE_TYPES.map(t=>`
+              <div class="info-row" style="margin-bottom:12px;border-bottom:none;padding-bottom:0">
+                <span class="info-label" style="display:flex;align-items:center;gap:6px">${ic(t.icon)} ${t.l}</span>
                 <div style="display:flex;align-items:center;gap:10px">
                   <div class="bar-track">
                     <div class="bar-fill" style="width:${s.total>0?(s.byType[t.v]||0)/s.total*100:0}%"></div>
                   </div>
-                  <span class="font-bold">${s.byType[t.v]||0}</span>
+                  <span class="font-bold text-sm">${s.byType[t.v]||0}</span>
                 </div>
               </div>`).join('')}
           </div>
 
+          <div class="card mb-12">
+            <div class="card-title">${ic('qr-code')} QR Code สำหรับผู้มาติดต่อ</div>
+            <div class="qr-wrap">
+              <div class="qr-url-row">
+                <input type="text" id="qr-url" class="form-control" value="" placeholder="URL ของระบบ..." oninput="refreshQR()">
+              </div>
+              <div id="qr-canvas"></div>
+              <p class="text-muted text-xs text-center">สแกนเพื่อบันทึกรถเข้า</p>
+              <div class="qr-actions">
+                <button class="btn btn-primary" style="flex:1" onclick="downloadQR()">${ic('download')} ดาวน์โหลด PNG</button>
+                <button class="btn btn-ghost" onclick="printQR()">${ic('printer')} พิมพ์</button>
+              </div>
+            </div>
+          </div>
+
           <div class="card">
-            <div class="card-title">จัดการข้อมูล</div>
+            <div class="card-title">${ic('database')} จัดการข้อมูล</div>
             <button class="btn btn-outline btn-full" onclick="exportCSV(Store.all())">
-              ⬇️ Export ข้อมูลทั้งหมดเป็น CSV
+              ${ic('file-down')} Export ข้อมูลทั้งหมดเป็น CSV
             </button>
           </div>
         </div>
-      </div>`;
+      </div>`);
+    initQR();
   }
 
   // ══════════════════════════════════════════════════════════════════
   //  PAGE: CHECKOUT
   // ══════════════════════════════════════════════════════════════════
 
-  function pgCheckout(params) {
-    if (!Auth.isStaff()) { Router.go('/login'); return; }
-    const rec = Store.byId(params[0]);
-    const app = document.getElementById('app');
-
-    if (!rec || rec.status !== 'parking') {
-      app.innerHTML = `
-        ${navbar('บันทึกเวลาออก','/staff')}
-        <div class="page"><div class="container">
-          <div class="empty-state">
-            <div class="empty-icon">❌</div>
-            <p class="empty-text">ไม่พบรายการ หรือรถได้ออกไปแล้ว</p>
-            <button class="btn btn-primary mt-16" onclick="Router.go('/staff')">กลับหน้าหลัก</button>
-          </div>
-        </div></div>`;
+  function pgCheckout(params){
+    if(!Auth.isStaff()){Router.go('/login');return;}
+    const rec=Store.byId(params[0]);
+    if(!rec||rec.status!=='parking'){
+      setApp(`${navbar('บันทึกเวลาออก','/staff')}<div class="page"><div class="container"><div class="empty-state"><div class="empty-icon">${ic('circle-x')}</div><p class="empty-text">ไม่พบรายการ หรือรถได้ออกไปแล้ว</p><button class="btn btn-primary mt-16" onclick="Router.go('/staff')">${ic('arrow-left')} กลับ</button></div></div></div>`);
       return;
     }
-
-    const el = Math.round((Date.now()-new Date(rec.entryTime))/60000);
-    app.innerHTML = `
+    const el=Math.round((Date.now()-new Date(rec.entryTime))/60000);
+    setApp(`
       ${navbar('บันทึกเวลาออก','/staff')}
       <div class="page">
         <div class="container">
           <h2 class="section-title">ยืนยันเวลาออก</h2>
 
           <div class="card mb-16">
-            <div class="card-title">ข้อมูลรถ</div>
+            <div class="card-title">${ic('car')} ข้อมูลรถ</div>
             <div class="info-list">
               <div class="info-row">
                 <span class="info-label">ทะเบียนรถ</span>
@@ -1312,7 +1218,7 @@
               </div>
               <div class="info-row">
                 <span class="info-label">ประเภทรถ</span>
-                <span class="info-value">${vtIcon(rec.vehicleType)} ${vtLabel(rec.vehicleType)}</span>
+                <span class="info-value">${vtLabel(rec.vehicleType)}</span>
               </div>
               <div class="info-row">
                 <span class="info-label">สถานที่ติดต่อ</span>
@@ -1330,117 +1236,157 @@
           </div>
 
           <div class="card mb-16">
-            <div class="card-title">เวลาออก (บันทึกอัตโนมัติ)</div>
-            <div class="form-control" style="color:var(--text2);cursor:default">
-              🕐 <span id="co-clock"></span>
+            <div class="card-title">${ic('clock')} เวลาออก (บันทึกอัตโนมัติ)</div>
+            <div class="form-control" style="color:var(--text2);cursor:default;display:flex;align-items:center;gap:8px">
+              ${ic('clock-3')} <span id="co-clock"></span>
             </div>
             <div class="form-hint">เวลาจะถูกบันทึก ณ ขณะที่กดยืนยัน</div>
           </div>
 
           <button class="btn btn-success btn-full btn-lg" onclick="doCheckout('${rec.id}')">
-            ✅ ยืนยันบันทึกเวลาออก
+            ${ic('check-circle-2')} ยืนยันบันทึกเวลาออก
           </button>
-          <button class="btn btn-ghost btn-full mt-8" onclick="Router.go('/staff')">← กลับ</button>
+          <button class="btn btn-ghost btn-full mt-8" onclick="Router.go('/staff')">
+            ${ic('arrow-left')} กลับ
+          </button>
         </div>
-      </div>`;
+      </div>`);
 
-    const clkEl = document.getElementById('co-clock');
-    const tick = () => { if(clkEl) clkEl.textContent = new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); };
-    tick();
-    const iv = setInterval(tick, 1000);
-    // Clear interval when navigating away
-    window.addEventListener('hashchange', () => clearInterval(iv), {once:true});
+    const clkEl=document.getElementById('co-clock');
+    const tick=()=>{if(clkEl) clkEl.textContent=new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',second:'2-digit'});};
+    tick(); const iv=setInterval(tick,1000);
+    window.addEventListener('hashchange',()=>clearInterval(iv),{once:true});
   }
 
-  function doCheckout(id) {
-    const exitTime = new Date().toISOString();
-    const rec = Store.byId(id);
-    if (!rec) return;
-    const dur = calcDur(rec.entryTime, exitTime);
-    const user = Auth.get();
-    Store.update(id, {exitTime, duration:dur, status:'exited', recordedBy:user?.name||'staff'});
-    toast(`บันทึกเวลาออกสำเร็จ — จอด ${fmtDur(dur)}`, 'success');
+  function doCheckout(id){
+    const exitTime=new Date().toISOString(), rec=Store.byId(id);
+    if(!rec) return;
+    const dur=calcDur(rec.entryTime,exitTime), user=Auth.get();
+    Store.update(id,{exitTime,duration:dur,status:'exited',recordedBy:user?.name||'staff'});
+    toast(`บันทึกเวลาออกสำเร็จ — จอด ${fmtDur(dur)}`,'success');
     Router.go('/staff');
   }
 
   // ══════════════════════════════════════════════════════════════════
-  //  PAGE: EDIT RECORD (staff/admin)
+  //  PAGE: EDIT
   // ══════════════════════════════════════════════════════════════════
 
-  function pgEdit(params) {
-    if (!Auth.isStaff()) { Router.go('/login'); return; }
-    const rec = Store.byId(params[0]);
-    const app = document.getElementById('app');
-    if (!rec) { app.innerHTML = navbar('แก้ไขข้อมูล','/staff')+'<div class="page"><div class="container"><div class="empty-state"><div class="empty-icon">❓</div><p>ไม่พบข้อมูล</p></div></div></div>'; return; }
-
-    app.innerHTML = `
+  function pgEdit(params){
+    if(!Auth.isStaff()){Router.go('/login');return;}
+    const rec=Store.byId(params[0]);
+    if(!rec){setApp(navbar('แก้ไขข้อมูล','/staff')+'<div class="page"><div class="container"><div class="empty-state"><div class="empty-icon"><i data-lucide="help-circle"></i></div><p class="empty-text">ไม่พบข้อมูล</p></div></div></div>');applyIcons();return;}
+    setApp(`
       ${navbar('แก้ไขข้อมูล','/staff')}
       <div class="page">
         <div class="container">
           <div class="card">
-            <div class="card-title">แก้ไขข้อมูล — ${esc(rec.licensePlate)}</div>
+            <div class="card-title">${ic('pencil')} แก้ไขข้อมูล — ${esc(rec.licensePlate)}</div>
             <form id="ed-form">
               <div class="form-group">
-                <label class="form-label">ชื่อ-นามสกุลผู้ขับรถ <span class="req">*</span></label>
+                <label class="form-label">${ic('user')} ชื่อ-นามสกุลผู้ขับรถ <span class="req">*</span></label>
                 <input type="text" id="ed-name" class="form-control" value="${esc(rec.driverName)}">
               </div>
               <div class="form-group">
-                <label class="form-label">สถานที่ติดต่อ <span class="req">*</span></label>
+                <label class="form-label">${ic('building-2')} สถานที่ติดต่อ <span class="req">*</span></label>
                 <input type="text" id="ed-dest" class="form-control" value="${esc(rec.destination)}">
               </div>
               <div class="form-group">
-                <label class="form-label">วัตถุประสงค์</label>
+                <label class="form-label">${ic('file-text')} วัตถุประสงค์</label>
                 <input type="text" id="ed-pur" class="form-control" value="${esc(rec.purpose||'')}">
               </div>
               <div class="form-group">
-                <label class="form-label">หมายเหตุ</label>
+                <label class="form-label">${ic('sticky-note')} หมายเหตุ</label>
                 <textarea id="ed-note" class="form-control">${esc(rec.notes||'')}</textarea>
               </div>
               <div style="display:flex;gap:8px;margin-top:8px">
-                <button type="submit" class="btn btn-primary" style="flex:1">บันทึก</button>
-                <button type="button" class="btn btn-ghost" onclick="Router.go('/staff')">ยกเลิก</button>
+                <button type="submit" class="btn btn-primary" style="flex:1">${ic('save')} บันทึก</button>
+                <button type="button" class="btn btn-ghost" onclick="Router.go('/staff')">${ic('x')} ยกเลิก</button>
               </div>
             </form>
           </div>
         </div>
-      </div>`;
+      </div>`);
 
-    document.getElementById('ed-form').addEventListener('submit', e => {
+    document.getElementById('ed-form').addEventListener('submit',e=>{
       e.preventDefault();
-      Store.update(rec.id, {
-        driverName:  document.getElementById('ed-name').value.trim(),
-        destination: document.getElementById('ed-dest').value.trim(),
-        purpose:     document.getElementById('ed-pur').value.trim(),
-        notes:       document.getElementById('ed-note').value.trim(),
+      Store.update(rec.id,{
+        driverName:document.getElementById('ed-name').value.trim(),
+        destination:document.getElementById('ed-dest').value.trim(),
+        purpose:document.getElementById('ed-pur').value.trim(),
+        notes:document.getElementById('ed-note').value.trim(),
       });
-      toast('แก้ไขข้อมูลสำเร็จ','success');
-      Router.go('/staff');
+      toast('แก้ไขข้อมูลสำเร็จ','success'); Router.go('/staff');
     });
+  }
+
+  // ══════════════════════════════════════════════════════════════════
+  //  QR CODE
+  // ══════════════════════════════════════════════════════════════════
+
+  function initQR(){
+    const el=document.getElementById('qr-url');
+    if(!el) return;
+    const base=window.location.href.split('#')[0];
+    el.value=base+'#/checkin';
+    buildQR(el.value);
+  }
+
+  function buildQR(url){
+    const container=document.getElementById('qr-canvas');
+    if(!container) return;
+    container.innerHTML='';
+    if(!window.QRCode){container.innerHTML='<p class="text-muted text-sm">โหลด QR library ไม่สำเร็จ</p>';return;}
+    const dark=document.documentElement.getAttribute('data-theme')==='dark';
+    new QRCode(container,{text:url,width:200,height:200,colorDark:dark?'#e2e8f0':'#0F172A',colorLight:dark?'#141B2D':'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+  }
+
+  function refreshQR(){const url=document.getElementById('qr-url')?.value?.trim(); if(url) buildQR(url);}
+
+  function downloadQR(){
+    const canvas=document.querySelector('#qr-canvas canvas');
+    if(!canvas){toast('ไม่พบ QR Code','error');return;}
+    const a=document.createElement('a'); a.download='parking-qrcode.png'; a.href=canvas.toDataURL('image/png'); a.click();
+    toast('ดาวน์โหลด QR Code สำเร็จ','success');
+  }
+
+  function printQR(){
+    const canvas=document.querySelector('#qr-canvas canvas');
+    if(!canvas){toast('ไม่พบ QR Code','error');return;}
+    const url=document.getElementById('qr-url')?.value||'';
+    const w=window.open('','_blank','width=500,height=600');
+    w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>QR Code — ระบบจอดรถ</title>
+      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+      <style>body{font-family:'Plus Jakarta Sans',sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:32px;text-align:center}
+      img{width:240px;height:240px;border:1px solid #E4ECFC;border-radius:12px;padding:12px}
+      h2{font-size:1.3rem;font-weight:800;margin:18px 0 6px}p{color:#475569;font-size:.9rem}
+      .url{font-size:.72rem;color:#94A3B8;margin-top:10px;word-break:break-all;max-width:280px}</style>
+      </head><body><img src="${canvas.toDataURL('image/png')}">
+      <h2>ระบบบันทึกที่จอดรถ</h2><p>สแกน QR Code เพื่อบันทึกรถเข้า</p>
+      <div class="url">${url}</div>
+      <script>window.onload=()=>{window.print();window.close()}<\/script></body></html>`);
+    w.document.close();
   }
 
   // ══════════════════════════════════════════════════════════════════
   //  INIT
   // ══════════════════════════════════════════════════════════════════
 
-  function init() {
-    // Restore theme
-    const saved = localStorage.getItem('pkTheme');
-    if (saved) document.documentElement.setAttribute('data-theme', saved);
-    else if (window.matchMedia('(prefers-color-scheme: dark)').matches)
-      document.documentElement.setAttribute('data-theme', 'dark');
+  function init(){
+    const saved=localStorage.getItem('pkTheme');
+    if(saved) document.documentElement.setAttribute('data-theme',saved);
+    else if(window.matchMedia('(prefers-color-scheme: dark)').matches)
+      document.documentElement.setAttribute('data-theme','dark');
 
-    // Seed mock data
     Store.seed();
 
-    // Routes
-    Router.on('/',          () => pgLanding());
-    Router.on('/checkin',   () => pgCheckin());
-    Router.on('/success',   p  => pgSuccess(p));
-    Router.on('/login',     () => pgLogin());
-    Router.on('/staff',     p  => pgStaff(p));
-    Router.on('/checkout',  p  => pgCheckout(p));
-    Router.on('/edit',      p  => pgEdit(p));
-    Router.on('*',          () => pgLanding());
+    Router.on('/',         ()=>pgLanding());
+    Router.on('/checkin',  ()=>pgCheckin());
+    Router.on('/success',  p=>pgSuccess(p));
+    Router.on('/login',    ()=>pgLogin());
+    Router.on('/staff',    p=>pgStaff(p));
+    Router.on('/checkout', p=>pgCheckout(p));
+    Router.on('/edit',     p=>pgEdit(p));
+    Router.on('*',         ()=>pgLanding());
 
     Router.init();
   }
