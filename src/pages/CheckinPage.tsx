@@ -174,23 +174,34 @@ export function CheckinPage() {
           background: #fff !important;
         }
 
-        /* ── Affix wrapper (มี prefix icon) ── */
-        .ci-form .ant-input-affix-wrapper {
+        /* ── Affix wrapper (มี prefix icon) — ยกเว้น AutoComplete's inner wrapper ── */
+        .ci-form .ant-input-affix-wrapper:not(.ant-select-selection-search-input) {
           min-height: 50px !important; border-radius: 12px !important;
           border-color: #E2E8F0 !important; background: #F8FAFF !important;
           font-size: 15px !important; padding: 0 14px !important;
           display: flex !important; align-items: center !important;
         }
-        .ci-form .ant-input-affix-wrapper-focused {
+        .ci-form .ant-input-affix-wrapper-focused:not(.ant-select-selection-search-input) {
           border-color: #2563EB !important;
           box-shadow: 0 0 0 3px rgba(37,99,235,.10) !important;
           background: #fff !important;
         }
         /* inner input — reset ทั้งหมด */
-        .ci-form .ant-input-affix-wrapper .ant-input {
+        .ci-form .ant-input-affix-wrapper:not(.ant-select-selection-search-input) .ant-input {
           background: transparent !important; border: none !important;
           box-shadow: none !important; min-height: unset !important;
           padding: 0 8px !important; font-size: 15px !important; flex: 1;
+        }
+        /* AutoComplete inner affix wrapper — reset ให้ไม่มี border/bg ซ้อน */
+        .ci-form .ant-select-selection-search-input.ant-input-affix-wrapper {
+          background: transparent !important; border: none !important;
+          box-shadow: none !important; min-height: unset !important;
+          padding: 0 !important; height: 100% !important;
+        }
+        .ci-form .ant-select-selection-search-input .ant-input {
+          background: transparent !important; border: none !important;
+          box-shadow: none !important; min-height: unset !important;
+          padding: 0 4px !important; font-size: 15px !important;
         }
 
         /* ── Select ── */
