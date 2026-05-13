@@ -64,18 +64,39 @@ function KpiCard({ icon, iconBg, value, label, sub, borderColor }: {
 
 /* ── Elapsed display ─────────────────────────────────────────── */
 function ElapsedBadge({ entryTime, now }: { entryTime: string; now: number }) {
-  const mins = elapsedMinutes(entryTime, now);
-  const color = mins > 240 ? '#DC2626' : mins > 60 ? '#D97706' : '#64748B';
-  const bg    = mins > 240 ? 'rgba(220,38,38,0.07)' : mins > 60 ? 'rgba(217,119,6,0.07)' : 'transparent';
+  const mins       = elapsedMinutes(entryTime, now);
+  const isOvertime = mins > 360;   // > 6 ชั่วโมง
+  const isUrgent   = mins > 240;   // > 4 ชั่วโมง
+  const isWarn     = mins > 60;    // > 1 ชั่วโมง
+
+  const color = isOvertime ? '#7F1D1D' : isUrgent ? '#DC2626' : isWarn ? '#D97706' : '#64748B';
+  const bg    = isOvertime ? 'rgba(127,29,29,0.08)'
+              : isUrgent   ? 'rgba(220,38,38,0.07)'
+              : isWarn     ? 'rgba(217,119,6,0.07)'
+              : 'transparent';
+  const border = isOvertime ? '1px solid rgba(127,29,29,0.22)' : undefined;
+
   return (
-    <span style={{
-      fontFamily: "'JetBrains Mono', monospace",
-      fontSize: 12, fontWeight: 600, color,
-      background: bg, borderRadius: 5, padding: bg !== 'transparent' ? '2px 6px' : 0,
-    }}>
-      {mins > 240 && <WarningOutlined style={{ marginRight: 4, fontSize: 10 }} />}
-      {fmtDuration(mins)}
-    </span>
+    <div style={{ display: 'inline-flex', flexDirection: 'column', gap: 3, alignItems: 'flex-start' }}>
+      <span style={{
+        fontFamily: "'JetBrains Mono', monospace", whiteSpace: 'nowrap',
+        fontSize: 12, fontWeight: 600, color, background: bg, border,
+        borderRadius: 5, padding: bg !== 'transparent' ? '2px 6px' : 0,
+        display: 'inline-flex', alignItems: 'center', gap: 4,
+      }}>
+        {(isUrgent || isOvertime) && <WarningOutlined style={{ fontSize: 10 }} />}
+        {fmtDuration(mins)}
+      </span>
+      {isOvertime && (
+        <span style={{
+          fontSize: 10, fontWeight: 700, color: '#7F1D1D',
+          background: 'rgba(127,29,29,0.1)', border: '1px solid rgba(127,29,29,0.2)',
+          borderRadius: 4, padding: '1px 6px', whiteSpace: 'nowrap', letterSpacing: '0.04em',
+        }}>
+          ⚠ เกินเวลา 6 ชม.
+        </span>
+      )}
+    </div>
   );
 }
 
@@ -137,13 +158,16 @@ function RowActions({ record, onCheckout, onEdit, onCancel }:
 /* ── Mobile compact card ─────────────────────────────────────── */
 function CompactCard({ record, now, onCheckout, onEdit, onCancel }:
   { record: ParkingRecord; now: number; onCheckout: () => void; onEdit: () => void; onCancel: () => void }) {
-  const mins = elapsedMinutes(record.entryTime, now);
-  const isUrgent = mins > 240;
+  const mins       = elapsedMinutes(record.entryTime, now);
+  const isOvertime = mins > 360;
+  const isUrgent   = !isOvertime && mins > 240;
+  const accentColor = isOvertime ? '#991B1B' : isUrgent ? '#DC2626' : '#2563EB';
+  const borderColor = isOvertime ? 'rgba(127,29,29,0.3)' : isUrgent ? 'rgba(220,38,38,0.25)' : '#E2E8F0';
   return (
     <div style={{
-      background: '#FFFFFF',
-      border: `1px solid ${isUrgent ? 'rgba(220,38,38,0.25)' : '#E2E8F0'}`,
-      borderLeft: `3px solid ${isUrgent ? '#DC2626' : '#2563EB'}`,
+      background: isOvertime ? 'rgba(127,29,29,0.03)' : '#FFFFFF',
+      border: `1px solid ${borderColor}`,
+      borderLeft: `3px solid ${accentColor}`,
       borderRadius: 10, padding: '12px 14px', marginBottom: 8,
     }}>
       {/* Top row */}
@@ -326,7 +350,7 @@ export function ActiveTab({ onRefresh }: Props) {
     {
       title: 'จอดมาแล้ว',
       key: 'elapsed',
-      width: 110,
+      width: 130,
       render: (_, r) => <ElapsedBadge entryTime={r.entryTime} now={now} />,
     },
     {
@@ -347,6 +371,7 @@ export function ActiveTab({ onRefresh }: Props) {
   /* ── Row styling ── */
   const rowClassName = (r: ParkingRecord) => {
     const mins = elapsedMinutes(r.entryTime, now);
+    if (mins > 360) return 'row-overtime';
     if (mins > 240) return 'row-urgent';
     if (mins > 60)  return 'row-warn';
     return '';
@@ -496,7 +521,11 @@ export function ActiveTab({ onRefresh }: Props) {
             }
             .parking-table .ant-table-tbody > tr:last-child > td { border-bottom: none !important; }
             .parking-table .ant-table-tbody > tr:hover > td { background: #F8FAFC !important; }
+            .parking-table .row-overtime > td { background: rgba(127,29,29,0.04) !important; }
+            .parking-table .row-overtime > td:first-child { border-left: 3px solid #991B1B !important; }
+            .parking-table .row-overtime:hover > td { background: rgba(127,29,29,0.08) !important; }
             .parking-table .row-urgent > td { background: rgba(220,38,38,0.03) !important; }
+            .parking-table .row-urgent > td:first-child { border-left: 3px solid #DC2626 !important; }
             .parking-table .row-urgent:hover > td { background: rgba(220,38,38,0.06) !important; }
             .parking-table .row-warn > td { background: rgba(217,119,6,0.02) !important; }
           `}</style>
