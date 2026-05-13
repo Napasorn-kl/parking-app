@@ -149,13 +149,13 @@ export function ActiveTab({ onRefresh }: Props) {
             {/* ── Zone B: Info rows ── */}
             <div style={{
               background: '#F8FAFC',
-              border: '1px solid #F1F5F9',
+              border: '1px solid #EEF2F7',
               borderRadius: 8,
               padding: '10px 12px',
               display: 'flex',
               flexDirection: 'column',
-              gap: 7,
-              marginBottom: 11,
+              gap: 8,
+              marginBottom: 12,
             }}>
               {/* Driver + vehicle */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
