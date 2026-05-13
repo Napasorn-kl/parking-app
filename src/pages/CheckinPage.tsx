@@ -125,9 +125,6 @@ export function CheckinPage() {
           <div style={{ fontWeight: 700, fontSize: 15, color: '#0F172A', lineHeight: 1.2 }}>ระบบจอดรถ</div>
           <div style={{ fontSize: 11, color: '#64748B' }}>Parking Management</div>
         </div>
-        <div style={{ marginLeft: 'auto' }}>
-          <a href="#/login" style={{ color: '#94A3B8', fontSize: 13 }}>เจ้าหน้าที่ →</a>
-        </div>
       </div>
 
       <div style={{ padding: '20px 16px 40px', maxWidth: 500, margin: '0 auto' }}>

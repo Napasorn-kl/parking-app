@@ -76,7 +76,7 @@ export function QRTab() {
         borderRadius: 12, padding: '20px', marginBottom: 20,
       }}>
         <div style={{ color: '#94A3B8', fontSize: 12, fontWeight: 600, letterSpacing: '0.08em', marginBottom: 10, textTransform: 'uppercase' }}>
-          URL ของระบบ
+          URL หน้าบันทึกรถเข้า (สำหรับ QR Code)
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           <Input

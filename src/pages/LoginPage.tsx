@@ -96,12 +96,6 @@ export function LoginPage() {
           </Form.Item>
         </Form>
 
-        <div style={{ textAlign: 'center', marginTop: 20 }}>
-          <a href="#/checkin" style={{ color: '#94A3B8', fontSize: 13 }}>
-            ← กลับหน้าบันทึกรถเข้า
-          </a>
-        </div>
-
         <div style={{
           marginTop: 24, background: '#F8FAFC', border: '1px solid #E2E8F0',
           borderRadius: 8, padding: '10px 14px', fontSize: 12, color: '#64748B',
