@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Form, Input, Select, Button, AutoComplete, Row, Col, message } from 'antd';
 import {
   UserOutlined, PhoneOutlined, CarOutlined, EnvironmentOutlined,
-  CheckCircleFilled, BankOutlined, HomeOutlined, TeamOutlined, FileTextOutlined,
+  CheckCircleFilled, BankOutlined, HomeOutlined, TeamOutlined,
 } from '@ant-design/icons';
 import { Store, Auth, genId, VEHICLE_TYPES, PROVINCES, DESTINATIONS, fmtTime } from '../lib/data';
 import type { ParkingRecord, VehicleType } from '../lib/data';
@@ -158,30 +158,67 @@ export function CheckinPage() {
         .ci-form .ant-form-item { margin-bottom: 0; }
         .ci-form .ant-form-item-label { padding-bottom: 5px; }
         .ci-form .ant-form-item-label > label {
-          font-size: 13px !important; font-weight: 600 !important; color: #374151 !important; height:auto !important;
+          font-size: 13px !important; font-weight: 600 !important;
+          color: #374151 !important; height: auto !important;
         }
-        .ci-form .ant-input,
-        .ci-form .ant-input-affix-wrapper,
-        .ci-form .ant-select-selector {
-          min-height: 50px !important;
-          border-radius: 12px !important;
-          border-color: #E2E8F0 !important;
-          background: #F8FAFF !important;
-          font-size: 15px !important;
+
+        /* ── Standalone input (ไม่มี prefix) ── */
+        .ci-form .ant-input:not(.ant-input-affix-wrapper .ant-input):not(textarea) {
+          min-height: 50px !important; border-radius: 12px !important;
+          border-color: #E2E8F0 !important; background: #F8FAFF !important;
+          font-size: 15px !important; padding: 0 14px !important;
         }
-        .ci-form .ant-input-affix-wrapper { padding: 0 14px !important; }
-        .ci-form .ant-input-affix-wrapper .ant-input {
-          min-height: unset !important; background: transparent !important; border: none !important;
-          box-shadow: none !important; padding: 0 8px !important;
+        .ci-form .ant-input:not(.ant-input-affix-wrapper .ant-input):not(textarea):focus {
+          border-color: #2563EB !important;
+          box-shadow: 0 0 0 3px rgba(37,99,235,.10) !important;
+          background: #fff !important;
         }
-        .ci-form .ant-input:focus,
-        .ci-form .ant-select-focused .ant-select-selector,
+
+        /* ── Affix wrapper (มี prefix icon) ── */
+        .ci-form .ant-input-affix-wrapper {
+          min-height: 50px !important; border-radius: 12px !important;
+          border-color: #E2E8F0 !important; background: #F8FAFF !important;
+          font-size: 15px !important; padding: 0 14px !important;
+          display: flex !important; align-items: center !important;
+        }
         .ci-form .ant-input-affix-wrapper-focused {
           border-color: #2563EB !important;
           box-shadow: 0 0 0 3px rgba(37,99,235,.10) !important;
           background: #fff !important;
         }
-        .ci-form .ant-select-selector { align-items: center !important; padding: 0 14px !important; }
+        /* inner input — reset ทั้งหมด */
+        .ci-form .ant-input-affix-wrapper .ant-input {
+          background: transparent !important; border: none !important;
+          box-shadow: none !important; min-height: unset !important;
+          padding: 0 8px !important; font-size: 15px !important; flex: 1;
+        }
+
+        /* ── Select ── */
+        .ci-form .ant-select-selector {
+          min-height: 50px !important; border-radius: 12px !important;
+          border-color: #E2E8F0 !important; background: #F8FAFF !important;
+          font-size: 15px !important; align-items: center !important;
+          padding: 0 14px !important;
+        }
+        .ci-form .ant-select-focused .ant-select-selector {
+          border-color: #2563EB !important;
+          box-shadow: 0 0 0 3px rgba(37,99,235,.10) !important;
+          background: #fff !important;
+        }
+
+        /* ── TextArea ── */
+        .ci-form textarea.ant-input {
+          min-height: 90px !important; border-radius: 12px !important;
+          border-color: #E2E8F0 !important; background: #F8FAFF !important;
+          font-size: 15px !important; padding: 14px !important;
+          resize: none !important; line-height: 1.6 !important;
+        }
+        .ci-form textarea.ant-input:focus {
+          border-color: #2563EB !important;
+          box-shadow: 0 0 0 3px rgba(37,99,235,.10) !important;
+          background: #fff !important;
+        }
+
         .ci-form .ant-form-item-explain-error { font-size: 12px; margin-top: 4px; }
       `}</style>
 
@@ -283,8 +320,7 @@ export function CheckinPage() {
 
                 <Form.Item name="purpose" label="วัตถุประสงค์การติดต่อ"
                   rules={[{ required:true, message:'กรุณาระบุวัตถุประสงค์' }]}>
-                  <Input prefix={<FileTextOutlined style={{ color:'#94A3B8' }} />}
-                    placeholder="เช่น ประชุม, ส่งพัสดุ, สัมภาษณ์งาน" />
+                  <Input.TextArea rows={3} placeholder="เช่น ประชุม, ส่งพัสดุ, สัมภาษณ์งาน" />
                 </Form.Item>
 
               </div>
