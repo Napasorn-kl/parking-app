@@ -214,30 +214,36 @@ export function StaffLayout() {
         >
           {/* Page header */}
           <div style={{
-            padding: isMobile ? '16px 16px 0' : '22px 28px 0',
-            display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-            marginBottom: 4,
+            padding: isMobile ? '14px 16px 0' : '22px 28px 0',
+            display: 'flex', justifyContent: 'space-between',
+            alignItems: 'center', gap: 10, marginBottom: 4,
           }}>
-            <div>
-              <h2 style={{ color: '#0F172A', margin: '0 0 2px', fontSize: 20, fontWeight: 700, lineHeight: 1.2 }}>
+            <div style={{ minWidth: 0 }}>
+              <h2 style={{
+                color: '#0F172A', margin: '0 0 2px',
+                fontSize: isMobile ? 17 : 20, fontWeight: 700, lineHeight: 1.2,
+                whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+              }}>
                 {TAB_TITLES[tab]}
               </h2>
-              <div style={{ color: '#64748B', fontSize: 12 }}>
-                {new Date().toLocaleDateString('th-TH', {
-                  weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
-                })}
-              </div>
+              {!isMobile && (
+                <div style={{ color: '#64748B', fontSize: 12 }}>
+                  {new Date().toLocaleDateString('th-TH', {
+                    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+                  })}
+                </div>
+              )}
             </div>
 
             {/* Live indicator */}
             {tab === 'active' && (
               <div style={{
-                display: 'flex', alignItems: 'center', gap: 8,
+                display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0,
                 background: 'rgba(2,132,199,0.07)', border: '1px solid rgba(2,132,199,0.18)',
-                borderRadius: 8, padding: '6px 14px',
+                borderRadius: 8, padding: isMobile ? '5px 10px' : '6px 14px',
               }}>
                 <span className="pulse-dot" />
-                <span style={{ color: '#0284C7', fontSize: 13, fontWeight: 600 }}>
+                <span style={{ color: '#0284C7', fontSize: isMobile ? 12 : 13, fontWeight: 600, whiteSpace: 'nowrap' }}>
                   {activeCount} คันในลาน
                 </span>
               </div>

@@ -159,3 +159,27 @@ body {
 .ant-select-selector, .ant-picker {
   font-family: 'IBM Plex Sans Thai', 'IBM Plex Sans', sans-serif !important;
 }
+
+/* ── Mobile touch targets ──────────────────────── */
+@media (max-width: 767px) {
+  /* Menu items easier to tap */
+  .ant-menu-item { height: 46px !important; line-height: 46px !important; }
+
+  /* Table horizontal scroll hint */
+  .ant-table-wrapper { overflow-x: auto; }
+
+  /* Pagination smaller on mobile */
+  .ant-pagination { font-size: 13px !important; }
+  .ant-pagination .ant-pagination-item { min-width: 30px !important; height: 30px !important; line-height: 28px !important; }
+  .ant-pagination .ant-pagination-prev,
+  .ant-pagination .ant-pagination-next { min-width: 30px !important; height: 30px !important; line-height: 30px !important; }
+
+  /* Modals full-width friendly */
+  .ant-modal { margin: 0 16px !important; }
+
+  /* DatePicker popups fit screen */
+  .ant-picker-dropdown { max-width: calc(100vw - 16px) !important; }
+
+  /* Select/AutoComplete dropdown fit screen */
+  .ant-select-dropdown { max-width: calc(100vw - 32px) !important; }
+}

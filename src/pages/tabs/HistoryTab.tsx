@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   Input, Select, Button, Table, DatePicker, Space, Tag,
   Tooltip, Typography,
@@ -29,6 +29,12 @@ export function HistoryTab({ refreshKey }: Props) {
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState('');
   const [dateRange, setDateRange] = useState<[dayjs.Dayjs | null, dayjs.Dayjs | null] | null>(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   const filtered = useMemo(() => {
     let records = Store.all();
@@ -143,10 +149,11 @@ export function HistoryTab({ refreshKey }: Props) {
       {/* Filters */}
       <div style={{
         background: '#FFFFFF', border: '1px solid #E2E8F0',
-        borderRadius: 10, padding: '14px 16px', marginBottom: 16,
-        display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'flex-end',
+        borderRadius: 10, padding: isMobile ? '12px 14px' : '14px 16px', marginBottom: 16,
+        display: 'flex', flexDirection: 'column', gap: 10,
       }}>
-        <div style={{ flex: '1 1 200px', minWidth: 180 }}>
+        {/* Search — full width */}
+        <div>
           <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 4 }}>
             <FilterOutlined style={{ marginRight: 4 }} />ค้นหา
           </div>
@@ -158,30 +165,43 @@ export function HistoryTab({ refreshKey }: Props) {
             allowClear
           />
         </div>
-        <div style={{ flex: '0 1 180px', minWidth: 160 }}>
-          <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 4 }}>วันที่</div>
-          <RangePicker
-            style={{ width: '100%' }}
-            onChange={(dates) => setDateRange(dates as [dayjs.Dayjs | null, dayjs.Dayjs | null])}
-            placeholder={['เริ่มต้น', 'สิ้นสุด']}
-          />
+
+        {/* Date + Status + Export — row on desktop, stacked on mobile */}
+        <div style={{
+          display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
+          gap: isMobile ? 10 : 12,
+          alignItems: isMobile ? 'stretch' : 'flex-end',
+        }}>
+          <div style={{ flex: isMobile ? 'unset' : '0 1 200px' }}>
+            <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 4 }}>วันที่</div>
+            <RangePicker
+              style={{ width: '100%' }}
+              onChange={(dates) => setDateRange(dates as [dayjs.Dayjs | null, dayjs.Dayjs | null])}
+              placeholder={['เริ่มต้น', 'สิ้นสุด']}
+            />
+          </div>
+          <div style={{ flex: isMobile ? 'unset' : '0 1 150px' }}>
+            <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 4 }}>สถานะ</div>
+            <Select
+              value={status}
+              onChange={setStatus}
+              style={{ width: '100%' }}
+              options={STATUS_OPTIONS}
+            />
+          </div>
+          {Auth.isAdmin() && (
+            <div style={{ flexShrink: 0, marginTop: isMobile ? 0 : 20 }}>
+              <Button
+                block={isMobile}
+                icon={<DownloadOutlined />}
+                onClick={() => exportCSV(filtered)}
+              >
+                Export CSV
+              </Button>
+            </div>
+          )}
         </div>
-        <div style={{ flex: '0 1 140px', minWidth: 120 }}>
-          <div style={{ color: '#94A3B8', fontSize: 12, marginBottom: 4 }}>สถานะ</div>
-          <Select
-            value={status}
-            onChange={setStatus}
-            style={{ width: '100%' }}
-            options={STATUS_OPTIONS}
-          />
-        </div>
-        {Auth.isAdmin() && (
-          <Tooltip title="Export ข้อมูลที่แสดงอยู่เป็น CSV">
-            <Button icon={<DownloadOutlined />} onClick={() => exportCSV(filtered)}>
-              Export CSV
-            </Button>
-          </Tooltip>
-        )}
       </div>
 
       {/* Result count */}

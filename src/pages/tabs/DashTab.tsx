@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Row, Col, Button, Tooltip, DatePicker } from 'antd';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
@@ -119,6 +119,12 @@ export function DashTab({ refreshKey }: Props) {
   const todayStr = today.format('YYYY-MM-DD');
 
   const [dateRange, setDateRange] = useState<[Dayjs, Dayjs]>([today, today]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
   const from = dateRange[0].format('YYYY-MM-DD');
   const to   = dateRange[1].format('YYYY-MM-DD');
 
@@ -160,44 +166,44 @@ export function DashTab({ refreshKey }: Props) {
       {/* ── Date filter bar ── */}
       <div style={{
         background: '#FFFFFF', border: '1px solid #E2E8F0',
-        borderRadius: 12, padding: '14px 16px', marginBottom: 20,
-        display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap',
+        borderRadius: 12, padding: isMobile ? '12px 14px' : '14px 16px', marginBottom: 20,
+        display: 'flex', flexDirection: 'column', gap: 10,
       }}>
-        <CalendarOutlined style={{ color: '#94A3B8', fontSize: 14, flexShrink: 0 }} />
-
-        {/* Range picker */}
-        <RangePicker
-          value={dateRange}
-          onChange={(dates) => {
-            if (dates && dates[0] && dates[1]) setDateRange([dates[0], dates[1]]);
-          }}
-          format="DD/MM/YYYY"
-          allowClear={false}
-          size="small"
-          disabledDate={(d) => d.isAfter(today)}
-          style={{ width: 210, flexShrink: 0 }}
-        />
-
-        {/* Preset chips */}
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-          <PresetChip label="วันนี้"       active={isToday}   onClick={() => setPreset('today')} />
-          <PresetChip label="7 วัน"        active={preset7}   onClick={() => setPreset('7d')}    />
-          <PresetChip label="30 วัน"       active={preset30}  onClick={() => setPreset('30d')}   />
-          <PresetChip label="เดือนนี้"     active={presetMon} onClick={() => setPreset('month')} />
+        {/* Row 1: picker */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <CalendarOutlined style={{ color: '#94A3B8', fontSize: 14, flexShrink: 0 }} />
+          <RangePicker
+            value={dateRange}
+            onChange={(dates) => {
+              if (dates && dates[0] && dates[1]) setDateRange([dates[0], dates[1]]);
+            }}
+            format="DD/MM/YYYY"
+            allowClear={false}
+            size="small"
+            disabledDate={(d) => d.isAfter(today)}
+            style={{ flex: 1, minWidth: 0 }}
+          />
+          {!isMobile && (
+            <Tooltip title="Export ข้อมูลช่วงวันที่นี้เป็น CSV">
+              <Button icon={<DownloadOutlined />} size="small" onClick={handleExport} style={{ borderRadius: 8, flexShrink: 0 }}>
+                Export
+              </Button>
+            </Tooltip>
+          )}
         </div>
 
-        {/* Spacer + export */}
-        <div style={{ marginLeft: 'auto' }}>
-          <Tooltip title="Export ข้อมูลช่วงวันที่นี้เป็น CSV">
-            <Button
-              icon={<DownloadOutlined />}
-              size="small"
-              onClick={handleExport}
-              style={{ borderRadius: 8 }}
-            >
+        {/* Row 2: preset chips + export (mobile) */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+          <PresetChip label="วันนี้"   active={isToday}   onClick={() => setPreset('today')} />
+          <PresetChip label="7 วัน"   active={preset7}   onClick={() => setPreset('7d')}    />
+          <PresetChip label="30 วัน"  active={preset30}  onClick={() => setPreset('30d')}   />
+          <PresetChip label="เดือนนี้" active={presetMon} onClick={() => setPreset('month')} />
+          {isMobile && (
+            <Button icon={<DownloadOutlined />} size="small" onClick={handleExport}
+              style={{ borderRadius: 8, marginLeft: 'auto' }}>
               Export
             </Button>
-          </Tooltip>
+          )}
         </div>
       </div>
 

@@ -549,6 +549,8 @@ export function ActiveTab({ onRefresh }: Props) {
         onOk={confirmCheckout} onCancel={() => setCheckoutRecord(null)}
         okText="ยืนยันออก" cancelText="ยกเลิก"
         okButtonProps={{ style: { background: '#22C55E', borderColor: '#22C55E' } }}
+        width={isMobile ? 'calc(100vw - 32px)' : 480}
+        style={isMobile ? { top: 40 } : {}}
       >
         {checkoutRecord && (() => {
           const exitNow = new Date().toISOString();
@@ -598,6 +600,8 @@ export function ActiveTab({ onRefresh }: Props) {
         title="แก้ไขข้อมูล" open={!!editRecord}
         onOk={confirmEdit} onCancel={() => setEditRecord(null)}
         okText="บันทึก" cancelText="ยกเลิก"
+        width={isMobile ? 'calc(100vw - 32px)' : 520}
+        style={isMobile ? { top: 20 } : {}}
       >
         <Form form={editForm} layout="vertical" style={{ marginTop: 12 }}>
           <Form.Item name="driverName" label="ชื่อ-นามสกุลผู้ขับ" rules={[{ required: true }]}>
